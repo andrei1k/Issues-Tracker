@@ -2,19 +2,20 @@ import Knex from 'knex'
 import { config } from '../knexfile';
 import express from 'express'
 
-const knex = Knex(config.development)
+const knex = Knex(config.development);
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3001;
+const IP = '192.168.0.108';
 
 app.get('/', (req, res) => {
   knex('test').then(value => {
-    res.send(value)
+    res.send(value);
   }).finally(() => {
-    knex.destroy()
+    knex.destroy();
   })
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(port, IP, () => {
+  console.log(`Example app listening on port ${port}`);
 })

@@ -35,4 +35,5 @@ export const config = convict({
   },
 })
 
+console.log(process.env.DB_PORT);
 config.validate()

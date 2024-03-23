@@ -1,0 +1,9 @@
+.home-div {
+    display: flex;
+    position: fixed; 
+    left: 20%;
+    /* max-width: 80%; */
+    /* max-height: 80%; */
+    padding: 20px;
+    background-color: lightcyan;
+}

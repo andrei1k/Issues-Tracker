@@ -1,6 +1,6 @@
 .home-div {
     display: flex;
-    position: fixed; 
+    /* position: fixed;  */
     left: 20%;
     /* max-width: 80%; */
     /* max-height: 80%; */

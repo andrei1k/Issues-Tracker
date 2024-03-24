@@ -26,7 +26,7 @@ export class Issue extends BaseModel {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
-                from: 'issue.userId',
+                from: 'issues.assignedTo',
                 to: 'users.id'
                 }
             },
@@ -35,7 +35,7 @@ export class Issue extends BaseModel {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Project,
                 join: {
-                from: 'issue.projectId',
+                from: 'issues.projectId',
                 to: 'projects.id'
                 }
             },
@@ -44,7 +44,7 @@ export class Issue extends BaseModel {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Status,
                 join: {
-                from: 'issue.statusId',
+                from: 'issues.statusId',
                 to: 'statuses.id'
                 }
             },

@@ -9,8 +9,8 @@ export class Status extends BaseModel {
     name!: string
 
     issues?: Issue[]
-    followingStatuses: Status[]
-    previousStatuses: Status[]
+    followingStatuses?: Status[]
+    previousStatuses?: Status[]
 
     static get relationMappings() {
 
@@ -31,8 +31,8 @@ export class Status extends BaseModel {
                 join: {
                 from: 'statuses.id',
                 through: {
-                    from: 'statusFlow.fromStatus',
-                    to: 'statusFlow.toStatus'
+                    from: 'statusFlows.fromStatus',
+                    to: 'statusFlows.toStatus'
                 },
                 to: 'statuses.id'
                 }
@@ -44,8 +44,8 @@ export class Status extends BaseModel {
                 join: {
                 from: 'statuses.id',
                 through: {
-                    from: 'statusFlow.toStatus',
-                    to: 'statusFlow.fromStatus'
+                    from: 'statusFlows.toStatus',
+                    to: 'statusFlows.fromStatus'
                 },
                 to: 'statuses.id'
                 }

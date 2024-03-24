@@ -16,14 +16,14 @@ export class Project extends BaseModel {
 
         return {
     
-            projects: {
+            users: {
                 relation: Model.ManyToManyRelation,
                 modelClass: User,
                 join: {
                 from: 'projects.id',
                 through: {
-                    from: 'userProjects.userId',
-                    to: 'userProjects.projectId'
+                    from: 'userProjects.projectId',
+                    to: 'userProjects.userId'
                 },
                 to: 'users.id'
                 }

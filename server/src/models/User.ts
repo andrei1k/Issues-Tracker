@@ -13,7 +13,7 @@ export class User extends BaseModel {
     lastName!: string
 
     projects?: Project[]
-    assignedIssues?: Issue[]
+    issues?: Issue[]
 
     static get relationMappings() {
 
@@ -37,7 +37,7 @@ export class User extends BaseModel {
                 modelClass: Issue,
                 join: {
                 from: 'users.id',
-                to: 'issues.userId'
+                to: 'issues.assignedTo'
                 }
             },
         }

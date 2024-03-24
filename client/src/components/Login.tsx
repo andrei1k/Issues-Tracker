@@ -10,7 +10,7 @@ class Login extends Component {
     inputFocus(event) {
         const input = event.target;
         if (!input.value) {
-            if (input.id === 'username') {
+            if (input.id === 'email') {
                 input.placeholder = 'Enter email:';
             } else if (input.id === 'password') {
                 input.placeholder = 'Enter password:';
@@ -20,24 +20,22 @@ class Login extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // Обработка на формата
+
     }
 
     render() {
         return (
-            <div className="login-container">
-                <form className="login-form" onSubmit={this.handleSubmit}>
+            <div className='login-container'>
+                <form className='login-form' onSubmit={this.handleSubmit}>
                     <h2>Login</h2>
-                    <div className="input-group">
-                        <input type="text" id="username" name="username" placeholder="Enter email:" 
+                    <div className='input-group'>
+                        <input type='text' id='email' name='email' placeholder='Enter email:' 
+                        onClick={this.inputText} onBlur={this.inputFocus} required></input>
+                        <input type='password' id='password' name='password' placeholder='Enter password:' 
                         onClick={this.inputText} onBlur={this.inputFocus} required></input>
                     </div>
-                    <div className="input-group">
-                        <input type="password" id="password" name="password" placeholder="Enter password:" 
-                        onClick={this.inputText} onBlur={this.inputFocus} required></input>
-                    </div>
-                    <div className="input-group button-container">
-                        <button type="submit">Login</button>
+                    <div className='input-group button-container'>
+                        <button type='submit'>Login</button>
                     </div>
                 </form>
             </div>

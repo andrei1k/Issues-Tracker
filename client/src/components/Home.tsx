@@ -4,7 +4,7 @@ import './Home.css';
 class Home extends Component {
     render() {
         return(
-            <div className="home-div">
+            <div className='home-div'>
                 <h1>Issue Tracker!</h1>
             </div>
         )

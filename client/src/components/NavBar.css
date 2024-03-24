@@ -1,11 +1,10 @@
 .navBar {
+    position: relative;
     margin: 10px;
     margin-right: 4%;
     margin-left: 4%;
-    position: relative;
 }
 .navigation {
-    /* background-color: lightblue; */
     display: flex;
     justify-content: flex-end;
     flex-direction: row;

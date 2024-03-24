@@ -1,31 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './NavBar.css';
 
-// class NavBar extends Component {
-// items = [
-//     { label: 'Home', to: '/' },
-//     { label: 'About', to: '/about' },
-//     { label: 'Contact', to: '/contact' },
-//     { label: 'Login', to: '/login' },
-//     { label: 'Register', to:'/register'}
-// ];
-
-//     render() {
-//         return (
-//             <nav className={"navBar"}>
-//                 <button className="menu-button">Menu</button>
-//                 <div className="navigation">
-//                     {this.items.map((item, index) => (
-//                         <a key={index} className="menu-item" href={item.to}>
-//                             {item.label}
-//                         </a>
-//                     ))}
-//                 </div>
-//             </nav>
-//         );
-//     }
-// }
-
 interface NavItem {
     label: string;
     to: string;
@@ -62,10 +37,10 @@ const NavBar: React.FC = () => {
 
     return (
         <nav className={"navBar"}>
-            <button ref={menuRef} className="menu-button" onClick={toggleMenu}>Menu</button>
+            <button ref={menuRef} className='menu-button' onClick={toggleMenu}>Menu</button>
             <div  className={`navigation ${menuVisible ? 'open' : ''}`}>
                 {items.map((item, index) => (
-                    <a key={index} className="menu-item" href={item.to}>
+                    <a key={index} className='menu-item' href={item.to}>
                         {item.label}
                     </a>
                 ))}

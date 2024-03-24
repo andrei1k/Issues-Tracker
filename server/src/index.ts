@@ -6,7 +6,6 @@ const knex = Knex(config.development);
 
 const app = express();
 const port = 3001;
-const IP = '192.168.0.108';
 
 app.get('/', (req, res) => {
   knex('test').then(value => {
@@ -16,6 +15,6 @@ app.get('/', (req, res) => {
   })
 })
 
-app.listen(port, IP, () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 })

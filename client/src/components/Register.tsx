@@ -1,7 +1,28 @@
 import React, { Component } from 'react';
 import './Register.css';
 
-class Register extends Component {
+interface RegisterState {
+  password: string;
+  confirmPassword: string;
+  passwordsMatch: boolean;
+}
+
+class Register extends Component<{}, RegisterState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      password: '',
+      confirmPassword: '',
+      passwordsMatch: true
+    };
+
+    this.inputText = this.inputText.bind(this);
+    this.inputFocus = this.inputFocus.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
+  }
+
   inputText(event) {
       const input = event.target;
       input.placeholder = '';
@@ -23,6 +44,23 @@ class Register extends Component {
           }
       }
   }
+
+  handlePasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
+  handleConfirmPasswordChange(event) {
+    const confirmPassword = event.target.value;
+    this.setState((prevState) => ({
+      confirmPassword,
+      passwordsMatch: confirmPassword === prevState.password,
+    }));
+
+    if (this.state.password === '') {
+      this.setState({passwordsMatch: true}); 
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
   }
@@ -39,9 +77,10 @@ class Register extends Component {
                       <input type='text' id='email' name='email' placeholder='Enter email:' 
                           onClick={this.inputText} onBlur={this.inputFocus} required></input>
                       <input type='password' id='password' name='password' placeholder='Enter password:' 
-                          onClick={this.inputText} onBlur={this.inputFocus} required></input>
+                          onClick={this.inputText} onBlur={this.inputFocus} onChange={this.handlePasswordChange} required></input>
                       <input type='password' id='confirm-password' name='confirm-password' placeholder='Confirm password:' 
-                          onClick={this.inputText} onBlur={this.inputFocus} required></input>
+                          onClick={this.inputText} onBlur={this.inputFocus} onChange={this.handleConfirmPasswordChange} required></input>
+                      {!this.state.passwordsMatch && <p>Passwords do not match</p>}
                     </div>
                     <div className='input-group button-container'>
                         <button type='submit'>Register</button>

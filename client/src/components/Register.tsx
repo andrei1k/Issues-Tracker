@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './Register.css';
 
 interface RegisterState {
+  firstName: string,
+  lastName: string,
+  email: string,
   password: string;
   confirmPassword: string;
   passwordsMatch: boolean;
@@ -12,6 +15,9 @@ class Register extends Component<{}, RegisterState> {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: '',
+      lastName: '',
+      email: '',
       password: '',
       confirmPassword: '',
       passwordsMatch: true
@@ -21,6 +27,7 @@ class Register extends Component<{}, RegisterState> {
     this.inputFocus = this.inputFocus.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   inputText(event) {
@@ -63,6 +70,26 @@ class Register extends Component<{}, RegisterState> {
 
   handleSubmit(event) {
     event.preventDefault();
+    // const firstName = event.target.elements['first-name'].value;
+    // const lastName = event.target.elements['last-name'].value;
+    // const email = event.target.elements['email'].value;
+    // console.log({ firstName, lastName, email });
+
+    const dataE = { firstName: 'das', lastName: 'dsa', email: 'dsa' };
+    fetch('/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataE)      
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Callback from server:', data);
+    })
+    .catch(error => {
+      console.error('Error sending query:', error);
+    });
   }
     render() {
       return (

@@ -7,7 +7,7 @@ export class User extends BaseModel {
 
     static readonly tableName = 'users'
 
-    username!: string
+    email!: string
     password!: string
     firstName!: string
     lastName!: string

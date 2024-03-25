@@ -47,13 +47,13 @@ function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const dataE = { firstName, lastName, email };
-        fetch('http://10.108.4.127:3001/register', {
+        const reqData = { firstName, lastName, email, password };
+        fetch('http://88.203.234.166:3001/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataE)      
+            body: JSON.stringify(reqData)      
         })
         .then(response => response.json())
         .then(data => {

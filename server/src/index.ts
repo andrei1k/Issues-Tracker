@@ -10,7 +10,7 @@ const knex = Knex(config.development)
 Model.knex(knex)
 
 const app = express();
-const IP = '192.168.0.108';
+// const IP = '192.168.0.108';
 const port = 3001;
 
 app.use(cors());
@@ -31,14 +31,11 @@ app.get('/users', (req, res) => {
 
 
 app.post('/register', (req, res) => {
-  // const firstName = "a";
-  // const lastName = "a";
-  // const email = "a";
   const { firstName, lastName, email } = req.body;
   res.json({ firstName, lastName, email });
 });
 
-app.listen(port, IP, () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
   
     

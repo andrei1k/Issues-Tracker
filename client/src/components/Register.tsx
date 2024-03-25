@@ -76,7 +76,7 @@ class Register extends Component<{}, RegisterState> {
     // console.log({ firstName, lastName, email });
 
     const dataE = { firstName, lastName, email };
-    fetch('/register', {
+    fetch('http://10.108.4.127:3001/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

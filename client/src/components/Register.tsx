@@ -70,12 +70,12 @@ class Register extends Component<{}, RegisterState> {
 
   handleSubmit(event) {
     event.preventDefault();
-    // const firstName = event.target.elements['first-name'].value;
-    // const lastName = event.target.elements['last-name'].value;
-    // const email = event.target.elements['email'].value;
+    const firstName = event.target.elements['first-name'].value;
+    const lastName = event.target.elements['last-name'].value;
+    const email = event.target.elements['email'].value;
     // console.log({ firstName, lastName, email });
 
-    const dataE = { firstName: 'das', lastName: 'dsa', email: 'dsa' };
+    const dataE = { firstName, lastName, email };
     fetch('/register', {
       method: 'POST',
       headers: {

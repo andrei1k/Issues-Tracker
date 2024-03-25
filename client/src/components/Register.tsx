@@ -23,11 +23,11 @@ class Register extends Component<{}, RegisterState> {
       passwordsMatch: true
     };
 
-    this.inputText = this.inputText.bind(this);
-    this.inputFocus = this.inputFocus.bind(this);
+    // this.inputText = this.inputText.bind(this);
+    // this.inputFocus = this.inputFocus.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   inputText(event) {
@@ -107,7 +107,7 @@ class Register extends Component<{}, RegisterState> {
                           onClick={this.inputText} onBlur={this.inputFocus} onChange={this.handlePasswordChange} required></input>
                       <input type='password' id='confirm-password' name='confirm-password' placeholder='Confirm password:' 
                           onClick={this.inputText} onBlur={this.inputFocus} onChange={this.handleConfirmPasswordChange} required></input>
-                      {!this.state.passwordsMatch && <p>Passwords do not match</p>}
+                      {!this.state.passwordsMatch && <p id="p-match">Passwords do not match</p>}
                     </div>
                     <div className='input-group button-container'>
                         <button type='submit'>Register</button>

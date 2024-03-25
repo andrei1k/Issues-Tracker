@@ -6,8 +6,8 @@ import { UserServer } from './servers/UserServer';
 
 const cors = require('cors');
 
-const knex = Knex(config.development)
-Model.knex(knex)
+const knex = Knex(config.development);
+Model.knex(knex);
 
 const app = express();
 // const IP = '192.168.0.108';
@@ -18,12 +18,12 @@ app.use(express.json());
 
 app.get('/users', (req, res) => {
 
-  const userService = new UserServer()
+  const userService = new UserServer();
 
   userService.login('sasha', 'parolina').then(data => {
     
     console.log(`molodca ${data?.firstName}`);
-    res.send(data)
+    res.send(data);
 
   })
   
@@ -36,7 +36,5 @@ app.post('/register', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-  
-    
+  console.log(`Example app listening on port ${port}`);
 })

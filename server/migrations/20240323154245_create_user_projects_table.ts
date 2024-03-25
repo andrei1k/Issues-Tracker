@@ -16,4 +16,3 @@ export async function down(knex: Knex): Promise<void> {
 
     await knex.schema.dropTable('userProjects')
 }
-

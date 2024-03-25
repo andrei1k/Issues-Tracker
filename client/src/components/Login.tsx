@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 
 function Login() {
-    const inputText = (event) => {
-        const input = event.target;
-        input.placeholder = '';
-    };
 
-    const inputFocus = (event) => {
-        const input = event.target;
-        if (!input.value) {
-            if (input.id === 'email') {
-                input.placeholder = 'Enter email:';
-            } else if (input.id === 'password') {
-                input.placeholder = 'Enter password:';
-            }
-        }
-    };
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        await fetch('http://88.203.234.166:3001/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            setMessage(`Logged: ${data?.firstName}`);
+        })
+        .catch(error => {
+            setMessage('Wrong email or password!');
+            console.error('Logging error:', error);
+        });
     };
 
     return (
@@ -28,13 +32,14 @@ function Login() {
                 <h2>Login</h2>
                 <div className='input-group'>
                     <input type='text' id='email' name='email' placeholder='Enter email:' 
-                    onClick={inputText} onBlur={inputFocus} required></input>
+                        onChange={(e) => setEmail(e.target.value)} required></input>
                     <input type='password' id='password' name='password' placeholder='Enter password:' 
-                    onClick={inputText} onBlur={inputFocus} required></input>
+                        onChange={(e) => setPassword(e.target.value)} required></input>
                 </div>
                 <div className='input-group button-container'>
                     <button type='submit'>Login</button>
                 </div>
+                {message && <p>{message}</p>}
             </form>
         </div>
     );

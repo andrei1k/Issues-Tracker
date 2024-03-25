@@ -11,8 +11,8 @@ function NavBar() {
     const menuRef = useRef<HTMLButtonElement | null>(null);
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
+        const handleClickOutside: EventListener = (event: Event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setMenuVisible(false);
             }
         };

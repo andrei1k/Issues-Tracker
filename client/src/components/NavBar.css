@@ -4,6 +4,7 @@
     margin-right: 4%;
     margin-left: 4%;
 }
+
 .navigation {
     display: flex;
     justify-content: flex-end;
@@ -53,6 +54,12 @@
 .menu-button {
     display: none;
     max-width: 150px;
+}
+
+@media (min-width: 769px) {
+    .navigation.open {
+        display: none;
+    }
 }
 
 @media (max-width: 768px) {

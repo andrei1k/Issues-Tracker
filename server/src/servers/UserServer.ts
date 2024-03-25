@@ -12,6 +12,9 @@ export class UserServer {
     async login(email: string, password: string): Promise<User | undefined> {
         
         const user = await User.query().where('email', email).first();
+        if (!user || password != user.password) {
+            return undefined;
+        }
         return user;
     }
 

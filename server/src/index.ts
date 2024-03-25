@@ -44,6 +44,21 @@ app.post('/register', (req, res) => {
   } 
 });
 
+app.post('/login', (req, res) => {
+  const userService = new UserServer();
+  const { email, password } = req.body;
+  const hashedPassword = CryptoJS.SHA256(password).toString();
+
+  try {
+    userService.login(email, hashedPassword).then( data => {
+      res.send(data);
+    });
+
+  } catch {
+    res.status(500).json({ error: '...' });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 })

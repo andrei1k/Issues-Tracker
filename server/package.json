@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "migration" : "npm run knex migrate:latest",
+    "seeds" : "npm run knex seed:run",
     "test": "echo \"Error: no test specified\" && exit 1",
     "knex": "knex"
   },

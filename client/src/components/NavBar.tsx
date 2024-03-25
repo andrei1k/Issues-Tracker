@@ -6,9 +6,9 @@ interface NavItem {
     to: string;
 }
 
-const NavBar: React.FC = () => {
+function NavBar() {
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
-    const menuRef = useRef(null);
+    const menuRef = useRef<HTMLButtonElement | null>(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -48,5 +48,7 @@ const NavBar: React.FC = () => {
         </nav>
     );
 };
+
+
 
 export default NavBar;

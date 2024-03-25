@@ -6,7 +6,6 @@ import NavBar from './components/NavBar.tsx';
 import Register from './components/Register.tsx';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
-
 function App() {
     return (
     <Router>

@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-function Login() {
+// from navbar
+interface LoginProps {
+    onLogin: (localData: LocalData) => void;
+}
+
+interface LocalData {
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
+function Login({ onLogin }: LoginProps) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -18,7 +29,10 @@ function Login() {
         })
         .then(response => response.json())
         .then(data => {
+            const localData:LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
+            console.log(localData);
             setMessage(`Logged: ${data?.firstName}`);
+            onLogin(localData); 
         })
         .catch(error => {
             setMessage('Wrong email or password!');
@@ -31,7 +45,7 @@ function Login() {
             <form className='login-form' onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <div className='input-group'>
-                    <input type='text' id='email' name='email' placeholder='Enter email:' 
+                    <input type='email' id='email' name='email' placeholder='Enter email:' 
                         onChange={(e) => setEmail(e.target.value)} required></input>
                     <input type='password' id='password' name='password' placeholder='Enter password:' 
                         onChange={(e) => setPassword(e.target.value)} required></input>

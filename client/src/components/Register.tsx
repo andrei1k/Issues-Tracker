@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import './Register.css';
 
-function Register() {
+interface RegisterProps {
+    onRegister: (localData: LocalData) => void;
+}
+
+interface LocalData {
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
+function Register({ onRegister }: RegisterProps) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -34,10 +44,20 @@ function Register() {
             },
             body: JSON.stringify(data)      
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+            if (response.status === 400) {
+                setMessage("Email is already used!");
+                // throw new Error('Bad request');
+            }
+            if (!response.ok) {
+                throw new Error('Server response was not ok');
+            }
+            return response.json();
+        })
+        .then( () => {
             setMessage("Register successfully!");
-            console.log('Callback from server:', data);
+            const localData: LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
+            onRegister(localData);
         })
         .catch(error => {
             console.error('Error sending query:', error);
@@ -53,7 +73,7 @@ function Register() {
                         required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     <input type='text' id='last-name' name='last-name' placeholder='Enter last name:' 
                         required value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <input type='text' id='email' name='email' placeholder='Enter email:' 
+                    <input type='email' id='email' name='email' placeholder='Enter email:' 
                         required value={email} onChange={(e) => setEmail(e.target.value)} />
                     <input type='password' id='password' name='password' placeholder='Enter password:' 
                         required value={password} onChange={handlePasswordChange} />

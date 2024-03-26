@@ -31,13 +31,20 @@ app.get('/users', (req, res) => {
 })
 
 
-app.post('/register', (req, res) => {
-  const userData = req.body;
-  const hashedPassword = CryptoJS.SHA256(userData.password).toString();
+app.post('/register', async (req, res) => {
   try {
-    userData.password = hashedPassword;
+    const userData = req.body;
     const userService = new UserServer();
+    const existingUser = await userService.findByEmail(userData.email);
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'Имейлът вече е регистриран.' });
+    }
+
+    userData.password = CryptoJS.SHA256(userData.password).toString();
+    
     const newUser = userService.register(userData);
+    
     res.status(201).json(newUser);
   } catch {
     res.status(500).json({ error: '...' });

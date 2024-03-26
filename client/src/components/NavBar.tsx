@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import './NavBar.css';
 
-interface NavItem {
-    label: string;
-    to: string;
+interface NavBarProps {
+    isLoggedIn: boolean;
+    logOut: () => void;
 }
 
-function NavBar() {
+function NavBar({ isLoggedIn, logOut } : NavBarProps) {
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const menuRef = useRef<HTMLButtonElement | null>(null);
 
@@ -27,26 +28,29 @@ function NavBar() {
         setMenuVisible(prevMenuVisible => !prevMenuVisible);
     };
 
-    const items: NavItem[] = [
-        { label: 'Home', to: '/' },
-        { label: 'About', to: '/about' },
-        { label: 'Contact', to: '/contact' },
-        { label: 'Login', to: '/login' },
-        { label: 'Register', to:'/register'}
-    ];
-
     return (
         <nav className={"navBar"}>
             <button ref={menuRef} className='menu-button' onClick={toggleMenu}>Menu</button>
             <div  className={`navigation ${menuVisible ? 'open' : ''}`}>
-                {items.map((item, index) => (
-                    <a key={index} className='menu-item' href={item.to}>
-                        {item.label}
-                    </a>
-                ))}
+                <Link to='/' className='menu-item'>Home</Link>
+                {isLoggedIn ? (
+                    <>
+                        <Link to='/dashboard' className='menu-item'>My Dashboard</Link>
+                        <Link to='/profile' className='menu-item'>My Profile</Link>
+                        <Link to='/' className='menu-item' onClick={logOut}>Logout</Link>
+                    </>
+                ) : (
+                    <>
+                        <Link to='/login' className='menu-item' >Login</Link>
+                        <Link to='/register' className='menu-item'>Register</Link>
+                    </>
+                )}
             </div>
         </nav>
     );
+
+
+
 };
 
 

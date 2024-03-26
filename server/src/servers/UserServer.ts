@@ -19,8 +19,12 @@ export class UserServer {
     }
 
     async register(userData: UserRegistrationData): Promise<User> {
+
         const newUser = await User.query().insert(userData);
         return newUser;
     }
 
+    async findByEmail(email: string): Promise<User | undefined> {
+        return await User.query().findOne({ email });
+    }
 }

@@ -47,7 +47,7 @@ function Register({ onRegister }: RegisterProps) {
         .then(response => {
             if (response.status === 400) {
                 setMessage("Email is already used!");
-                // throw new Error('Bad request');
+                throw new Error('Bad request');
             }
             if (!response.ok) {
                 throw new Error('Server response was not ok');

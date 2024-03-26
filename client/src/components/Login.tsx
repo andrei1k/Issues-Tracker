@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-// from navbar
 interface LoginProps {
     onLogin: (localData: LocalData) => void;
 }

@@ -17,7 +17,6 @@ interface LocalData {
 function App() {
     const [userData, setUserData] = 
         useState<{ userInfo: LocalData | null, isLoggedIn: boolean } | null>(null);
-    const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData');

@@ -51,16 +51,14 @@ app.post('/register', async (req, res) => {
   } 
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const userService = new UserServer();
   const { email, password } = req.body;
   const hashedPassword = CryptoJS.SHA256(password).toString();
 
   try {
-    userService.login(email, hashedPassword).then( data => {
-      res.send(data);
-    });
-
+    const data = await userService.login(email, hashedPassword);
+    res.send(data);
   } catch {
     res.status(500).json({ error: '...' });
   }

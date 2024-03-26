@@ -29,11 +29,14 @@ function App() {
     const authorize = (userInfo: LocalData) => {
         localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
         setUserData({ userInfo, isLoggedIn: true });
-        window.location.href = '/dashboard';
+
+        const logoutTimer = setTimeout(logOut, 1200000); // 20 minutes
+        localStorage.setItem('logoutTimer', logoutTimer.toString());
     };
     const logOut = () => {
         localStorage.removeItem('userData');
         setUserData(null);
+        localStorage.removeItem('logoutTimer'); 
         window.location.href = '/';
     }
 

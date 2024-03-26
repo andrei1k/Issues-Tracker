@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import './Login.css';
 
 interface LoginProps {
@@ -16,6 +17,7 @@ function Login({ onLogin }: LoginProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [successLogin, setSuccessLogin] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -30,8 +32,8 @@ function Login({ onLogin }: LoginProps) {
         .then(data => {
             const localData:LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
             console.log(localData);
-            setMessage(`Logged: ${data?.firstName}`);
-            onLogin(localData); 
+            setSuccessLogin(true);
+            onLogin(localData);     
         })
         .catch(error => {
             setMessage('Wrong email or password!');
@@ -52,6 +54,7 @@ function Login({ onLogin }: LoginProps) {
                 <div className='input-group button-container'>
                     <button type='submit'>Login</button>
                 </div>
+                {successLogin && <Navigate to='/dashboard'/>}
                 {message && <p>{message}</p>}
             </form>
         </div>

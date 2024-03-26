@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import './Register.css';
 
 interface RegisterProps {
@@ -19,6 +20,8 @@ function Register({ onRegister }: RegisterProps) {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [message, setMessage] = useState('');
+    
+    const [successReg, setSuccessReg] = useState(false);
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
@@ -57,6 +60,7 @@ function Register({ onRegister }: RegisterProps) {
         .then( () => {
             setMessage("Register successfully!");
             const localData: LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
+            setSuccessReg(true);
             onRegister(localData);
         })
         .catch(error => {
@@ -84,6 +88,7 @@ function Register({ onRegister }: RegisterProps) {
                 <div className='input-group button-container'>
                     <button type='submit'>Register</button>
                 </div>
+                {successReg && <Navigate to='/dashboard'/>}
                 {message && <p>{message}</p>}
             </form>
         </div>

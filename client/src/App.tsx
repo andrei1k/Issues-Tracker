@@ -16,21 +16,22 @@ interface LocalData {
 
 function App() {
     const [userData, setUserData] = 
-        useState<{ userInfo: LocalData | null, isLoggedIn: boolean } | null>(null);
+        useState<{ userInfo: LocalData | null, isLoggedIn: boolean} | null>(null);
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData');
         if (storedData) {
             const fetchedUserData = JSON.parse(storedData);
-            setUserData({ userInfo: fetchedUserData.userInfo, isLoggedIn: true });
+            setUserData({ userInfo: fetchedUserData.userInfo, isLoggedIn: true});
         }
     }, []);
 
     const authorize = (userInfo: LocalData, rememberMe: boolean) => {
         localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
-        setUserData({ userInfo, isLoggedIn: true });
-        const logoutTimer = setTimeout(logOut, 60000); // 20 minutes
+        setUserData({ userInfo, isLoggedIn: true});
+        console.log(rememberMe);
         if (!rememberMe) {
+            const logoutTimer = setTimeout(logOut, 60000); // 20 minutes
             localStorage.setItem('logoutTimer', logoutTimer.toString());
         }
     };

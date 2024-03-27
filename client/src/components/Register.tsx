@@ -40,7 +40,7 @@ function Register({ onRegister }: RegisterProps) {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = { firstName, lastName, email, password };
-        await fetch('http://88.203.234.166:3001/register', {
+        await fetch('http://88.203.234.166:3001/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

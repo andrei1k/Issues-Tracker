@@ -26,7 +26,7 @@ function Login({ onLogin }: LoginProps) {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await fetch('http://88.203.234.166:3001/login', {
+        await fetch('http://88.203.234.166:3001/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

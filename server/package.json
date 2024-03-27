@@ -27,5 +27,8 @@
     "objection": "^3.1.4",
     "pg": "^8.11.3",
     "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2"
   }
 }

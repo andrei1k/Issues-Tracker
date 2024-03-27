@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import CryptoJS from 'crypto-js';
-import { UserServer } from '../servers/UserServer'; // Предполагам, че имате такъв файл
+import { UserServer } from '../servers/UserServer';
 
 export const authRouters = Router(); 
 const userService = new UserServer();

@@ -33,13 +33,14 @@
   }
   
   .input-group input::placeholder {
-    font-size: 11px;
+    font-size: 12px;
     color: #999;
     font-style: italic;
   }
   .input-group input {
     width: 60%;
-    padding: 8px;
+    height: 25px;
+    padding: 5px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

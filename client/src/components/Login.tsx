@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import './Login.css';
+import '../styles/Login.css';
 
 interface LoginProps {
     onLogin: (localData: LocalData) => void;
@@ -21,7 +21,7 @@ function Login({ onLogin }: LoginProps) {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await fetch('http://88.203.234.166:3001/login', {
+        await fetch('https://88.203.234.166:3001/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +31,6 @@ function Login({ onLogin }: LoginProps) {
         .then(response => response.json())
         .then(data => {
             const localData:LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
-            console.log(localData);
             setSuccessLogin(true);
             onLogin(localData);     
         })

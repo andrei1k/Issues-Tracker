@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import './Register.css';
+import '../styles/Register.css';
 
 interface RegisterProps {
     onRegister: (localData: LocalData) => void;
@@ -40,7 +40,7 @@ function Register({ onRegister }: RegisterProps) {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = { firstName, lastName, email, password };
-        await fetch('http://88.203.234.166:3001/register', {
+        await fetch('https://88.203.234.166:3001/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

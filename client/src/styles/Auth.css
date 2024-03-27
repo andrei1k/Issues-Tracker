@@ -47,7 +47,6 @@
 .input-group input {
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
   max-width: 390px;
   margin-bottom: 8px;
   padding-left: 5px;
@@ -81,8 +80,8 @@ button:hover {
     display: flex;
     justify-content: center;
     margin: 80px;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 7%;
+    margin-right: 7%;
     background-color: rgb(210, 217, 224);
     border-radius: 8px;
     min-width: 250px;

@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import '../styles/Auth.css';
 
 interface RegisterProps {
-    onRegister: (localData: LocalData) => void;
+    onRegister: (localData: LocalData, rememberMe: boolean) => void;
 }
 
 interface LocalData {
@@ -40,7 +40,7 @@ function Register({ onRegister }: RegisterProps) {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = { firstName, lastName, email, password };
-        await fetch('https://88.203.234.166:3001/register', {
+        await fetch('http://88.203.234.166:3001/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function Register({ onRegister }: RegisterProps) {
             setMessage("Register successfully!");
             const localData: LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
             setSuccessReg(true);
-            onRegister(localData);
+            onRegister(localData, false);
         })
         .catch(error => {
             console.error('Error sending query:', error);

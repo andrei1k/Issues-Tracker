@@ -26,12 +26,13 @@ function App() {
         }
     }, []);
 
-    const authorize = (userInfo: LocalData) => {
+    const authorize = (userInfo: LocalData, rememberMe: boolean) => {
         localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
         setUserData({ userInfo, isLoggedIn: true });
-
-        const logoutTimer = setTimeout(logOut, 1200000); // 20 minutes
-        localStorage.setItem('logoutTimer', logoutTimer.toString());
+        const logoutTimer = setTimeout(logOut, 60000); // 20 minutes
+        if (!rememberMe) {
+            localStorage.setItem('logoutTimer', logoutTimer.toString());
+        }
     };
     const logOut = () => {
         localStorage.removeItem('userData');

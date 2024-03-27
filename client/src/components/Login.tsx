@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import '../styles/Auth.css';
 
 interface LoginProps {
-    onLogin: (localData: LocalData) => void;
+    onLogin: (localData: LocalData, rememberMe: boolean) => void;
 }
 
 interface LocalData {
@@ -26,7 +26,7 @@ function Login({ onLogin }: LoginProps) {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await fetch('https://88.203.234.166:3001/login', {
+        await fetch('http://88.203.234.166:3001/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ function Login({ onLogin }: LoginProps) {
         .then(data => {
             const localData:LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
             setSuccessLogin(true);
-            onLogin(localData);     
+            onLogin(localData, rememberMe);     
         })
         .catch(error => {
             setMessage('Wrong email or password!');

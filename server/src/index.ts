@@ -8,9 +8,7 @@ import { UserServer } from './servers/UserServer';
 const CryptoJS = require('crypto-js');
 const cors = require('cors');
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+
 
 const knex = Knex(config.development);
 Model.knex(knex);
@@ -19,13 +17,6 @@ const app = express();
 const port = 3001;
 
 
-const keyPath = path.join(__dirname, '../../ssl-cert/example.key');
-const certificatePath = path.join(__dirname, '../../ssl-cert/example.crt');
-const privateKey = fs.readFileSync(keyPath, 'utf8');
-const certificate = fs.readFileSync(certificatePath, 'utf8');
-const credentials = { key: privateKey, cert: certificate };
-
-const httpsServer = https.createServer(credentials, app);
 
 app.use(cors());
 app.use(express.json());
@@ -77,6 +68,6 @@ app.post('/login', async (req, res) => {
   }
 })
 
-httpsServer.listen(port, () => {
-  console.log(`HTTPS Server running on port ${port}`);
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });

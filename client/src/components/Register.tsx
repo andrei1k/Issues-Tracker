@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import '../styles/Register.css';
+import '../styles/Auth.css';
 
 interface RegisterProps {
     onRegister: (localData: LocalData) => void;
@@ -69,25 +69,23 @@ function Register({ onRegister }: RegisterProps) {
     };
 
     return (
-        <div className='register-container'>
-            <form className='register-form' onSubmit={handleSubmit}>
+        <div className='auth-container'>
+            <form className='auth-form' onSubmit={handleSubmit}>
                 <h2>Register</h2>
                 <div className='input-group'>
-                    <input type='text' id='first-name' name='first-name' placeholder='Enter first name:' 
+                    <input type='text' id='first-name' name='first-name' placeholder='First name' 
                         required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    <input type='text' id='last-name' name='last-name' placeholder='Enter last name:' 
+                    <input type='text' id='last-name' name='last-name' placeholder='Last name' 
                         required value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <input type='email' id='email' name='email' placeholder='Enter email:' 
+                    <input type='email' id='email' name='email' placeholder='Email address' 
                         required value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <input type='password' id='password' name='password' placeholder='Enter password:' 
+                    <input type='password' id='password' name='password' placeholder='Password' 
                         required value={password} onChange={handlePasswordChange} />
-                    <input type='password' id='confirm-password' name='confirm-password' placeholder='Confirm password:' 
+                    <input type='password' id='confirm-password' name='confirm-password' placeholder='Confirm password' 
                         required value={confirmPassword} onChange={handleConfirmPasswordChange} />
                     {!passwordsMatch && <p id="p-match">Passwords do not match</p>}
                 </div>
-                <div className='input-group button-container'>
-                    <button type='submit'>Register</button>
-                </div>
+                <button type='submit'>Register</button>
                 {successReg && <Navigate to='/dashboard'/>}
                 {message && <p>{message}</p>}
             </form>

@@ -1,0 +1,102 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  margin: 80px;
+  margin-left: 30%;
+  margin-right: 30%;
+  background-color: rgb(210, 217, 224);
+  border-radius: 8px;
+  min-width: 350px;
+}
+.auth-container .h2 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.auth-form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  margin: 10%;
+  max-width: 400px;
+}
+
+.auth-form.h2 {
+  align-self: center;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-self: normal;
+}
+
+.remember-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+  align-self: flex-start;
+}
+.input-group input::placeholder {
+  font-size: 14px;
+  color: #999;
+}
+
+.input-group input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 390px;
+  margin-bottom: 8px;
+  padding-left: 5px;
+  height: 40px;
+  font-size: 14px;
+}
+
+button {
+  width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  min-width: 100px;
+  padding: 10px;
+  background-color: #1d63ad;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.8s ease, scale 0.8s ease, opacity 0.8s ease, color 0.8s ease, border-color 1s ease;
+}
+
+button:hover {
+  background-color: #8bc3ee;
+  scale: 1.05; 
+  opacity: 0.9;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    margin: 80px;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: rgb(210, 217, 224);
+    border-radius: 8px;
+    min-width: 250px;
+  }
+  .auth-form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    text-align: start;
+    flex-direction: column;
+    margin-top: 10%;
+    margin-bottom: 15%;
+    margin-left: 10%;
+    margin-right: 10%;
+    max-width: 400px;
+  }
+}

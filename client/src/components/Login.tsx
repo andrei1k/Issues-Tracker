@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import '../styles/Login.css';
+import '../styles/Auth.css';
 
 interface LoginProps {
     onLogin: (localData: LocalData) => void;
@@ -18,6 +18,11 @@ function Login({ onLogin }: LoginProps) {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [successLogin, setSuccessLogin] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+
+    const handleRememberMe = () => {
+        setRememberMe(!rememberMe);
+    };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -41,18 +46,20 @@ function Login({ onLogin }: LoginProps) {
     };
 
     return (
-        <div className='login-container'>
-            <form className='login-form' onSubmit={handleSubmit}>
+        <div className='auth-container'>
+            <form className='auth-form' onSubmit={handleSubmit}>
+            
                 <h2>Login</h2>
                 <div className='input-group'>
-                    <input type='email' id='email' name='email' placeholder='Enter email:' 
-                        onChange={(e) => setEmail(e.target.value)} required></input>
-                    <input type='password' id='password' name='password' placeholder='Enter password:' 
-                        onChange={(e) => setPassword(e.target.value)} required></input>
+                    <input type='email' id='email' name='email' placeholder='Email address' 
+                        onChange={(e) => setEmail(e.target.value)} required/>
+                    <input type='password' id='password' name='password' placeholder='Password' 
+                        onChange={(e) => setPassword(e.target.value)} required/>
                 </div>
-                <div className='input-group button-container'>
-                    <button type='submit'>Login</button>
-                </div>
+                <label className='remember-button'>
+                    <input type='checkbox' onChange={handleRememberMe} checked={rememberMe}/>Remember Me
+                </label>
+                <button type='submit'>Login</button>
                 {successLogin && <Navigate to='/dashboard'/>}
                 {message && <p>{message}</p>}
             </form>

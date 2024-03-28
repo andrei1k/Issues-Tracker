@@ -26,6 +26,18 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+  const isEmailValid = (email: string): boolean => {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  };
+
+  const isNameValid = (name: string): boolean => {
+    return /^[а-яА-Яa-zA-Z-]+$/.test(name);
+  };
+
+  const isPasswordStrong = (password: string): boolean => {
+    return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
+  }
+  
   const handlePasswordChange = 
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const currentPassword = event.target.value;
@@ -52,18 +64,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
           setPasswordStrong(false); 
       }
   };
-
-  const isEmailValid = (email: string): boolean => {
-    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
-  };
-
-  const isNameValid = (name: string): boolean => {
-    return /^[а-яА-Яa-zA-Z-]+$/.test(name);
-  };
-
-  const isPasswordStrong = (password: string): boolean => {
-    return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
-  }
 
   const handleSubmit = 
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -149,7 +149,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
               <input type='password' name='confirm-password' placeholder='Confirm password' 
                 required value={confirmPassword} onChange={handleConfirmPasswordChange} />
               {!passwordsMatch && <p>Passwords do not match!</p>}
-              {/*here*/}
               {!passwordStrong && <p>Password must have at least 8 symbols, char and digits!</p>}
             </>
           )}
@@ -159,9 +158,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
             <input type='checkbox' onChange={() => setRememberMe(!rememberMe)} checked={rememberMe}/>Remember Me
           </label>
         }
-        {/* here  */}
-        {/* {passwordsMatch && passwordStrong && <button className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>}
-         */}
         <button className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
         {success && <Navigate to='/dashboard'/>}
         {message && <p>{message}</p>}

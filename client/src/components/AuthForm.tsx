@@ -21,7 +21,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [passwordStrong, setPasswordStrong] = useState(false);
+  const [passwordStrong, setPasswordStrong] = useState(true);
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -37,20 +37,17 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const isPasswordStrong = (password: string): boolean => {
     return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
   }
-  
+
   const handlePasswordChange = 
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const currentPassword = event.target.value;
       setPassword(currentPassword);
-      // console.log();
-      if (!isPasswordStrong(currentPassword) || currentPassword === '') {
-        setPasswordStrong(false);
-      }
-      else {
-        setPasswordStrong(true);
-      }
-
+      setPasswordStrong(isPasswordStrong(currentPassword));
       setPasswordsMatch(currentPassword === confirmPassword);
+      if (currentPassword === '' && confirmPassword === '') {
+          setPasswordsMatch(true);
+          setPasswordStrong(true);
+      }
   };
 
   const handleConfirmPasswordChange = 
@@ -58,11 +55,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       const currentPassword = event.target.value;
       setConfirmPassword(currentPassword);
       setPasswordsMatch(currentPassword === password);
-      
-      if (password === '' && currentPassword === '') {
-          setPasswordsMatch(true);
-          setPasswordStrong(false); 
-      }
   };
 
   const handleSubmit = 

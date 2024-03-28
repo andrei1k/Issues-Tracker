@@ -8,7 +8,7 @@ const userService = new UserServer();
 authRouters.post('/register', async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    const existingUser = await userService.findByEmail(userData.email);
+    await userService.findByEmail(userData.email);
 
     
     userData.password = CryptoJS.SHA256(userData.password).toString();

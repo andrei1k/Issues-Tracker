@@ -33,14 +33,25 @@ function Login({ onLogin }: LoginProps) {
             },
             body: JSON.stringify({ email, password }),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (response.status === 400) {
+                setMessage('Wrong email or password!');
+                throw new Error('Bad request!');
+            }
+            
+            if (!response.ok) {
+                setMessage('An error occurred while logging in. Please try again later.');
+                throw new Error('Server response was not ok!');
+            }
+
+            return response.json();
+        })
         .then(data => {
             const localData:LocalData = {firstName: data.firstName, lastName: data.lastName, email:data.email};
             setSuccessLogin(true);
             onLogin(localData, rememberMe);     
         })
-        .catch(error => {
-            setMessage('Wrong email or password!');
+        .catch(error => { 
             console.error('Logging error:', error);
         });
     };
@@ -59,7 +70,7 @@ function Login({ onLogin }: LoginProps) {
                 <label className='remember-button'>
                     <input type='checkbox' onChange={handleRememberMe} checked={rememberMe}/>Remember Me
                 </label>
-                <button type='submit'>Login</button>
+                <button className='submit' type='submit'>Login</button>
                 {successLogin && <Navigate to='/dashboard'/>}
                 {message && <p>{message}</p>}
             </form>

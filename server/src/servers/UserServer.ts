@@ -13,7 +13,7 @@ export class UserServer {
         
         const user = await User.query().where('email', email).first();
         if (!user || password != user.password) {
-            return undefined;
+            throw Error ('Wrong email or password!');
         }
         return user;
     }

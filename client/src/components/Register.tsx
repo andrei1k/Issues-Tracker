@@ -64,7 +64,7 @@ function Register({ onRegister }: RegisterProps) {
             onRegister(localData, false);
         })
         .catch(error => {
-            console.error('Error sending query:', error);
+            console.error('Register error:', error);
         });
     };
 
@@ -85,7 +85,7 @@ function Register({ onRegister }: RegisterProps) {
                         required value={confirmPassword} onChange={handleConfirmPasswordChange} />
                     {!passwordsMatch && <p id="p-match">Passwords do not match</p>}
                 </div>
-                <button type='submit'>Register</button>
+                <button className='submit' type='submit'>Register</button>
                 {successReg && <Navigate to='/dashboard'/>}
                 {message && <p>{message}</p>}
             </form>

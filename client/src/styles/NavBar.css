@@ -16,17 +16,13 @@
 .navigation.open {
     display: flex;
     position: absolute;
-    max-width: 150px;
+    width: 100%;
     top: 100%;
-    margin-right: 6%;
-    justify-content: flex-end;
+    justify-content: normal;
     background-color: lightblue;
     flex-direction: column;
-    gap: 10px;
-    max-width: 150px;
-    .menu-item {
-        width: auto;
-    }
+    gap: 5px;
+    background-color: white;
     z-index: 999; /*above pages if needed*/
 }
 
@@ -46,35 +42,42 @@
 }
 
 .menu-item:hover {
-    color: white;
-    background-color: rgb(34, 160, 160);
-    scale: 1.02;
+    background-color: rgb(211, 209, 209);
+    scale: 1.01;
 }
 
 .menu-button {
     display: none;
-    max-width: 150px;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 451px) {
     .navigation.open {
         display: none;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 450px) {
     .menu-button {
         display: block;
-        position: relative;
+        margin: 10px;
+        font-size: 36px;
+        cursor: pointer;
     }
     .navigation {
         display: none;
     }
+    .menu-item {
+        justify-content: normal;
+        width: 95%;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        max-width: 400px;
+    }
     .navBar {
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
         align-items: flex-end;
+        margin: 0px;
     }
 
 }

@@ -10,16 +10,14 @@ authRouters.post('/register', async (req: Request, res: Response) => {
     const userData = req.body;
     const existingUser = await userService.findByEmail(userData.email);
 
-    if (existingUser) {
-      return res.status(400).json({ error: 'The email is already registered.' });
-    }
-
+    
     userData.password = CryptoJS.SHA256(userData.password).toString();
-
+    
     const newUser = userService.register(userData);
-
+    
     res.status(201).json(newUser);
   } catch {
+    res.status(400).json({ error: 'The email is already registered.' });
     res.status(500).json({ error: '...' });
   }
 })
@@ -30,8 +28,8 @@ authRouters.post('/login', async (req: Request, res: Response) => {
 
   try {
     const data = await userService.login(email, hashedPassword);
-    res.send(data);
+    res.status(201).json(data);
   } catch {
-    res.status(500).json({ error: '...' });
+    res.status(400).json({ error: '...' });
   }
 })

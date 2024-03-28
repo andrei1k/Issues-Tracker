@@ -6,7 +6,7 @@ import NavBar from './components/NavBar.tsx';
 import Register from './components/Register.tsx';
 import Dashboard from './components/Dashboard.tsx';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 interface LocalData {
     firstName: string ; 
@@ -16,7 +16,7 @@ interface LocalData {
 
 function App() {
     const [userData, setUserData] = 
-        useState<{ userInfo: LocalData | null, isLoggedIn: boolean} | null>(null);
+        useState<{ userInfo: LocalData, isLoggedIn: boolean} | null>(null);
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData');
@@ -24,32 +24,47 @@ function App() {
             const fetchedUserData = JSON.parse(storedData);
             setUserData({ userInfo: fetchedUserData.userInfo, isLoggedIn: true});
         }
+        else {
+            const defaultUserData = {
+                userInfo: {firstName: '', lastName: '', email: ''},
+                isLoggedIn: false
+            }
+            setUserData(defaultUserData);
+        }
     }, []);
 
     const authorize = (userInfo: LocalData, rememberMe: boolean) => {
         localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
         setUserData({ userInfo, isLoggedIn: true});
-        console.log(rememberMe);
         if (!rememberMe) {
-            const logoutTimer = setTimeout(logOut, 60000); // 20 minutes
+            const logoutTimer = setTimeout(logOut, 600000); // 10 minutes
             localStorage.setItem('logoutTimer', logoutTimer.toString());
         }
     };
     const logOut = () => {
+        window.location.href = '/';
         localStorage.removeItem('userData');
         setUserData(null);
         localStorage.removeItem('logoutTimer'); 
-        window.location.href = '/';
     }
 
     return (
     <Router>
         <NavBar isLoggedIn={userData !== null && userData.isLoggedIn} logOut={logOut}/>
         <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/dashboard" element={<Dashboard userInfo={userData?.userInfo ?? null}/>}/>
-            <Route path="/login" element={<Login onLogin={authorize} />} />
-            <Route path="/register" element={<Register onRegister={authorize}/>}/>
+            <Route path='/' element={<Home/>} />
+            <Route path='/dashboard' element={userData && userData.isLoggedIn ? 
+                <Dashboard userInfo={userData.userInfo ?? null} /> : 
+                <Navigate to='/login' />}>
+            </Route>          
+            <Route path='/login' element={userData && userData.isLoggedIn ? 
+                <Navigate to='/dashboard' /> :    
+                <Login onLogin={authorize} />}>
+            </Route>
+            <Route path='/register' element={userData && userData.isLoggedIn ? 
+                <Navigate to='/dashboard'/> : 
+                <Register onRegister={authorize}/>}>
+            </Route>
         </Routes>
     </Router>
     )

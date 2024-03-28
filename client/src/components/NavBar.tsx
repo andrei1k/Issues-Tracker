@@ -15,7 +15,6 @@ function NavBar({ isLoggedIn, logOut } : NavBarProps) {
     useEffect (() => {
       let handler = (event: MouseEvent) => {
         if (menuRef.current && !menuRef.current.contains(event.target as Node) ) {
-          console.log(event.target);
           toggleMenu();
         }
       };

@@ -21,30 +21,67 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordStrong, setPasswordStrong] = useState(false);
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const handlePasswordChange = 
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(event.target.value);
+      const currentPassword = event.target.value;
+      setPassword(currentPassword);
+      // console.log();
+      if (!isPasswordStrong(currentPassword) || currentPassword === '') {
+        setPasswordStrong(false);
+      }
+      else {
+        setPasswordStrong(true);
+      }
+
+      setPasswordsMatch(currentPassword === confirmPassword);
   };
 
   const handleConfirmPasswordChange = 
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const confirmPassword = event.target.value;
-      setConfirmPassword(confirmPassword);
-      setPasswordsMatch(confirmPassword === password);
+      const currentPassword = event.target.value;
+      setConfirmPassword(currentPassword);
+      setPasswordsMatch(currentPassword === password);
       
-      if (password === '') {
-          setPasswordsMatch(true); 
+      if (password === '' && currentPassword === '') {
+          setPasswordsMatch(true);
+          setPasswordStrong(false); 
       }
   };
+
+  const isEmailValid = (email: string): boolean => {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  };
+
+  const isNameValid = (name: string): boolean => {
+    return /^[а-яА-Яa-zA-Z-]+$/.test(name);
+  };
+
+  const isPasswordStrong = (password: string): boolean => {
+    return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
+  }
 
   const handleSubmit = 
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const formData: LocalData = { firstName, lastName, email, password };
+      
+      if (!isEmailValid(email)) {
+        setMessage('Please enter a valid email address.');
+        return;
+      }
+
+      if (formType === 'register') {
+        if (!isNameValid(firstName) || !isNameValid(lastName)) {
+          setMessage('Please enter valid first and last names.');
+          return;
+        }
+      }
+
+      const formData = { firstName, lastName, email, password };
       await fetch(`http://88.203.234.166:3001/auth/${formType}`, {
           method: 'POST',
           headers: {
@@ -92,26 +129,28 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
 
   return (
     <div className='auth-container'>
-      <form className='auth-form' onSubmit={handleSubmit}>
+      <form className='auth-form' onSubmit={handleSubmit} noValidate>
         <h2>{formType === 'login' ? 'Login' : 'Register'}</h2>          
         <div className='input-group'>
           {formType === 'register' && (
             <>
-              <input type='text' id='first-name' name='first-name' placeholder='First name' 
+              <input type='text' name='first-name' placeholder='First name' 
                 required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-              <input type='text' id='last-name' name='last-name' placeholder='Last name' 
+              <input type='text' name='last-name' placeholder='Last name' 
                 required value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </>
           )}
-          <input type='email' id='email' name='email' placeholder='Email address' 
+          <input type='email' name='email' placeholder='Email address' 
             required value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input type='password' id='password' name='password' placeholder='Password' 
+          <input type='password' name='password' placeholder='Password' 
             required value={password} onChange={handlePasswordChange} />
           {formType === 'register' && (
             <>
-              <input type='password' id='confirm-password' name='confirm-password' placeholder='Confirm password' 
+              <input type='password' name='confirm-password' placeholder='Confirm password' 
                 required value={confirmPassword} onChange={handleConfirmPasswordChange} />
-              {!passwordsMatch && <p id="p-match">Passwords do not match</p>}
+              {!passwordsMatch && <p>Passwords do not match!</p>}
+              {/*here*/}
+              {!passwordStrong && <p>Password must have at least 8 symbols, char and digits!</p>}
             </>
           )}
         </div>
@@ -120,6 +159,9 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
             <input type='checkbox' onChange={() => setRememberMe(!rememberMe)} checked={rememberMe}/>Remember Me
           </label>
         }
+        {/* here  */}
+        {/* {passwordsMatch && passwordStrong && <button className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>}
+         */}
         <button className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
         {success && <Navigate to='/dashboard'/>}
         {message && <p>{message}</p>}

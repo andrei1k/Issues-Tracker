@@ -5,6 +5,7 @@ import Login from './components/Login.tsx';
 import NavBar from './components/NavBar.tsx';
 import Register from './components/Register.tsx';
 import Dashboard from './components/Dashboard.tsx';
+import Profile from './components/Profile.tsx';
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -56,7 +57,11 @@ function App() {
             <Route path='/dashboard' element={userData && userData.isLoggedIn ? 
                 <Dashboard userInfo={userData.userInfo ?? null} /> : 
                 <Navigate to='/login' />}>
-            </Route>          
+            </Route>
+            <Route path='/profile' element={userData && userData.isLoggedIn ? 
+                <Profile /> :
+                <Navigate to='/login'/>}> 
+            </Route>
             <Route path='/login' element={userData && userData.isLoggedIn ? 
                 <Navigate to='/dashboard' /> :    
                 <Login onLogin={authorize} />}>

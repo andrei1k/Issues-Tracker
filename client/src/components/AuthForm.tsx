@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import '../styles/Auth.css';
 
@@ -25,6 +25,9 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
+
 
   const isEmailValid = (email: string): boolean => {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
@@ -37,6 +40,17 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const isPasswordStrong = (password: string): boolean => {
     return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
   }
+
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isSessionExpired = urlParams.get('sessionExpired');
+
+    if (isSessionExpired === 'true') {
+      setSessionExpired(true);
+    }
+
+  }, []); 
 
   const handlePasswordChange = 
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,15 +74,21 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const handleSubmit = 
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      
+      setLoading(true);
+
+      // wait 1 sec for displaying loading indicator
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       if (!isEmailValid(email)) {
         setMessage('Please enter a valid email address.');
+        setLoading(false);
         return;
       }
 
       if (formType === 'register') {
         if (!isNameValid(firstName) || !isNameValid(lastName)) {
           setMessage('Please enter valid first and last names.');
+          setLoading(false);
           return;
         }
       }
@@ -83,43 +103,48 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       })
       .then(response => {
           if (response.status === 400) {
-              setMessage(`${formType === 'login' ? 
-                'Wrong email or password!' : 
-                'Email is already used!'} `
-              );
-              throw new Error('Bad request');
+            setMessage(`${formType === 'login' ? 
+              'Wrong email or password!' : 
+              'Email is already used!'} `
+            );
+            setLoading(false);
+            throw new Error('Bad request');
           }
-          if (!response.ok) {
-              throw new Error('Server response was not ok');
+          if (response.status === 500 || !response.ok) {
+            setMessage('Internal error!');
+            setLoading(false);
+            throw new Error('Server response was not ok');
           }
           return response.json();
       })
       .then(data => {
-          setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
-          let localData: LocalData;
-          // If we register now, we gat the form data.
-          if (formType === 'login') {
-            localData = {
-              firstName: data.firstName, 
-              lastName: data.lastName, 
-              email: data.email 
-            }
-          } else {
-            localData = {
-              firstName: formData.firstName,
-              lastName: formData.lastName,
-              email: formData.email
-            }
+        setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
+        let localData: LocalData;
+        // If we register now, we gat the form data.
+        if (formType === 'login') {
+          localData = {
+            firstName: data.firstName, 
+            lastName: data.lastName, 
+            email: data.email 
           }
-          setSuccess(true);
-          onSubmit(localData, rememberMe);
+        } else {
+          localData = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email
+          }
+        }
+        setSuccess(true);
+        setLoading(false);
+        onSubmit(localData, rememberMe);
       })
       .catch(error => {
-          console.error(`${formType} error:`, error);
+        console.error(`${formType} error:`, error);
     });
   };
 
   return (
+    <div>{sessionExpired && <div className='session-expire'>Session has expired, please log in again!</div>}
     <div className='auth-container'>
       <form className='auth-form' onSubmit={handleSubmit} noValidate>
         <h2>{formType === 'login' ? 'Login' : 'Register'}</h2>          
@@ -150,10 +175,12 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
             <input type='checkbox' onChange={() => setRememberMe(!rememberMe)} checked={rememberMe}/>Remember Me
           </label>
         }
-        <button className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
+        <button onClick={() => setMessage('')} className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
+        {loading && <div className="loading-indicator"></div>}
         {success && <Navigate to='/dashboard'/>}
         {message && <p>{message}</p>}
       </form>
+    </div>
     </div>
   );
 }

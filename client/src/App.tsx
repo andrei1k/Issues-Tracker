@@ -38,12 +38,14 @@ function App() {
         localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
         setUserData({ userInfo, isLoggedIn: true});
         if (!rememberMe) {
-            const logoutTimer = setTimeout(logOut, 600000); // 10 minutes
+            const logoutTimer = setTimeout(() => {
+                logOut();
+                window.location.href = '/login?sessionExpired=true';
+            }, 600000); // 10 minutes
             localStorage.setItem('logoutTimer', logoutTimer.toString());
         }
     };
     const logOut = () => {
-        window.location.href = '/';
         localStorage.removeItem('userData');
         setUserData(null);
         localStorage.removeItem('logoutTimer'); 

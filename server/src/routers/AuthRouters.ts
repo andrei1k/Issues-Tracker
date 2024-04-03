@@ -16,9 +16,14 @@ authRouters.post('/register', async (req: Request, res: Response) => {
     const newUser = userService.register(userData);
     
     res.status(201).json(newUser);
-  } catch {
-    res.status(400).json({ error: 'The email is already registered.' });
-    res.status(500).json({ error: '...' });
+  } catch(error) {
+
+    if (error === 'already-used-email') {
+      res.status(400).json({error});
+    }
+    else {
+      res.status(500).json({error: 'Server error' });
+    }
   }
 })
 
@@ -29,7 +34,12 @@ authRouters.post('/login', async (req: Request, res: Response) => {
   try {
     const data = await userService.login(email, hashedPassword);
     res.status(201).json(data);
-  } catch {
-    res.status(400).json({ error: '...' });
+  } catch (error) {
+    if (error === 'invalid-credentials') {
+      res.status(400).json({error});
+    }
+    else {
+      res.status(500).json({error: 'Server error' });
+    }
   }
 })

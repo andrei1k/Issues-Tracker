@@ -77,7 +77,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       setLoading(true);
 
       // wait 1 sec for displaying loading indicator
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 600));
 
       if (!isEmailValid(email)) {
         setMessage('Please enter a valid email address.');

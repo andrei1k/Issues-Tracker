@@ -1,6 +1,18 @@
 .home-div {
     display: flex;
-    left: 20%;
+    align-items: center;
+    flex-direction: column;
+}
+
+.description {
+    margin: 10%;
     padding: 20px;
-    background-color: lightcyan;
+    margin-top: 50px;
+    border: 3px solid whitesmoke;
+    border-radius: 10px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
 }

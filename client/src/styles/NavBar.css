@@ -9,7 +9,6 @@
     display: flex;
     justify-content: flex-end;
     flex-direction: row;
-    right: 0;
     gap: 20px;
 }
 
@@ -19,19 +18,15 @@
     width: 100%;
     top: 100%;
     justify-content: normal;
-    background-color: lightblue;
     flex-direction: column;
     gap: 5px;
     background-color: white;
-    z-index: 999; /*above pages if needed*/
 }
 
 .menu-item {
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    transition: transform 0.5s ease, scale 0.5s ease, color 0.5s ease, background-color 0.5s ease;
-    font-size: 1.2em;
+    text-align: center;
+    transition: scale 0.3s ease, color 0.5s ease, background-color 0.5s ease;
+    font-size: 18px;
     border-radius: 6px;
     color: black;
     text-decoration: none;
@@ -43,7 +38,7 @@
 
 .menu-item:hover {
     background-color: rgb(211, 209, 209);
-    scale: 1.01;
+    scale: 1.02;
 }
 
 .menu-button {
@@ -53,7 +48,7 @@
 @media (min-width: 451px) {
     .navigation.open {
         display: none;
-    }
+    }    
 }
 
 @media (max-width: 450px) {

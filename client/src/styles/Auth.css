@@ -71,7 +71,7 @@
   border: none;
   border-radius: 15px;
   cursor: pointer;
-  transition: transform 0.8s ease, scale 0.8s ease, opacity 0.8s ease, color 0.8s ease, border-color 1s ease;
+  transition: scale 0.8s ease, opacity 0.8s ease, color 0.8s ease;
   margin-top: 10px;
   margin-bottom: 10px;
 }

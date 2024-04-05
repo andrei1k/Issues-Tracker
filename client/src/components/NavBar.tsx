@@ -36,7 +36,7 @@ function NavBar({ isLoggedIn, logOut } : NavBarProps) {
     }
 
     return (
-      <nav className={"navBar"}>
+      <nav className='navBar'>
         {menuVisible ? 
           (<FiX className='menu-button' onClick={toggleMenu}/>) : 
           (<FiAlignJustify className='menu-button' onClick={toggleMenu}/>)

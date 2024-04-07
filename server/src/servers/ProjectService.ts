@@ -21,8 +21,8 @@ export class ProjectService {
     }
 
     async removeProject(userId: number, projectName: string): Promise<void> {
-        // should we add logic for shared projects ?
         const user = await User.query().findById(userId);
+        // await user?.$relatedQuery('projects').unrelate().where('title', projectName);
         await user?.$relatedQuery('projects').delete().where('title', projectName);
     }
 }

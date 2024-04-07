@@ -17,7 +17,6 @@ function Dashboard({ userInfo }: DashboardProps ) {
     const [projects, setProjects] = useState<{ title: string, createdAt: string }[]>([]);
     const [message, setMessage] = useState('');
 
-
     const viewProjects = async () => {
         try {
             const response = await fetch(`http://88.203.234.166:3001/projects/view/${userInfo?.userId}`, {

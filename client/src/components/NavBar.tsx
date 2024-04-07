@@ -70,9 +70,6 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
           </div>
         </nav>
     );
-
-
-
 };
 
 

@@ -77,7 +77,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       event.preventDefault();
       setLoading(true);
 
-      // wait 1 sec for displaying loading indicator
+      // wait almost 1 sec for displaying loading indicator
       await new Promise(resolve => setTimeout(resolve, 600));
 
       if (!isEmailValid(email)) {

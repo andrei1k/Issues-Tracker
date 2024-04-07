@@ -8,7 +8,6 @@ interface UserRegistrationData {
 }
 
 export class UserService {
-
     async login(email: string, password: string): Promise<User> {      
         const user = await User.query().where('email', email).first();
         if (!user || password != user.password) {

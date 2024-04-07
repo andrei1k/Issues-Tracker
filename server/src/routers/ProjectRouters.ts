@@ -40,8 +40,6 @@ projectRouters.post("/add/:userId", async (req: Request, res: Response) => {
 projectRouters.delete('/remove/:userId', async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const projectName = req.body.projectName;
-
-    // should we add logic for shared projects ?
     
     try {
         await projectService.removeProject(Number(userId), projectName);

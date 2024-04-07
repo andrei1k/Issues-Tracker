@@ -4,11 +4,12 @@ import '../styles/NavBar.css';
 import { FiAlignJustify,FiX } from "react-icons/fi";
 
 interface NavBarProps {
+    userId: number,
     isLoggedIn: boolean;
     logOut: () => void;
 }
 
-function NavBar({ isLoggedIn, logOut } : NavBarProps) {
+function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +26,7 @@ function NavBar({ isLoggedIn, logOut } : NavBarProps) {
       return () => {
         document.removeEventListener('mousedown', handler);
       }
-    });
+    },[menuVisible]);
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
@@ -45,7 +46,7 @@ function NavBar({ isLoggedIn, logOut } : NavBarProps) {
             <Link to='/' className='menu-item' onClick={handleMenuClick}>Home</Link>
              {isLoggedIn ? (
                 <>
-                  <Link to='/dashboard' className='menu-item' onClick={handleMenuClick}>
+                  <Link to={`/dashboard/${userId}`} className='menu-item' onClick={handleMenuClick}>
                     My Dashboard
                   </Link>
                   <Link to='/profile' className='menu-item' onClick={handleMenuClick}>

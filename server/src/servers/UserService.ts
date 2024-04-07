@@ -7,24 +7,25 @@ interface UserRegistrationData {
     password: string;
 }
 
-export class UserServer {
+export class UserService {
 
-    async login(email: string, password: string): Promise<User | undefined> {
-        
+    async login(email: string, password: string): Promise<User> {      
         const user = await User.query().where('email', email).first();
         if (!user || password != user.password) {
-            throw Error ('invalid-credentials');
+            throw new Error ('invalid-credentials');
         }
         return user;
     }
 
     async register(userData: UserRegistrationData): Promise<User> {
-
         const newUser = await User.query().insert(userData);
         return newUser;
     }
 
-    async findByEmail(email: string): Promise<User | undefined> {
-        return await User.query().findOne({ email });
+    async findByEmail(email: string): Promise<void> {
+        const isAlreadyRegistered = await User.query().findOne({ email });
+        if(Boolean(isAlreadyRegistered)) {
+            throw new Error('already-used-email');
+        }
     }
 }

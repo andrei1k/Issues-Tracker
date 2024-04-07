@@ -1,24 +1,22 @@
 import { Request, Response, Router } from 'express';
 import CryptoJS from 'crypto-js';
-import { UserServer } from '../servers/UserServer';
+import { UserService } from '../servers/UserService';
 
 export const authRouters = Router(); 
-const userService = new UserServer();
+const userService = new UserService();
 
 authRouters.post('/register', async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     await userService.findByEmail(userData.email);
-
     
-    userData.password = CryptoJS.SHA256(userData.password).toString();
-    
-    const newUser = userService.register(userData);
+    userData.password = CryptoJS.SHA256(userData.password).toString();   
+    const newUser = await userService.register(userData);
     
     res.status(201).json(newUser);
-  } catch(error) {
+  } catch(error: any) {
 
-    if (error === 'already-used-email') {
+    if (error.message === 'already-used-email') {
       res.status(400).json({error});
     }
     else {

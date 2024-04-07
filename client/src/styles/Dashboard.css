@@ -1,0 +1,32 @@
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px;
+    max-width: 750px;
+}
+
+.project-table th,
+.project-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.project-table th {
+    background-color: #f2f2f2;
+}
+
+.project-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.project-table tbody tr:hover {
+    background-color: #ddd;
+}
+@media (max-width: 450px) {
+    .project-table {
+        width: 350px;
+        /* border-collapse: collapse; */
+        margin: 10px;
+    }
+}

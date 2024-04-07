@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { UserServer } from '../servers/UserServer'; 
+import { UserService } from '../servers/UserService'; 
 
 export const userRouter = Router();
-const userService = new UserServer();
+const userService = new UserService();
 
 userRouter.get('/users', async (req: Request, res: Response) => {
     userService.login('sasha', 'parolina').then(data => {

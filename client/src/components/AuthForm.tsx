@@ -8,6 +8,7 @@ interface AuthProps {
 }
 
 interface LocalData {
+  userId: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -119,21 +120,14 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       })
       .then(data => {
         setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
-        let localData: LocalData;
-        // If we register now, we gat the form data.
-        if (formType === 'login') {
-          localData = {
-            firstName: data.firstName, 
-            lastName: data.lastName, 
-            email: data.email 
-          }
-        } else {
-          localData = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email
-          }
+
+        const localData: LocalData = {
+          userId: data.id,
+          firstName: data.firstName, 
+          lastName: data.lastName, 
+          email: data.email 
         }
+
         setSuccess(true);
         setLoading(false);
         onSubmit(localData, rememberMe);

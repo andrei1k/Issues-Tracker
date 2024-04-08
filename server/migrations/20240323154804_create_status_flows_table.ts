@@ -8,6 +8,8 @@ export async function up(knex: Knex): Promise<void> {
         t.integer('fromStatus').references('id').inTable('statuses').notNullable().onDelete('CASCADE')
         t.integer('toStatus').references('id').inTable('statuses').notNullable().onDelete('CASCADE')
         t.timestamp('created_at').defaultTo(knex.fn.now())
+
+        t.unique(['fromStatus', 'toStatus']);
     })
 }
 

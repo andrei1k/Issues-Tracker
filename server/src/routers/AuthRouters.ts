@@ -32,8 +32,8 @@ authRouters.post('/login', async (req: Request, res: Response) => {
   try {
     const data = await userService.login(email, hashedPassword);
     res.status(201).json(data);
-  } catch (error) {
-    if (error === 'invalid-credentials') {
+  } catch (error: any) {
+    if (error.message === 'invalid-credentials') {
       res.status(400).json({error});
     }
     else {

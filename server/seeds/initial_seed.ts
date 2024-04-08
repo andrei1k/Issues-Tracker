@@ -31,10 +31,10 @@ export async function seed(knex: Knex): Promise<void> {
     ]);
 
     await knex("issues").insert([
-        { description: 'create database', priority: 1, statusId: 2, projectId: 1, assignedTo: 4 },
-        { description: 'Create server for issues', priority: 2, statusId: 1, projectId: 1 },
-        { description: 'create login', priority: 1, statusId: 2, projectId: 1, assignedTo: 2 },
-        { description: 'Start this hard sad project', priority: 1, statusId: 1, projectId: 2},
+        {title: 'Create database', description: 'Create database', priority: 1, statusId: 2, projectId: 1, assignedTo: 4 },
+        {title: 'Issues backend', description: 'Create server for issues', priority: 2, statusId: 1, projectId: 1 },
+        {title: 'Login', description: 'create login', priority: 1, statusId: 2, projectId: 1, assignedTo: 2 },
+        {title: 'Hell/O', description: 'Start this hard sad project', priority: 1, statusId: 1, projectId: 2},
     ]);
 
     await knex("userProjects").insert([

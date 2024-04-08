@@ -13,6 +13,7 @@ export class Issue extends BaseModel {
     statusId!: number
     projectId!: number
     assignedTo?: number
+    title!: string
 
     assignedUser?: User
     project?: Project

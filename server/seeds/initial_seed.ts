@@ -9,7 +9,6 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("userProjects").del();
     await knex("statusFlows").del();
 
-
     // Inserts seed entries
     await knex("users").insert([
         { email: "sereja@abv.bg", password: 'sereja444', firstName: 'Sergey', lastName: 'Mitov' },

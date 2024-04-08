@@ -8,6 +8,10 @@ export async function up(knex: Knex): Promise<void> {
         t.integer('userId').references('id').inTable('users').notNullable().onDelete('CASCADE')
         t.integer('projectId').references('id').inTable('projects').notNullable().onDelete('CASCADE')
         t.timestamp('created_at').defaultTo(knex.fn.now())
+
+        t.index("userId");
+        t.index("projectId");
+        
     })
 }
 

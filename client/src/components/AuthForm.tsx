@@ -86,7 +86,8 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       });
   
       if (response.status === 400) {
-        setMessage(`${formType === 'login' ? 'Wrong email or password!' : 'Email is already used!'} `);
+        setMessage(`${formType === 'login' ? 'Wrong email or password!' : 
+          'Email is already used!'} `);
         setLoading(false);
         throw new Error('Bad request');
       }
@@ -114,7 +115,8 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
     } catch (error) {
       console.error(`${formType} error:`, error);
     }
-  }
+  };
+
   const handleSubmit = 
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();

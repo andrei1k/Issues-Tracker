@@ -38,14 +38,14 @@ function Dashboard({ userInfo }: DashboardProps ) {
         }
     };
     
-    const removeProject = async (projectName: string) => {
+    const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
         try {
             const response = await fetch(`http://88.203.234.166:3001/projects/remove/${userInfo?.userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify( {projectName} )
+                body: JSON.stringify( {projectName, mustBeDeleted} )
             });
     
             if (!response.ok) {
@@ -56,7 +56,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
         } catch(error) {
             setMessage(error.message);
         }
-    }
+    };
 
     const addProject = async (projectName: string) => {
         try {
@@ -93,7 +93,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
                 setMessage('Failed to create project!');
             }
         }
-    }
+    };
     
 
     useEffect(() => {
@@ -105,11 +105,17 @@ function Dashboard({ userInfo }: DashboardProps ) {
         await addProject(projectName);
     };
 
+    const handleLeave: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+        event.preventDefault();
+        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
+        await removeProject(String(crrProjectName), false);
+    };
+
     const handleRemove: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
         event.preventDefault();
         const crrProjectName = event.currentTarget.getAttribute('data-projectname');
-        await removeProject(String(crrProjectName));
-    }
+        await removeProject(String(crrProjectName), true);
+    };
 
     return (
         <div>
@@ -131,14 +137,20 @@ function Dashboard({ userInfo }: DashboardProps ) {
                         <th>Name</th>
                         <th>Created at</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {projects.map((project, index) => (
                         <tr key={index}>
-                            <td>{project.title}</td>
+                            <td>{project.title}</td> {/*add logic for entering a project here*/}
                             <td>{new Date(project.createdAt).toUTCString()}</td>
-                            <td><button onClick={handleRemove} data-projectname={project.title}>Delete</button></td>
+                            <td className='button'>
+                                <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
+                            </td>
+                            <td className='button'>
+                                <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

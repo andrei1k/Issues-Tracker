@@ -22,7 +22,18 @@ export class ProjectService {
 
     async removeProject(userId: number, projectName: string): Promise<void> {
         const user = await User.query().findById(userId);
-        // await user?.$relatedQuery('projects').unrelate().where('title', projectName);
         await user?.$relatedQuery('projects').delete().where('title', projectName);
+    }
+
+    async leaveProject(userId: number, projectName: string): Promise<void> {
+        const user = await User.query().findById(userId);
+        const project = await Project.query().findOne({ title: projectName });
+        const projectUsers = await project?.$relatedQuery('users');
+
+        if (projectUsers?.length === 1) {
+            await await user?.$relatedQuery('projects').delete().where('title', projectName);
+        } else {
+            await user?.$relatedQuery('projects').unrelate().where('title', projectName);
+        }
     }
 }

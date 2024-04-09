@@ -26,6 +26,7 @@ export class AuthController {
 
         try {
             const data = await userService.login(email, hashedPassword);
+            req.session.userId = data.id;
             res.status(201).json(data);
         } catch (error: any) {
             if (error.message === 'invalid-credentials') {

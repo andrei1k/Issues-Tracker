@@ -9,8 +9,7 @@ export async function up(knex: Knex): Promise<void> {
         t.integer('projectId').references('id').inTable('projects').notNullable().onDelete('CASCADE')
         t.timestamp('created_at').defaultTo(knex.fn.now())
 
-        t.unique(['userId', 'projectId']);   
-        t.index("userId");      
+        t.unique(['userId', 'projectId']);    
         t.index("projectId");      
     })
 }

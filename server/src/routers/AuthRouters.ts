@@ -8,20 +8,16 @@ const userService = new UserService();
 authRouters.post('/register', async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    await userService.findByEmail(userData.email);
     
     userData.password = CryptoJS.SHA256(userData.password).toString();   
     const newUser = await userService.register(userData);
     
     res.status(201).json(newUser);
   } catch(error: any) {
-
-    if (error.message === 'already-used-email') {
-      res.status(400).json({error});
+    if (error.constraint === 'users_email_unique') {
+      res.status(400).json({error: 'already-used-email' });
     }
-    else {
-      res.status(500).json({error: 'Server error' });
-    }
+      res.status(500).json({error: 'Server error!' });
   }
 })
 

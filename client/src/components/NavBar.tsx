@@ -47,10 +47,10 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
              {isLoggedIn ? (
                 <>
                   <Link to={`/dashboard/${userId}`} className='menu-item' onClick={handleMenuClick}>
-                    My Dashboard
+                    Dashboard
                   </Link>
                   <Link to='/profile' className='menu-item' onClick={handleMenuClick}>
-                    My Profile
+                    Profile
                   </Link>
                   <Link to='/' className='menu-item' 
                     onClick={() => {handleMenuClick(); logOut();}}>

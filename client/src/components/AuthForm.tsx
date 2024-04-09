@@ -15,6 +15,9 @@ interface LocalData {
   password?: string;
 }
 
+// used for authUser parameter
+type FormData = Omit<LocalData, 'userId'>;
+
 function AuthForm({ onSubmit, formType }: AuthProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -72,13 +75,55 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       setPasswordsMatch(currentPassword === password);
   };
 
+  async function authUser(formData: FormData) {
+    try {
+      const response = await fetch(`http://88.203.234.166:3001/auth/${formType}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+  
+      if (response.status === 400) {
+        setMessage(`${formType === 'login' ? 'Wrong email or password!' : 
+          'Email is already used!'} `);
+        setLoading(false);
+        throw new Error('Bad request');
+      }
+  
+      if (response.status === 500 || !response.ok) {
+        setMessage('Internal error!');
+        setLoading(false);
+        throw new Error('Server response was not ok');
+      }
+  
+      const data = await response.json();
+  
+      setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
+  
+      const localData: LocalData = {
+        userId: data.id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email
+      }
+  
+      setSuccess(true);
+      setLoading(false);
+      onSubmit(localData, rememberMe);
+    } catch (error) {
+      console.error(`${formType} error:`, error);
+    }
+  };
+
   const handleSubmit = 
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setLoading(true);
 
       // wait almost 1 sec for displaying loading indicator
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise(_ => setTimeout(_, 600));
 
       if (!isEmailValid(email)) {
         setMessage('Please enter a valid email address.');
@@ -95,46 +140,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       }
 
       const formData = { firstName, lastName, email, password };
-      await fetch(`http://88.203.234.166:3001/auth/${formType}`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData)      
-      })
-      .then(response => {
-          if (response.status === 400) {
-            setMessage(`${formType === 'login' ? 
-              'Wrong email or password!' : 
-              'Email is already used!'} `
-            );
-            setLoading(false);
-            throw new Error('Bad request');
-          }
-          if (response.status === 500 || !response.ok) {
-            setMessage('Internal error!');
-            setLoading(false);
-            throw new Error('Server response was not ok');
-          }
-          return response.json();
-      })
-      .then(data => {
-        setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
-
-        const localData: LocalData = {
-          userId: data.id,
-          firstName: data.firstName, 
-          lastName: data.lastName, 
-          email: data.email 
-        }
-
-        setSuccess(true);
-        setLoading(false);
-        onSubmit(localData, rememberMe);
-      })
-      .catch(error => {
-        console.error(`${formType} error:`, error);
-    });
+      await authUser(formData);
   };
 
   return (

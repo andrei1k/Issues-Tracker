@@ -20,11 +20,4 @@ export class UserService {
         const newUser = await User.query().insert(userData);
         return newUser;
     }
-
-    async findByEmail(email: string): Promise<void> {
-        const isAlreadyRegistered = await User.query().findOne({ email });
-        if(Boolean(isAlreadyRegistered)) {
-            throw new Error('already-used-email');
-        }
-    }
 }

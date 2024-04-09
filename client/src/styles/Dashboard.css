@@ -9,7 +9,7 @@
 .project-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
 .project-table th {
@@ -19,14 +19,21 @@
 .project-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-
-.project-table tbody tr:hover {
-    background-color: #ddd;
-}
 @media (max-width: 450px) {
     .project-table {
         width: 350px;
-        /* border-collapse: collapse; */
         margin: 10px;
     }
+}
+.action-button {
+    cursor: pointer;
+    background-color: white;
+    font-size: 14px;
+    max-width: 50px;
+    border: none;
+    transition: background-color 0.5s ease;
+    border-radius: 5px;
+}
+.action-button:hover {
+    background-color: lightcoral;
 }

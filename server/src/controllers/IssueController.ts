@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-
-import { IssueServiceModel } from '../servers/IssueService';
-import issueService from '../servers/IssueService';
+import issueService, { IssueServiceModel }  from '../services/IssueService';
 
 class IssueController {
 

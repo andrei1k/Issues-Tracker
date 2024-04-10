@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
-import { UserService } from '../servers/UserService';
+import { UserService } from '../services/UserService';
 
 const userService = new UserService();
 

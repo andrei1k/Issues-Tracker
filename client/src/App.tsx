@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import Home from './components/Home.tsx';
-import Login from './components/Login.tsx';
+import Home from './pages/Home.tsx';
+import Login from './pages/Login.tsx';
 import NavBar from './components/NavBar.tsx';
-import Register from './components/Register.tsx';
-import Dashboard from './components/Dashboard.tsx';
-import Profile from './components/Profile.tsx';
+import Register from './pages/Register.tsx';
+import Dashboard from './pages/Dashboard.tsx';
+import Profile from './pages/Profile.tsx';
 
 interface LocalData {
     userId: number;
@@ -17,26 +17,27 @@ interface LocalData {
 
 function App() {
     const [userData, setUserData] = 
-        useState<{ userInfo: LocalData, isLoggedIn: boolean} | null>(null);
+        useState<{ userInfo: LocalData, token:String, isLoggedIn: boolean } | null>(null);
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData');
         if (storedData) {
             const fetchedUserData = JSON.parse(storedData);
-            setUserData({ userInfo: fetchedUserData.userInfo, isLoggedIn: true});
+            setUserData({ userInfo: fetchedUserData.userInfo, token: fetchedUserData.token, isLoggedIn: true});
         }
         else {
             const defaultUserData = {
                 userInfo: {userId: 0,firstName: '', lastName: '', email: ''},
+                token: '',
                 isLoggedIn: false
             }
             setUserData(defaultUserData);
         }
     }, []);
 
-    const authorize = (userInfo: LocalData, rememberMe: boolean) => {
-        localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
-        setUserData({ userInfo, isLoggedIn: true});
+    const authorize = (userInfo: LocalData, rememberMe: boolean, token: string) => {
+        localStorage.setItem('userData', JSON.stringify({ userInfo, token, isLoggedIn: true }));
+        setUserData({ userInfo,token, isLoggedIn: true});
         if (!rememberMe) {
             const logoutTimer = setTimeout(() => {
                 logOut();
@@ -79,7 +80,7 @@ function DashboardRoute({ userData }) {
         return <Navigate to='/login' />;
     }
 
-    return <Dashboard userInfo={userData.userInfo} />;
+    return <Dashboard userInfo={userData.userInfo} token={userData.token} />;
 }
 
 function LoginRoute({ userData, onLogin }) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from './AuthForm.tsx';
+import AuthForm from '../components/AuthForm.tsx';
 
 interface LocalData {
     userId: number;
@@ -9,7 +9,7 @@ interface LocalData {
 }
 
 interface RegisterProps {
-    onRegister: (localData: LocalData, rememberMe: boolean) => void;
+    onRegister: (localData: LocalData, rememberMe: boolean, token: string) => void;
 }
 
 function Register({ onRegister }: RegisterProps) {

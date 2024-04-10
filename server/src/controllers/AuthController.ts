@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
 import { UserService } from '../services/UserService';
+import { createToken } from '../utils/jwtUtils';
 
 const userService = new UserService();
 
@@ -9,9 +10,10 @@ export class AuthController {
         try {
             const userData = req.body;
             userData.password = CryptoJS.SHA256(userData.password).toString();   
-            const newUser = await userService.register(userData);
-            req.session.userId = newUser.id;
-            res.status(201).json(newUser);
+            const currentUser = await userService.register(userData);
+
+            const token = createToken(currentUser.id);
+            res.status(201).json({currentUser, token});
         } catch(error: any) {
             if (error.constraint === 'users_email_unique') {
                 res.status(400).json({error: 'already-used-email' });
@@ -26,9 +28,10 @@ export class AuthController {
         const hashedPassword = CryptoJS.SHA256(password).toString();
 
         try {
-            const data = await userService.login(email, hashedPassword);
-            req.session.userId = data.id;
-            res.status(201).json(data);
+            const currentUser = await userService.login(email, hashedPassword);
+
+            const token = createToken(currentUser.id);
+            res.status(201).json({currentUser, token});
         } catch (error: any) {
             if (error.message === 'invalid-credentials') {
                 res.status(400).json({error});

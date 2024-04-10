@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import '../styles/Auth.css';
 
 interface AuthProps {
-  onSubmit: (data: any, rememberMe: boolean) => void;
+  onSubmit: (data: any, rememberMe: boolean, token: string) => void;
   formType: 'login' | 'register';
 }
 
@@ -80,18 +80,18 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       const response = await fetch(`http://88.203.234.166:3001/auth/${formType}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json' // Задаване на Content-Type заглавка
         },
         body: JSON.stringify(formData)
       });
-  
+      
       if (response.status === 400) {
         setMessage(`${formType === 'login' ? 'Wrong email or password!' : 
-          'Email is already used!'} `);
+        'Email is already used!'} `);
         setLoading(false);
         throw new Error('Bad request');
       }
-  
+      
       if (response.status === 500 || !response.ok) {
         setMessage('Internal error!');
         setLoading(false);
@@ -101,17 +101,17 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       const data = await response.json();
   
       setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
-  
+
       const localData: LocalData = {
-        userId: data.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email
+        userId: data.currentUser.id,
+        firstName: data.currentUser.firstName,
+        lastName: data.currentUser.lastName,
+        email: data.currentUser.email,
       }
   
       setSuccess(true);
       setLoading(false);
-      onSubmit(localData, rememberMe);
+      onSubmit(localData, rememberMe, data.token);
     } catch (error) {
       console.error(`${formType} error:`, error);
     }
@@ -138,7 +138,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
           return;
         }
       }
-
       const formData = { firstName, lastName, email, password };
       await authUser(formData);
   };

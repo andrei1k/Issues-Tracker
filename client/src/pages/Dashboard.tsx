@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Dashboard.css';
 
 interface DashboardProps {
-    userInfo: UserData | null; 
+    userInfo: UserData | null;
+    token: string; 
 }
 
 interface UserData {
@@ -12,18 +13,17 @@ interface UserData {
     email: string;
 }
 
-function Dashboard({ userInfo }: DashboardProps ) {
+function Dashboard({ userInfo, token }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
     const [projects, setProjects] = useState<{ title: string, createdAt: string }[]>([]);
     const [message, setMessage] = useState('');
-
     const viewProjects = async () => {
         try {
             const response = await fetch(`http://88.203.234.166:3001/projects/view/${userInfo?.userId}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
+                    'Authorization': `Bearer ${token}` 
+                }
             });
     
             if (!response.ok) {
@@ -44,6 +44,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
                 },
                 body: JSON.stringify( {projectName, mustBeDeleted} )
             });
@@ -60,6 +61,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
 
     const addProject = async (projectName: string) => {
         try {
+            console.log(JSON.stringify({ projectName }));
             if (projectName === '') {
                 throw new Error('empty-string');
             }
@@ -67,6 +69,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ projectName })
             });

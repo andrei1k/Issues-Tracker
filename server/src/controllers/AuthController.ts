@@ -10,6 +10,7 @@ export class AuthController {
             const userData = req.body;
             userData.password = CryptoJS.SHA256(userData.password).toString();   
             const newUser = await userService.register(userData);
+            req.session.userId = newUser.id;
             res.status(201).json(newUser);
         } catch(error: any) {
             if (error.constraint === 'users_email_unique') {

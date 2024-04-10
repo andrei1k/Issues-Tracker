@@ -25,7 +25,7 @@ Model.knex(knex);
 
 const app = express();
 const port = 3001;
-// const IP = '0.0.0.0';
+
 app.use(cors());
 app.use(express.json());
 

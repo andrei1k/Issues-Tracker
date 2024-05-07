@@ -7,6 +7,7 @@ import NavBar from './components/NavBar.tsx';
 import Register from './components/Register.tsx';
 import Dashboard from './components/Dashboard.tsx';
 import Profile from './components/Profile.tsx';
+import { WorkFlow } from './components/workflow.tsx';
 
 interface LocalData {
     userId: number;
@@ -60,6 +61,7 @@ function App() {
             <Route path='/dashboard/:userId' element={<DashboardRoute userData={userData} />} />
             <Route path='/login' element={<LoginRoute userData={userData} onLogin={authorize} />} />
             <Route path='/register' element={<RegisterRoute userData={userData} onRegister={authorize} />} />
+            <Route path='/test' element={<WorkFlow />} />
           </Routes>
         </Router>
       );

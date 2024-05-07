@@ -5,6 +5,7 @@ import { Model } from 'objection';
 import { authRouter } from './routers/AuthRouter';
 import { projectRouter } from './routers/ProjectRouter';
 import session from 'express-session';
+import { statusRouter } from './routers/StatusRouter';
 
 
 declare module "express-session" {
@@ -38,6 +39,7 @@ app.use(session({
 
 app.use('/auth',authRouter);
 app.use('/projects', projectRouter);
+app.use('/statuses', statusRouter);
 
 
 app.listen(port, () => {

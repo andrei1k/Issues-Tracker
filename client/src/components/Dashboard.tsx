@@ -19,7 +19,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
 
     const viewProjects = async () => {
         try {
-            const response = await fetch(`http://88.203.234.166:3001/projects/view/${userInfo?.userId}`, {
+            const response = await fetch(`http://localhost:3001/projects/view/${userInfo?.userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
     
     const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
         try {
-            const response = await fetch(`http://88.203.234.166:3001/projects/remove/${userInfo?.userId}`, {
+            const response = await fetch(`http://localhost:3001/projects/remove/${userInfo?.userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ function Dashboard({ userInfo }: DashboardProps ) {
             if (projectName === '') {
                 throw new Error('empty-string');
             }
-            const response = await fetch(`http://88.203.234.166:3001/projects/add/${userInfo?.userId}`, {
+            const response = await fetch(`http://localhost:3001/projects/add/${userInfo?.userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

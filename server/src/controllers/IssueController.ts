@@ -46,6 +46,26 @@ class IssueController {
             res.status(500).json({error: 'Server error' });
         }
     }
+
+    async getIssueById(req: Request, res: Response) {
+        try {
+            const issueId = parseInt(req.params.issueId);
+
+            const issue = await issueService.getIssueById(issueId);
+            res.status(200).json(issue);
+        } catch(err) {
+            res.status(500).json({error: 'Server error' });
+        }
+    }
+
+    async getAllIssues(req: Request, res: Response) {
+        try {
+            const issues = await issueService.getAllIssues();
+            res.status(200).json(issues);
+        } catch(err) {
+            res.status(500).json({error: 'Server error' });
+        }
+    }
 }
 
 export default new IssueController(); 

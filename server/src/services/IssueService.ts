@@ -62,24 +62,48 @@ class IssueService {
         }
     }
 
-    // async getAllIssues() {
-    //     try {
-    //         let issues = await Issue.query().withGraphFetched(['status', 'assignedUser'])
-    //         console.log(issues);
-    //         const issueServiceModels = issues.map(issue => {
-    //             return {
-    //                 title: issue.title,
-    //                 description: issue.description,
-    //                 priority: issue.priority,
-    //                 statusId: issue.status?.name,
-    //                 assignedTo: issue.assignedUser?.firstName + ' ' + issue.assignedUser?.lastName,
-    //             }
-    //         });
-    //         return issueServiceModels;
-    //     } catch(err) {
-    //         throw new Error('Could not fetch issues'); 
-    //     }
-    // }
+    async getIssueById(issueId: number) {
+        try {
+            const issue = await Issue.query()
+                                .findById(issueId)
+                                .withGraphFetched('assignedUser')
+                                .withGraphFetched('status').first() as Issue;
+            return {
+                title: issue.title,
+                description: issue.description,
+                priority: issue.priority,
+                status: issue.status?.name,
+                assignedTo: issue.assignedUser 
+                ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}` 
+                : null,
+                projectId: issue.projectId
+            }
+        } catch(err) {
+            throw new Error('Could not fetch issues'); 
+        }
+    }
+
+
+    async getAllIssues() {
+        try {
+            console.log('here');
+            const issues = await Issue.query().withGraphFetched('status').withGraphFetched('assignedUser');
+            console.log(issues);
+            const issueServiceModels = issues.map(issue => {
+                return {
+                    title: issue.title,
+                    description: issue.description,
+                    priority: issue.priority,
+                    statusId: issue.status?.name,
+                    assignedTo: issue.assignedUser?.firstName + ' ' + issue.assignedUser?.lastName,
+                    projectId: issue.projectId
+                }
+            });
+            return issueServiceModels;
+        } catch(err) {
+            throw new Error('Could not fetch issues'); 
+        }
+    }
 }
 
 export default new IssueService();

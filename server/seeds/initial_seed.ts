@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import CryptoJS from 'crypto-js';
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
@@ -13,7 +14,7 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("users").insert([
         { email: "sereja@abv.bg", password: 'sereja444', firstName: 'Sergey', lastName: 'Mitov' },
         { email: "natashka@abv.bg", password: 'natashka444', firstName: 'Natasha', lastName: 'Dragostinova' },
-        { email: "alenka@abv.bg", password: 'alenka444', firstName: 'Alena', lastName: 'Baldjieva' },
+        { email: "alenka@abv.bg", password:  CryptoJS.SHA256('alenka444').toString(), firstName: 'Alena', lastName: 'Baldjieva' },
         { email: "sveta@abv.bg", password: 'Sveta444', firstName: 'Svetlana', lastName: 'Kalcheva' },
     ]);
 

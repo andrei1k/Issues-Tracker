@@ -30,7 +30,7 @@ export const config = convict({
       doc: 'The postgresql database name',
       env: 'DB_NAME',
       type: '*',
-      default: 'books'
+      default: 'issuetracker'
     },
   },
 })

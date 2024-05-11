@@ -41,15 +41,15 @@ function App() {
         if (!rememberMe) {
             const logoutTimer = setTimeout(() => {
                 logOut();
-            }, 600000); // 10 minutes
-            localStorage.setItem('logoutTimer', logoutTimer.toString());
+                window.location.href = '/login?sessionExpired=true';
+            }, 300000); // 5 min
+            localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
         }
     };
     const logOut = () => {
         localStorage.removeItem('userData');
         setUserData(null);
         localStorage.removeItem('logoutTimer');
-        return <Navigate to='/login?sessionExpired=true'/>;
     }
 
     return (

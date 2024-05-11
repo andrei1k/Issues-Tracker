@@ -80,7 +80,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       const response = await fetch(`http://88.203.234.166:3001/auth/${formType}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json' // Задаване на Content-Type заглавка
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
       });

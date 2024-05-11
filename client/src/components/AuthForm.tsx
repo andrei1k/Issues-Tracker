@@ -77,13 +77,13 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
 
   async function authUser(formData: FormData) {
     try {
-      const response = await fetch(`http://88.203.234.166:3001/auth/${formType}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      const response = await fetch(`http://0.0.0.0:3001/auth/${formType}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
       
       if (response.status === 400) {
         setMessage(`${formType === 'login' ? 'Wrong email or password!' : 

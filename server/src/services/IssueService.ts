@@ -34,7 +34,7 @@ class IssueService {
             const updatedIssue = await Issue.query().patchAndFetchById(issueId, newIssueData);
             return updatedIssue;
         } catch(err) {
-            throw new Error('Could not create issues');
+            throw new Error('Could not update issues');
         }
     }
 
@@ -58,7 +58,7 @@ class IssueService {
             });
             return issuesMapped;
         } catch(err) {
-            throw new Error('Could not fetch issues'); 
+            throw new Error('Could not fetch issues for project'); 
         }
     }
 
@@ -79,7 +79,7 @@ class IssueService {
                 projectId: issue.projectId
             }
         } catch(err) {
-            throw new Error('Could not fetch issues'); 
+            throw new Error('Could not fetch issue by id'); 
         }
     }
 

@@ -7,12 +7,19 @@ class IssueController {
         try {
             const issueData: IssueServiceModel = req.body as IssueServiceModel;
             issueData.projectId = parseInt(req.params.projectId);
+            
+            const errors = IssueController.validateIssueData(issueData);
+
+            
+            if (Object.keys(errors).length > 0) {
+                return res.status(400).json({'errors': errors});
+            }
 
             console.log(issueData);
             const newIssue = await issueService.createIssue(issueData);
             res.status(201).json(newIssue);
         } catch(err) {
-            res.status(500).json({error: 'Server error' });
+            res.status(500).json({error: 'Server error. Failed to create issue' });
         }
     }
 
@@ -22,7 +29,7 @@ class IssueController {
             const deletedIssue = await issueService.removeIssue(issueId);
             res.status(200).json(deletedIssue);
         } catch(err) {
-            res.status(500).json({error: 'Server error' });
+            res.status(500).json({error: 'Server error. Failed to remove issue' });
         }
     }
 
@@ -30,10 +37,27 @@ class IssueController {
         try {
             const issueId = parseInt(req.params.issueId);
             const newIssueData: IssueServiceModel = req.body as IssueServiceModel;
+            
+            const existingIssue = await issueService.getIssueById(issueId);
+            if (!existingIssue) {
+                return res.status(404).json({error: 'Issue not found'});
+            }
+
+            const issueToValidate = {
+                ...existingIssue,
+                ...newIssueData
+            } as IssueServiceModel;
+
+            const errors = IssueController.validateIssueData(issueToValidate);
+
+            if (Object.keys(errors).length > 0) {
+                return res.status(400).json({'errors': errors});
+            }
+
             const editIssue = await issueService.editIssue(issueId, newIssueData);
             res.status(200).json(editIssue);
         } catch(err) {
-            res.status(500).json({error: 'Server error' });
+            res.status(500).json({error: 'Server error. Failed to edit issue' + err });
         }
     }
 
@@ -43,7 +67,7 @@ class IssueController {
             const issues = await issueService.getAllIssuesForProject(projectId);
             res.status(200).json(issues);
         } catch(err) {
-            res.status(500).json({error: 'Server error' });
+            res.status(500).json({error: 'Server error. Cannot get all issues for project' });
         }
     }
 
@@ -65,6 +89,26 @@ class IssueController {
         } catch(err) {
             res.status(500).json({error: 'Server error' });
         }
+    }
+
+    private static validateIssueData(issueData: IssueServiceModel) {
+
+        const errors: {[key: string]: string} = {};
+
+        if (!issueData.title || !issueData.description || !issueData.priority) {
+            errors["required"] = 'Required fields are missing';
+        }
+        
+        if (issueData.title.length > 255 || issueData.title.length < 3) {
+            errors["title"] = 'Invalid title length';
+            
+        }
+
+        if (issueData.description.length > 1000 || issueData.description.length < 10) {
+            errors["description"] = 'Invalid description length';
+        }
+
+        return errors;
     }
 }
 

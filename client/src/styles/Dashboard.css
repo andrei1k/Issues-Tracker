@@ -3,8 +3,11 @@
     border-collapse: collapse;
     margin: 10px;
     max-width: 750px;
+    background-color: #f2f2f2;
 }
-
+.project-table tbody {
+    background-color: white;
+}
 .project-table th,
 .project-table td {
     border: 1px solid #ddd;
@@ -12,13 +15,7 @@
     text-align: center;
 }
 
-.project-table th {
-    background-color: #f2f2f2;
-}
 
-.project-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
 @media (max-width: 450px) {
     .project-table {
         width: 350px;

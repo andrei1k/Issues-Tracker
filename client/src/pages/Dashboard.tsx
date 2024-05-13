@@ -61,7 +61,6 @@ function Dashboard({ userInfo, token }: DashboardProps ) {
 
     const addProject = async (projectName: string) => {
         try {
-            console.log(JSON.stringify({ projectName }));
             if (projectName === '') {
                 throw new Error('empty-string');
             }

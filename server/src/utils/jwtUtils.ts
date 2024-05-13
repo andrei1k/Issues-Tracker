@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-// Функция за създаване на JWT токен
 export function createToken(userId: number): string {
   const secretKey = 'your_secret_key';
-  const token = jwt.sign({ userId }, secretKey, { expiresIn: '20m' }); // Токенът изтича след 1 час
+  const token = jwt.sign({ userId }, secretKey, { expiresIn: '20m' });
   return token;
 }
 

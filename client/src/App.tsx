@@ -42,7 +42,7 @@ function App() {
             const logoutTimer = setTimeout(() => {
                 logOut();
                 window.location.href = '/login?sessionExpired=true';
-            }, 300000); // 5 min
+            }, 10000); // 10 sec
             localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
         }
     };

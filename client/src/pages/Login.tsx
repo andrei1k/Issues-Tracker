@@ -13,7 +13,9 @@ interface LoginProps {
 }
 
 function Login({ onLogin }: LoginProps) {
-    return <AuthForm onSubmit={onLogin} formType="login" />;
+    return <div>
+        <AuthForm onSubmit={onLogin} formType='login' />
+    </div>;
 }
 
 export default Login;

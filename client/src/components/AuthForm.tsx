@@ -19,6 +19,7 @@ interface LocalData {
 type FormData = Omit<LocalData, 'userId'>;
 
 function AuthForm({ onSubmit, formType }: AuthProps) {
+  const [userId, setUserId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -44,7 +45,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const isPasswordStrong = (password: string): boolean => {
     return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
   }
-
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -83,7 +83,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(formData)
-    });
+      });
       
       if (response.status === 400) {
         setMessage(`${formType === 'login' ? 'Wrong email or password!' : 
@@ -111,6 +111,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   
       setSuccess(true);
       setLoading(false);
+      setUserId(data.currentUser.id);
       onSubmit(localData, rememberMe, data.token);
     } catch (error) {
       console.error(`${formType} error:`, error);
@@ -176,7 +177,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
         }
         <button onClick={() => setMessage('')} className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
         {loading && <div className="loading-indicator"></div>}
-        {success && <Navigate to='/dashboard'/>}
+        {success && <Navigate to={`/dashboard/${userId}`}/>}
         {message && <p>{message}</p>}
       </form>
     </div>

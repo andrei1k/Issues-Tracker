@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/NavBar.css';
 import { FiAlignJustify,FiX } from "react-icons/fi";
+
+import '../styles/NavBar.css';
+import Layout from './Layout.tsx';
 
 interface NavBarProps {
     userId: number,
@@ -35,6 +37,11 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
     const handleMenuClick = () => {
       setMenuVisible(false);
     }
+    
+    const handleLinkClick = (pathname: string) => {
+      handleMenuClick();
+      document.title = Layout(pathname);
+    }
 
     return (
       <nav className='navBar'>
@@ -43,26 +50,30 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
           (<FiAlignJustify className='menu-button' onClick={toggleMenu}/>)
         }
           <div ref={menuRef} className={`navigation ${menuVisible ? 'open' : ''}`}>
-            <Link to='/' className='menu-item' onClick={handleMenuClick}>Home</Link>
+            <Link to='/' className='menu-item' onClick={() => handleLinkClick('/')}>Home</Link>
              {isLoggedIn ? (
                 <>
-                  <Link to={`/dashboard/${userId}`} className='menu-item' onClick={handleMenuClick}>
+                  <Link to={`/dashboard/${userId}`} className='menu-item' 
+                      onClick={() => handleLinkClick('/dashboard')}>
                     Dashboard
                   </Link>
-                  <Link to='/profile' className='menu-item' onClick={handleMenuClick}>
+                  <Link to='/profile' className='menu-item' 
+                      onClick={() => handleLinkClick('/profile')}>
                     Profile
                   </Link>
                   <Link to='/' className='menu-item' 
-                    onClick={() => {handleMenuClick(); logOut();}}>
+                    onClick={() => {handleLinkClick('/'); logOut();}}>
                       Logout
                   </Link>
                 </>
             ) : (
                 <>
-                  <Link to='/login' className='menu-item' onClick={handleMenuClick}>
+                  <Link to='/login' className='menu-item' 
+                      onClick={() => handleLinkClick('/login')}>
                     Login
                   </Link>
-                  <Link to='/register' className='menu-item' onClick={handleMenuClick}>
+                  <Link to='/register' className='menu-item' 
+                      onClick={() => handleLinkClick('/register')}>
                     Register
                   </Link>
                 </>

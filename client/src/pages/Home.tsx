@@ -22,7 +22,7 @@ function Home() {
                 This allows you to stay organized and informed about the status of your projects at all times.</p>
             </div>
         </div>
-    )
+    );
 }
 
 export default Home;

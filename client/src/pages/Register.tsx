@@ -13,7 +13,11 @@ interface RegisterProps {
 }
 
 function Register({ onRegister }: RegisterProps) {
-    return <AuthForm onSubmit={onRegister} formType="register" />;
+    return( 
+        <div>
+            <AuthForm onSubmit={onRegister} formType="register" />
+        </div>
+    );
 }
 
 export default Register;

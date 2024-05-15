@@ -1,12 +1,16 @@
 import { Request, Response } from 'express';
 import { ProjectService } from '../services/ProjectService';
-import { isTitleValid } from '../utils/Validations';
+import { isIdValid, isTitleValid } from '../utils/Validations';
 const projectService = new ProjectService();
 
 export class ProjectController {
     static async viewProjects(req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
-
+        
+        if (!isIdValid(userId)) {
+            res.status(400).json({ error: 'invalid-id' });
+            return;
+        }
         try {
             const projects = await projectService.viewProjects(Number(userId));
             res.status(200).json({ projects });
@@ -21,8 +25,8 @@ export class ProjectController {
         const projectName = req.body.projectName;
 
         try {
-            if (!isTitleValid(projectName)) {
-                res.status(400).json({ error: 'invalid-project-name' });
+            if (!isTitleValid(projectName) || !isIdValid(userId)) {
+                res.status(400).json({ error: 'invalid-data' });
                 return;
             }
             await projectService.checkAlreadyCreated(projectName, Number(userId));
@@ -42,7 +46,12 @@ export class ProjectController {
         const userId = req.params.userId;
         const projectName = req.body.projectName;
         const mustBeDeleted = req.body.mustBeDeleted;
-
+        
+        if (!isTitleValid(projectName) || !isIdValid(userId)) {
+            res.status(400).json({ error: 'invalid-data' });
+            return;
+        }
+        
         try {
             if (mustBeDeleted) {
                 await projectService.removeProject(Number(userId), projectName);

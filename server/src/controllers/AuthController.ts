@@ -9,18 +9,10 @@ export class AuthController {
     static async register(req: Request, res: Response): Promise<void> {
         try {
             const userData = req.body;
-            if (!isEmailValid(userData.email)) {
-                res.status(400).json({ error: 'invalid-email' });
-                return;
-            }
-
-            if (!isNameValid(userData.name)) {
-                res.status(400).json({ error: 'invalid-name' });
-                return;
-            }
-
-            if (!isPasswordStrong(userData.password)) {
-                res.status(400).json({ error: 'weak-password' });
+            if (!isEmailValid(userData.email) 
+                || !isNameValid(userData.name) 
+                || !isPasswordStrong(userData.password)) {
+                res.status(400).json({ error: 'invalid-data' });
                 return;
             }
             userData.password = CryptoJS.SHA256(userData.password).toString();   

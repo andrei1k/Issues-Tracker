@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ProjectService } from '../services/ProjectService';
-
+import { isTitleValid } from '../utils/Validations';
 const projectService = new ProjectService();
 
 export class ProjectController {
@@ -21,6 +21,10 @@ export class ProjectController {
         const projectName = req.body.projectName;
 
         try {
+            if (!isTitleValid(projectName)) {
+                res.status(400).json({ error: 'invalid-project-name' });
+                return;
+            }
             await projectService.checkAlreadyCreated(projectName, Number(userId));
             await projectService.addProject(Number(userId), projectName);
             res.status(200).send('Success');

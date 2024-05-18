@@ -2,13 +2,19 @@ import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
 import { UserService } from '../services/UserService';
 import { createToken } from '../utils/jwtUtils';
-
+import { isPasswordStrong, isNameValid, isEmailValid } from '../utils/Validations';
 const userService = new UserService();
 
 export class AuthController {
     static async register(req: Request, res: Response): Promise<void> {
         try {
             const userData = req.body;
+            if (!isEmailValid(userData.email) 
+                || !isNameValid(userData.name) 
+                || !isPasswordStrong(userData.password)) {
+                res.status(400).json({ error: 'invalid-data' });
+                return;
+            }
             userData.password = CryptoJS.SHA256(userData.password).toString();   
             const currentUser = await userService.register(userData);
 

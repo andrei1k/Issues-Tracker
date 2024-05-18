@@ -1,19 +1,21 @@
 import React from 'react';
-import AuthForm from '../components/AuthForm.tsx';
+import { Helmet } from 'react-helmet';
 
-interface LocalData {
-    userId: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-}
+import AuthForm,{LocalData} from '../components/AuthForm.tsx';
 
 interface RegisterProps {
-    onRegister: (localData: LocalData, rememberMe: boolean, token: string) => void;
+    onRegister: (userId:number, localData: LocalData, rememberMe: boolean, token: string) => void;
 }
 
 function Register({ onRegister }: RegisterProps) {
-    return <AuthForm onSubmit={onRegister} formType="register" />;
+    return( 
+        <div>
+            <Helmet>
+                <title>Register | Issue Tracker</title>
+            </Helmet>
+            <AuthForm onSubmit={onRegister} formType="register" />
+        </div>
+    );
 }
 
 export default Register;

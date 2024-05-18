@@ -1,9 +1,14 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
+
 import '../styles/Home.css';
  
 function Home() {
     return(
         <div className='home-div'>
+            <Helmet>
+                <title>Home | Issue Tracker</title>
+            </Helmet>
             <h1>Issue Tracker</h1>
             <div className='description'>
                 <h2>Welcome to the homepage of the IssueTracker website!</h2>
@@ -22,7 +27,7 @@ function Home() {
                 This allows you to stay organized and informed about the status of your projects at all times.</p>
             </div>
         </div>
-    )
+    );
 }
 
 export default Home;

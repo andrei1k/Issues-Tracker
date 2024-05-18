@@ -73,28 +73,30 @@ function App() {
             return <Navigate to='/'/>;
         }
         else {
-            window.location.href = '/login?sessionExpired=true';
+            // window.location.href = '/login?sessionExpired=true';
+            return <Navigate to='/login?sessionExpired=true'/>;
+
         }
     };
 
     return (
         <Router>
-        <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
-        <Routes>
-            <Route path='/' element={<Home/>} />
-            {!isLoggedIn && (
-            <>
-                <Route path='/login' element={<Login onLogin={authorize} />} />
-                <Route path='/register' element={<Register onRegister={authorize} />} />
-            </>
-            )}
-            <Route element={<PrivateOutlet />}>
-                    <Route path='/profile' element={<Profile />} />
-                    <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
-                    <Route path='/*' element={<Home/>}/>
-            </Route>
-            <Route path='/*' element={<Home/>}/>
-        </Routes>
+            <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
+            <Routes>
+                <Route path='/' element={<Home/>} />
+                {!isLoggedIn && (
+                <>
+                    <Route path='/login' element={<Login onLogin={authorize} />} />
+                    <Route path='/register' element={<Register onRegister={authorize} />} />
+                </>
+                )}
+                <Route element={<PrivateOutlet />}>
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                        <Route path='/*' element={<Home/>}/>
+                </Route>
+                <Route path='/*' element={<Home/>}/>
+            </Routes>
         </Router>
       );
 

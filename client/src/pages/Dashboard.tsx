@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import '../styles/Dashboard.css';
 
 
 interface DashboardProps {
-    userInfo: UserData | null;
+    userId: number;
+    userInfo: UserData;
     token: string; 
 }
 
 interface UserData {
-    userId: number;
     firstName: string;
     lastName: string;
     email: string;
 }
 
-function Dashboard({ userInfo, token }: DashboardProps ) {
+function Dashboard({ userId, userInfo, token }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
     const [projects, setProjects] = useState<{ title: string, createdAt: string }[]>([]);
     const [message, setMessage] = useState('');
     const viewProjects = async () => {
         try {
-            const response = await fetch(`http://0.0.0.0:3001/projects/view/${userInfo?.userId}`, {
+            const response = await fetch(`http://0.0.0.0:3001/projects/view/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}` 
@@ -41,7 +42,7 @@ function Dashboard({ userInfo, token }: DashboardProps ) {
     
     const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
         try {
-            const response = await fetch(`http://0.0.0.0:3001/projects/remove/${userInfo?.userId}`, {
+            const response = await fetch(`http://0.0.0.0:3001/projects/remove/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ function Dashboard({ userInfo, token }: DashboardProps ) {
             if (projectName === '') {
                 throw new Error('empty-string');
             }
-            const response = await fetch(`http://0.0.0.0:3001/projects/add/${userInfo?.userId}`, {
+            const response = await fetch(`http://0.0.0.0:3001/projects/add/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,44 +123,50 @@ function Dashboard({ userInfo, token }: DashboardProps ) {
 
     return (
         <div>
-            <h2>Welcome, {userInfo?.firstName} {userInfo?.lastName}</h2>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    placeholder="Enter project name" 
-                    value={projectName} 
-                    onChange={(e) => setProjectName(e.target.value)} 
-                />
-                <button type="submit">Create Project</button>
-            </form>
-            {message && <p>{message}</p>}
-            <h3>My Projects:</h3>
-            <table className='project-table'>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Created at</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {projects.map((project, index) => (
-                        <tr key={index}>
-                            <td>{project.title}</td> {/*add logic for entering a project here*/}
-                            <td>{new Date(project.createdAt).toUTCString()}</td>
-                            <td className='button'>
-                                <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
-                            </td>
-                            <td className='button'>
-                                <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
-                            </td>
+            <Helmet>
+                <title>Dashboard | Issue Tracker</title>
+            </Helmet>
+            <div>
+                <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2>
+                <form onSubmit={handleSubmit}>
+                    <input 
+                        type="text" 
+                        placeholder="Enter project name" 
+                        value={projectName} 
+                        onChange={(e) => setProjectName(e.target.value)} 
+                    />
+                    <button type="submit">Create Project</button>
+                </form>
+                {message && <p>{message}</p>}
+                <h3>My Projects:</h3>
+                <table className='project-table'>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Created at</th>
+                            <th></th>
+                            <th></th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {projects.map((project, index) => (
+                            <tr key={index}>
+                                <td>{project.title}</td>
+                                <td>{new Date(project.createdAt).toUTCString()}</td>
+                                <td className='button'>
+                                    <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
+                                </td>
+                                <td className='button'>
+                                    <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
+    
 }
 
 export default Dashboard;

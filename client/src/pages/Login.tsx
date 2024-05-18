@@ -1,21 +1,21 @@
 import React from 'react';
-import AuthForm from '../components/AuthForm.tsx';
+import { Helmet } from 'react-helmet';
 
-interface LocalData {
-    userId:number,
-    firstName: string;
-    lastName: string;
-    email: string;
-}
+import AuthForm,{LocalData} from '../components/AuthForm.tsx';
 
 interface LoginProps {
-    onLogin: (localData: LocalData, rememberMe: boolean, token: string) => void;
+    onLogin: (userId:number, localData: LocalData, rememberMe: boolean, token: string) => void;
 }
 
 function Login({ onLogin }: LoginProps) {
-    return <div>
-        <AuthForm onSubmit={onLogin} formType='login' />
-    </div>;
+    return(
+        <div>
+            <Helmet>
+                <title>Login | Issue Tracker</title>
+            </Helmet>
+            <AuthForm onSubmit={onLogin} formType='login' />
+        </div>
+        );
 }
 
 export default Login;

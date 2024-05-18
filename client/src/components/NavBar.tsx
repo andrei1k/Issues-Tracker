@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FiAlignJustify,FiX } from "react-icons/fi";
 
 import '../styles/NavBar.css';
-import Layout from './Layout.tsx';
 
 interface NavBarProps {
     userId: number,
@@ -37,11 +36,7 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
     const handleMenuClick = () => {
       setMenuVisible(false);
     }
-    
-    const handleLinkClick = (pathname: string) => {
-      handleMenuClick();
-      document.title = Layout(pathname);
-    }
+  
 
     return (
       <nav className='navBar'>
@@ -50,30 +45,26 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
           (<FiAlignJustify className='menu-button' onClick={toggleMenu}/>)
         }
           <div ref={menuRef} className={`navigation ${menuVisible ? 'open' : ''}`}>
-            <Link to='/' className='menu-item' onClick={() => handleLinkClick('/')}>Home</Link>
+            <Link to='/' className='menu-item'>Home</Link>
              {isLoggedIn ? (
                 <>
-                  <Link to={`/dashboard/${userId}`} className='menu-item' 
-                      onClick={() => handleLinkClick('/dashboard')}>
+                  <Link to={`/dashboard/${userId}`} className='menu-item'>
                     Dashboard
                   </Link>
-                  <Link to='/profile' className='menu-item' 
-                      onClick={() => handleLinkClick('/profile')}>
+                  <Link to='/profile' className='menu-item'>
                     Profile
                   </Link>
                   <Link to='/' className='menu-item' 
-                    onClick={() => {handleLinkClick('/'); logOut();}}>
+                    onClick={logOut}>
                       Logout
                   </Link>
                 </>
             ) : (
                 <>
-                  <Link to='/login' className='menu-item' 
-                      onClick={() => handleLinkClick('/login')}>
+                  <Link to='/login' className='menu-item'>
                     Login
                   </Link>
-                  <Link to='/register' className='menu-item' 
-                      onClick={() => handleLinkClick('/register')}>
+                  <Link to='/register' className='menu-item' >
                     Register
                   </Link>
                 </>

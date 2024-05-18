@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import '../styles/Auth.css';
 
 interface AuthProps {
-  onSubmit: (data: any, rememberMe: boolean, token: string) => void;
+  onSubmit: (userId:number, data: any, rememberMe: boolean, token: string) => void;
   formType: 'login' | 'register';
 }
 
-interface LocalData {
-  userId: number;
+export interface LocalData {
   firstName: string;
   lastName: string;
   email: string;
@@ -102,8 +102,9 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   
       setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
 
+      const localUserId = data.currentUser.id;
+      setUserId(data.currentUser.id);
       const localData: LocalData = {
-        userId: data.currentUser.id,
         firstName: data.currentUser.firstName,
         lastName: data.currentUser.lastName,
         email: data.currentUser.email,
@@ -111,8 +112,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   
       setSuccess(true);
       setLoading(false);
-      setUserId(data.currentUser.id);
-      onSubmit(localData, rememberMe, data.token);
+      onSubmit(localUserId, localData, rememberMe, data.token);
     } catch (error) {
       console.error(`${formType} error:`, error);
     }
@@ -177,7 +177,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
         }
         <button onClick={() => setMessage('')} className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
         {loading && <div className="loading-indicator"></div>}
-        {success && <Navigate to={`/dashboard/${userId}`}/>}
         {message && <p>{message}</p>}
       </form>
     </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/NavBar.css';
 import { FiAlignJustify,FiX } from "react-icons/fi";
+
+import '../styles/NavBar.css';
 
 interface NavBarProps {
     userId: number,
@@ -35,6 +36,7 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
     const handleMenuClick = () => {
       setMenuVisible(false);
     }
+  
 
     return (
       <nav className='navBar'>
@@ -43,26 +45,26 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
           (<FiAlignJustify className='menu-button' onClick={toggleMenu}/>)
         }
           <div ref={menuRef} className={`navigation ${menuVisible ? 'open' : ''}`}>
-            <Link to='/' className='menu-item' onClick={handleMenuClick}>Home</Link>
+            <Link to='/' className='menu-item'>Home</Link>
              {isLoggedIn ? (
                 <>
-                  <Link to={`/dashboard/${userId}`} className='menu-item' onClick={handleMenuClick}>
+                  <Link to={`/dashboard/${userId}`} className='menu-item'>
                     Dashboard
                   </Link>
-                  <Link to='/profile' className='menu-item' onClick={handleMenuClick}>
+                  <Link to='/profile' className='menu-item'>
                     Profile
                   </Link>
                   <Link to='/' className='menu-item' 
-                    onClick={() => {handleMenuClick(); logOut();}}>
+                    onClick={logOut}>
                       Logout
                   </Link>
                 </>
             ) : (
                 <>
-                  <Link to='/login' className='menu-item' onClick={handleMenuClick}>
+                  <Link to='/login' className='menu-item'>
                     Login
                   </Link>
-                  <Link to='/register' className='menu-item' onClick={handleMenuClick}>
+                  <Link to='/register' className='menu-item' >
                     Register
                   </Link>
                 </>

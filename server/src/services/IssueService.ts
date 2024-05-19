@@ -48,6 +48,7 @@ class IssueService {
           
             const issuesMapped = issues.map(issue => {
                 return {
+                    id: issue.id,
                     title: issue.title,
                     description: issue.description,
                     priority: issue.priority,

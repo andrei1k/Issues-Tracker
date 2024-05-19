@@ -7,6 +7,7 @@ import { getProjectInfo, getToken, getUserId } from '../utils/Data.tsx';
 import { Link } from "react-router-dom";
 
 interface Issue {
+  id?: number,
   title: string;
   description: string;
   priority: string;
@@ -42,11 +43,12 @@ function Issues() {
     }
   }, [project]);
 
-  const removeIssue = async () => {
+  const removeIssue = async (event) => {
     try {
-      // const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
-      const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/all/`, {
-            method: 'GET',
+      const currentIssueId = event.currentTarget.getAttribute('data-issueId');
+      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/remove/${currentIssueId}`, {
+      // const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/remove/${currentIssueId}`, {
+            method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${getToken()}`
@@ -54,11 +56,9 @@ function Issues() {
         });
 
         if (!response.ok) {
-            throw new Error('Error fetching projects');
+            throw new Error('Error removing project');
         }
 
-        const data = await response.json();
-        setIssues(data);
         await viewIssues();
     } catch (error) {
         console.log(error.message);
@@ -66,8 +66,8 @@ function Issues() {
   }
   const viewIssues = async () => {
     try {
-      // const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
-      const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/all/`, {
+      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
+      // const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/all/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -184,10 +184,13 @@ function Issues() {
                   <span className="field-value">{issue.deadline}</span>
                 </li>
                 <li className="issue-field">
+                <button className="remove-button"
+                          // data-issueId={issue.id}
+                  >Edit</button>
                   <button className="remove-button" 
                           onClick={removeIssue}
-                          // data-issueId={issue.}
-                  >Remove Issue</button>
+                          data-issueId={issue.id}
+                  >Remove</button>
                 </li>
               </ul>
             </li>

@@ -71,14 +71,16 @@
 }
 
 .remove-button {
-    font-size: 0.9em;
+    margin-right: 0.3em;
+    padding: 0.3em;
+    font-size: 1em;
     text-decoration: none;
     list-style: none;
     border: none;
     border-radius: 0.25em;
     cursor: pointer;
-    background-color: #cccccc;
-    color: #000000;
+    background-color: #7c7c7c;
+    color: #ffffff;
 }
 
 .remove-button:hover {

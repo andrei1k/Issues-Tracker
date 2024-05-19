@@ -32,8 +32,8 @@ function AddIssue() {
           if (!newIssue) {
             return;
           } 
-          // const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/create/`, {
-            const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/create/`, {
+          const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/create/`, {
+            // const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/create/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${getToken()}`,

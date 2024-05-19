@@ -3,16 +3,23 @@
     border-collapse: collapse;
     margin: 10px;
     max-width: 750px;
-    background-color: #797979;
-    color: white;
-
+    background-color: #d4d4d4;
+    color: black;
 }
 
 .project-table th,
 .project-table td {
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
+    border: none;
     padding: 8px;
     text-align: center;
+    min-width: 110px;
+}
+th.td-button,
+td.td-button {
+    border: none;
+    padding: 0px;
+    text-align: center;   
 }
 
 
@@ -22,18 +29,19 @@
         margin: 10px;
     }
 }
+
 .action-button {
-    cursor: pointer;
-    background-color: #797979;
-    color: white;
-    font-size: 14px;
-    max-width: 50px;
+    background-color: #d4d4d4;
+    /* color: #fff; */
+    color: black;
+    padding: 0.75em;
+    font-size: 1em;
     border: none;
-    transition: background-color 0.5s ease;
-    border-radius: 5px;
+    border-radius: 0.25em;
+    cursor: pointer;
     text-decoration: none;
 }
+
 .action-button:hover {
-    background-color: #c2c2c2;
-    color: black;
+    background-color: #b4b4b4;
 }

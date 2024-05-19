@@ -155,8 +155,6 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                         <tr>
                             <th>Name</th>
                             <th>Created at</th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -164,7 +162,7 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                             <tr key={index}>
                                 <td>{project.title}</td>
                                 <td>{new Date(project.createdAt).toUTCString()}</td>
-                                <td className='button'>
+                                <td className='td-button'>
                                 <Link to={`/project/${userId}/${project.title}/add`}
                                     onClick={handleView}
                                     data-projectid={project.id}
@@ -173,19 +171,19 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                                     Add Issue
                                 </Link>
                                 </td>
-                                <td className='button'>
-                                <Link to={`/project/${userId}/${project.title}`}
-                                    onClick={handleView}
-                                    data-projectid={project.id}
-                                    data-projectname={project.title}
-                                    className='action-button'>
-                                    View
-                                </Link>
+                                <td className='td-button'>
+                                    <Link to={`/project/${userId}/${project.title}`}
+                                        onClick={handleView}
+                                        data-projectid={project.id}
+                                        data-projectname={project.title}
+                                        className='action-button'>
+                                        View
+                                    </Link>
                                 </td>
-                                <td className='button'>
+                                <td className='td-button'>
                                     <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
                                 </td>
-                                <td className='button'>
+                                <td className='td-button'>
                                     <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
                                 </td>
                             </tr>

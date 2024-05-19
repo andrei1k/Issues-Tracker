@@ -8,7 +8,6 @@ class IssueController {
             const issueData: IssueServiceModel = req.body as IssueServiceModel;
             issueData.projectId = parseInt(req.params.projectId);
 
-            console.log(issueData);
             const newIssue = await issueService.createIssue(issueData);
             res.status(201).json(newIssue);
         } catch(err) {

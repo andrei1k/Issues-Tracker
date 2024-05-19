@@ -39,3 +39,10 @@ export function getIsLoggedIn() {
 
     return null;
 }
+
+export function getProjectInfo() {
+    const projectData = localStorage.getItem('project');
+    if (projectData) {
+        return JSON.parse(projectData);
+    }
+}

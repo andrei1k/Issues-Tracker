@@ -11,11 +11,18 @@ import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
+import Issues from './pages/Issues.tsx';
 import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
+import AddIssue from './pages/AddIssue.tsx';
 
 const defaultUserData: LocalData = {
     firstName: '', lastName: '', email: ''
 };
+
+interface Project {
+    title: string;
+    id: number;
+}
 
 function App() {
     const [userData, setUserData] = useState<LocalData>(defaultUserData);
@@ -55,7 +62,7 @@ function App() {
             const logoutTimer = setTimeout(() => {
                 localStorage.removeItem('logoutTimer');
                 logOut();
-            }, 60 * 1000); // 1 min
+            }, 5 * 60 * 1000); // 1 min
             localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
         }
     };
@@ -73,9 +80,7 @@ function App() {
             return <Navigate to='/'/>;
         }
         else {
-            // window.location.href = '/login?sessionExpired=true';
-            return <Navigate to='/login?sessionExpired=true'/>;
-
+            window.location.href = '/login?sessionExpired=true';
         }
     };
 
@@ -93,6 +98,8 @@ function App() {
                 <Route element={<PrivateOutlet />}>
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                        <Route path='/project/:userId/:projectTitle' element={<Issues/>}/>
+                        <Route path='/project/:userId/:projectTitle/add' element={<AddIssue/>}/>
                         <Route path='/*' element={<Home/>}/>
                 </Route>
                 <Route path='/*' element={<Home/>}/>

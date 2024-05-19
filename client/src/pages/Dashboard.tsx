@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import '../styles/Dashboard.css';
 
@@ -17,7 +18,7 @@ interface UserData {
 
 function Dashboard({ userId, userInfo, token }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
-    const [projects, setProjects] = useState<{ title: string, createdAt: string }[]>([]);
+    const [projects, setProjects] = useState<{ id: number, title: string, createdAt: string }[]>([]);
     const [message, setMessage] = useState('');
     const viewProjects = async () => {
         try {
@@ -121,6 +122,13 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
         await removeProject(String(crrProjectName), true);
     };
 
+    const handleView: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
+        const crrProjectId = event.currentTarget.getAttribute('data-projectid');
+        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
+        localStorage.setItem('project', JSON.stringify({crrProjectId, crrProjectName}));
+        return true;
+    }
+
     return (
         <div>
             <Helmet>
@@ -153,6 +161,24 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                             <tr key={index}>
                                 <td>{project.title}</td>
                                 <td>{new Date(project.createdAt).toUTCString()}</td>
+                                <td className='button'>
+                                <Link to={`/project/${userId}/${project.title}/add`}
+                                    onClick={handleView}
+                                    data-projectid={project.id}
+                                    data-projectname={project.title}
+                                    className='action-button'>
+                                    Add Issue
+                                </Link>
+                                </td>
+                                <td className='button'>
+                                <Link to={`/project/${userId}/${project.title}`}
+                                    onClick={handleView}
+                                    data-projectid={project.id}
+                                    data-projectname={project.title}
+                                    className='action-button'>
+                                    View
+                                </Link>
+                                </td>
                                 <td className='button'>
                                     <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
                                 </td>

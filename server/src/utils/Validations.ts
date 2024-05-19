@@ -24,7 +24,7 @@ export function isTitleValid(title: string): boolean {
         return false;
     }
     
-    return /[@!?#$%^&*()]/.test(title);
+    return !/[@!?#$%^&*()]/.test(title);
 }
 
 export function isIdValid(id: string) {

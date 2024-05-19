@@ -1,0 +1,54 @@
+/* полета за избор на филтър */
+.filter-input,
+.priority-select,
+.assignee-select,
+.date-input {
+    margin: 0.25em;
+    padding: 0.5em;
+    border: 0.1em solid #ccc;
+    border-radius: 0.25em;
+    font-size: 16px;
+}
+
+/*списъци с опции */
+.priority-select,
+.assignee-select {
+    width: 8.5em;
+}
+
+/* списък с issues */
+.filtered-issues{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 0.25em;
+    padding-left: 0;
+}
+
+.issue-item {
+    width: 27%;
+    margin-top: 1.25em;
+    margin-right: 1em;
+    padding: 0.75em;
+    border: 0.09em solid #ccc;
+    border-radius: 0.25em;
+    list-style: none;
+    min-width: 18.75em;
+}
+
+.issues{
+    padding-left: 0.75em;
+}
+
+.issue-field {
+    list-style: none;
+    margin-bottom: 0.25em;
+}
+
+.field-label {
+    font-weight: bold;
+}
+
+.field-value {
+    margin-left: 0.35em;
+}

@@ -16,12 +16,22 @@ function PrivateOutlet () {
 
 function matchUserId(userId: number) {
   const matchDashboard = window.location.pathname.match(/^\/dashboard\/(\d+)$/);
+  const matchProject = window.location.pathname.match(/^\/project\/(\d+)\/([^/]+)$/);
+  const matchIssue = window.location.pathname.match(/^\/project\/(\d+)\/([^/]+)\/add$/);
   const matchProfile = window.location.pathname === '/profile';
 
   if (matchDashboard) {
     const urlUserId = parseInt(matchDashboard[1]);
     return userId === urlUserId;
   } 
+  else if (matchProject) {
+    const urlUserId = parseInt(matchProject[1]);
+    return userId === urlUserId;
+  }
+  else if(matchIssue) {
+    const urlUserId = parseInt(matchIssue[1]);
+    return userId === urlUserId;
+  }
   else if (matchProfile) {
     return true; 
   }

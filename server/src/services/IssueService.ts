@@ -16,6 +16,7 @@ class IssueService {
             const addedIssue = await Issue.query().insert(issueData);
             return addedIssue;
         } catch(err) {
+            console.error(err);
             throw new Error('Could not create issues');
         }
     }

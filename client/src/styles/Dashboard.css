@@ -3,11 +3,11 @@
     border-collapse: collapse;
     margin: 10px;
     max-width: 750px;
-    background-color: #f2f2f2;
+    background-color: #797979;
+    color: white;
+
 }
-.project-table tbody {
-    background-color: white;
-}
+
 .project-table th,
 .project-table td {
     border: 1px solid #ddd;
@@ -24,7 +24,8 @@
 }
 .action-button {
     cursor: pointer;
-    background-color: white;
+    background-color: #797979;
+    color: white;
     font-size: 14px;
     max-width: 50px;
     border: none;
@@ -32,5 +33,6 @@
     border-radius: 5px;
 }
 .action-button:hover {
-    background-color: lightcoral;
+    background-color: #c2c2c2;
+    color: black;
 }

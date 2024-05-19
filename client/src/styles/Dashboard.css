@@ -31,6 +31,7 @@
     border: none;
     transition: background-color 0.5s ease;
     border-radius: 5px;
+    text-decoration: none;
 }
 .action-button:hover {
     background-color: #c2c2c2;

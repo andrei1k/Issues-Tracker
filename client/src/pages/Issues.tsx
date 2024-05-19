@@ -3,7 +3,8 @@ import { Helmet } from "react-helmet";
 
 import "../styles/Issues.css";
 
-import { getProjectInfo, getToken } from '../utils/Data.tsx';
+import { getProjectInfo, getToken, getUserId } from '../utils/Data.tsx';
+import { Link } from "react-router-dom";
 
 interface Issue {
   title: string;
@@ -41,9 +42,32 @@ function Issues() {
     }
   }, [project]);
 
+  const removeIssue = async () => {
+    try {
+      // const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
+      const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/all/`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getToken()}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error fetching projects');
+        }
+
+        const data = await response.json();
+        setIssues(data);
+        await viewIssues();
+    } catch (error) {
+        console.log(error.message);
+    }
+  }
   const viewIssues = async () => {
     try {
-        const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
+      // const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
+      const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/all/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -98,6 +122,7 @@ function Issues() {
       <title>Issues | Issue Tracker</title>
     </Helmet>
     <h2>Issue List</h2>
+    <Link to={`/dashboard/${getUserId()}`} className='back-button'>Back</Link>
     <input
       type="text"
       value={filter}
@@ -157,6 +182,12 @@ function Issues() {
                 <li className="issue-field">
                   <span className="field-label">Deadline:</span>
                   <span className="field-value">{issue.deadline}</span>
+                </li>
+                <li className="issue-field">
+                  <button className="remove-button" 
+                          onClick={removeIssue}
+                          // data-issueId={issue.}
+                  >Remove Issue</button>
                 </li>
               </ul>
             </li>

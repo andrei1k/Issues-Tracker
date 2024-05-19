@@ -45,26 +45,26 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
           (<FiAlignJustify className='menu-button' onClick={toggleMenu}/>)
         }
           <div ref={menuRef} className={`navigation ${menuVisible ? 'open' : ''}`}>
-            <Link to='/' className='menu-item'>Home</Link>
+            <Link to='/' onClick={handleMenuClick} className='menu-item'>Home</Link>
              {isLoggedIn ? (
                 <>
-                  <Link to={`/dashboard/${userId}`} className='menu-item'>
+                  <Link to={`/dashboard/${userId}`} onClick={handleMenuClick} className='menu-item'>
                     Dashboard
                   </Link>
-                  <Link to='/profile' className='menu-item'>
+                  <Link to='/profile' onClick={handleMenuClick} className='menu-item'>
                     Profile
                   </Link>
                   <Link to='/' className='menu-item' 
-                    onClick={logOut}>
+                    onClick={() => {handleMenuClick(); logOut(); }}>
                       Logout
                   </Link>
                 </>
             ) : (
                 <>
-                  <Link to='/login' className='menu-item'>
+                  <Link to='/login' onClick={handleMenuClick} className='menu-item'>
                     Login
                   </Link>
-                  <Link to='/register' className='menu-item' >
+                  <Link to='/register' onClick={handleMenuClick} className='menu-item' >
                     Register
                   </Link>
                 </>

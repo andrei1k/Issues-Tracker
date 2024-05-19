@@ -51,6 +51,7 @@ h2 {
     border: none;
     border-radius: 0.25em;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .submit-button:hover {

@@ -22,7 +22,8 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
     const [message, setMessage] = useState('');
     const viewProjects = async () => {
         try {
-            const response = await fetch(`http://0.0.0.0:3001/projects/view/${userId}`, {
+            // const response = await fetch(`http://0.0.0.0:3001/projects/view/${userId}`, {
+            const response = await fetch(`http://88.203.234.166:3001/projects/view/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}` 
@@ -43,7 +44,8 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
     
     const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
         try {
-            const response = await fetch(`http://0.0.0.0:3001/projects/remove/${userId}`, {
+            // const response = await fetch(`http://0.0.0.0:3001/projects/remove/${userId}`, {
+            const response = await fetch(`http://88.203.234.166:3001/projects/remove/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,7 +69,8 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
             if (projectName === '') {
                 throw new Error('empty-string');
             }
-            const response = await fetch(`http://0.0.0.0:3001/projects/add/${userId}`, {
+            // const response = await fetch(`http://0.0.0.0:3001/projects/add/${userId}`, {
+            const response = await fetch(`http://88.203.234.166:3001/projects/add/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/AddIssue.css";
 import { getProjectInfo, getToken, getUserId } from "../utils/Data.tsx";
+import { Link } from "react-router-dom";
 
 interface Project {
     id: number;
@@ -26,10 +27,13 @@ function AddIssue() {
   const [priority, setPriority] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [deadline, setDeadline] = useState("");
-
-    const addIssue = async(newIssue) => {
+    const addIssue = async(newIssue: Issue | undefined) => {
         try {
-            const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/create/`, {
+          if (!newIssue) {
+            return;
+          } 
+          // const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/create/`, {
+            const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/create/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${getToken()}`,
@@ -51,7 +55,7 @@ function AddIssue() {
             console.log(error.message);
         }
     }
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     // проверка за празни полета
@@ -69,14 +73,6 @@ function AddIssue() {
     setNewIssue(newIssue);
     setIsProjectSet(true);
     // addIssue(newIssue);
-
-    // запазване на issue в localStorage
-    // const issues = JSON.parse(localStorage.getItem("issues")) || [];
-
-    // issues.push(newIssue);
-    // localStorage.setItem("issues", JSON.stringify(issues));
-
-
 
     // setTitle("");
     // setDescription("");

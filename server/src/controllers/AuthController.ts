@@ -10,7 +10,8 @@ export class AuthController {
         try {
             const userData = req.body;
             if (!isEmailValid(userData.email) 
-                || !isNameValid(userData.name) 
+                || !isNameValid(userData.firstName) 
+                || !isNameValid(userData.lastName) 
                 || !isPasswordStrong(userData.password)) {
                 res.status(400).json({ error: 'invalid-data' });
                 return;

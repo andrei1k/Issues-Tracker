@@ -52,3 +52,35 @@
 .field-value {
     margin-left: 0.35em;
 }
+
+.back-button {
+    align-self: center;
+    justify-self: center;
+    background-color: #5f5f5f;
+    color: #fff;
+    padding: 0.75em 1.25em;
+    margin-bottom: 0.5em;
+    font-size: 0.75em;
+    border: none;
+    border-radius: 0.25em;
+    cursor: pointer;
+    text-decoration: none;
+}
+.back-button:hover {
+    background-color: #373737;
+}
+
+.remove-button {
+    font-size: 0.9em;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+    border-radius: 0.25em;
+    cursor: pointer;
+    background-color: #cccccc;
+    color: #000000;
+}
+
+.remove-button:hover {
+    background-color: #aaaaaa;
+}

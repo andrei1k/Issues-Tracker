@@ -1,4 +1,5 @@
 import { Issue } from '../models/Issue';
+import { numberPriorityToString } from '../utils/IssueDataWorker';
 
 export interface IssueServiceModel {
     title: string
@@ -51,7 +52,7 @@ class IssueService {
                     id: issue.id,
                     title: issue.title,
                     description: issue.description,
-                    priority: issue.priority,
+                    priority: numberPriorityToString(issue.priority),
                     status: issue.status?.name,
                     assignedTo: issue.assignedUser 
                     ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}` 
@@ -73,7 +74,7 @@ class IssueService {
             return {
                 title: issue.title,
                 description: issue.description,
-                priority: issue.priority,
+                priority:  numberPriorityToString(issue.priority),
                 status: issue.status?.name,
                 assignedTo: issue.assignedUser 
                 ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}` 

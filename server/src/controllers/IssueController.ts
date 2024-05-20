@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
 import issueService, { IssueServiceModel }  from '../services/IssueService';
+import { nameToId, priorityToNumber } from '../utils/IssueDataWorker';
 
 class IssueController {
 
     async createIssue(req: Request, res: Response) {
         try {
-            const issueData: IssueServiceModel = req.body as IssueServiceModel;
-            issueData.projectId = parseInt(req.params.projectId);
+            const data = req.body;
+            const priorityToInt = priorityToNumber(data.priority);
+            const assignedTo = await nameToId(data.assignedTo);
+
+            const issueData: IssueServiceModel = {title: data.title, 
+                description: data.description, priority: priorityToInt, 
+                statusId: data.statusId, assignedTo,
+                projectId: parseInt(req.params.projectId)} as IssueServiceModel;
 
             const newIssue = await issueService.createIssue(issueData);
             res.status(201).json(newIssue);
@@ -40,6 +47,7 @@ class IssueController {
         try {
             const projectId = parseInt(req.params.projectId);
             const issues = await issueService.getAllIssuesForProject(projectId);
+
             res.status(200).json(issues);
         } catch(err) {
             res.status(500).json({error: 'Server error' });

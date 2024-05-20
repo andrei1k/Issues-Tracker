@@ -12,6 +12,7 @@ interface Issue {
     title: string;
     description: string;
     priority: string;
+    assignedTo: string;
     deadline: string;
 }
 
@@ -27,45 +28,44 @@ function AddIssue() {
   const [priority, setPriority] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [deadline, setDeadline] = useState("");
-    const addIssue = async(newIssue: Issue | undefined) => {
-        try {
-          if (!newIssue) {
-            return;
-          } 
-          const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/create/`, {
-            // const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/create/`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${getToken()}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: newIssue.title,
-                    description: newIssue.description,
-                    priority: 1,
-                    statusId: 1,
-                    assignedTo: getUserId()
-                })
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error fetching projects');
-            }
-        } catch (error) {
-            console.log(error.message);
+  const addIssue = async(newIssue: Issue | undefined) => {
+    try {
+      if (!newIssue) {
+        return;
+      } 
+      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/create/`, {
+        // const response = await fetch(`http://88.203.234.166:3001/projects/${project.id}/issues/create/`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: newIssue.title,
+                description: newIssue.description,
+                priority: newIssue.priority,
+                statusId: 1,
+                assignedTo: newIssue.assignedTo
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Error fetching projects');
         }
+    } catch (error) {
+        console.log(error.message);
     }
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // проверка за празни полета
     const currentDate = new Date().toLocaleDateString();
     const newIssue = {
-      title: title || "No title provided",
-      description: description || "No description provided",
-      priority: priority || "No priority was set",
-    //   assignedTo: assignedTo || "Not assigned",
-      deadline: deadline || "No deadline provided"
+      title: title || "",
+      description: description || "",
+      priority: priority || "",
+      assignedTo: assignedTo || "",
+      deadline: deadline || ""
     };
 
     const crrProject = getProjectInfo();
@@ -88,11 +88,11 @@ function AddIssue() {
       setIsProjectSet(false); // Нулиране на isProjectSet след извикването на addIssue
     }
 
-    setTitle("");
-    setDescription("");
-    setPriority("");
-    setAssignedTo("");
-    setDeadline("");
+    // setTitle("");
+    // setDescription("");
+    // setPriority("");
+    // setAssignedTo("");
+    // setDeadline("");
   }, [project, isProjectSet, newIssue]);
   return (
     <div className="add-issue-container">

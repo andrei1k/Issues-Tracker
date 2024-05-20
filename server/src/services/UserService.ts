@@ -20,4 +20,15 @@ export class UserService {
         const newUser = await User.query().insert(userData);
         return newUser;
     }
+
+    async getUserIdByNames(firstName: string, lastName: string): Promise<number> {
+        const user = await User.query()
+                        .where('firstName', firstName)
+                        .where('lastName', lastName)
+                        .first();
+        if (!user) {
+            throw new Error('no-found-user');
+        }
+        return user.id;
+    }
 }

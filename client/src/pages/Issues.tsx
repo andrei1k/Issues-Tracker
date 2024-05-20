@@ -80,6 +80,7 @@ function Issues() {
         }
 
         const data = await response.json();
+        console.log();
         setIssues(data);
         return data;
     } catch (error) {

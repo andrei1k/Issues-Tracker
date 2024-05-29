@@ -1,103 +1,103 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import Home from './components/Home.tsx';
-import Login from './components/Login.tsx';
 import NavBar from './components/NavBar.tsx';
-import Register from './components/Register.tsx';
-import Dashboard from './components/Dashboard.tsx';
-import Profile from './components/Profile.tsx';
-import { WorkFlow } from './components/workflow.tsx';
+import { LocalData } from './components/AuthForm.tsx';
 
-interface LocalData {
-    userId: number;
-    firstName: string; 
-    lastName: string;
-    email: string;
-}
+import PrivateOutlet from './routes/PrivateOutlet.tsx';
+
+import Home from './pages/Home.tsx';
+import Login from './pages/Login.tsx';
+import Register from './pages/Register.tsx';
+import Dashboard from './pages/Dashboard.tsx';
+import Profile from './pages/Profile.tsx';
+import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
+
+const defaultUserData: LocalData = {
+    firstName: '', lastName: '', email: ''
+};
 
 function App() {
-    const [userData, setUserData] = 
-        useState<{ userInfo: LocalData, isLoggedIn: boolean} | null>(null);
+    const [userData, setUserData] = useState<LocalData>(defaultUserData);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const token = getToken();
+    const userId = getUserId();
+
 
     useEffect(() => {
-        const storedData = localStorage.getItem('userData');
-        if (storedData) {
-            const fetchedUserData = JSON.parse(storedData);
-            setUserData({ userInfo: fetchedUserData.userInfo, isLoggedIn: true});
+        if (isEmptyUserData()) {
+            const fetchedUserData = getUserInfo();
+            const fetchedLogData = getIsLoggedIn();
+            setUserData(fetchedUserData);
+            setIsLoggedIn(fetchedLogData);
         }
         else {
-            const defaultUserData = {
-                userInfo: {userId: 0,firstName: '', lastName: '', email: ''},
-                isLoggedIn: false
-            }
+            localStorage.setItem('userId', JSON.stringify(0));
+            localStorage.setItem('userData', JSON.stringify(defaultUserData));
+            localStorage.setItem('token', JSON.stringify(''));
+            localStorage.setItem('isLoggedIn', JSON.stringify(false));
             setUserData(defaultUserData);
         }
     }, []);
 
-    const authorize = (userInfo: LocalData, rememberMe: boolean) => {
-        localStorage.setItem('userData', JSON.stringify({ userInfo, isLoggedIn: true }));
-        setUserData({ userInfo, isLoggedIn: true});
+    const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string) => {
+        const updatedUserData = { userId, userInfo, token, isLoggedIn: true };
+
+        localStorage.setItem('userId', JSON.stringify(userId));
+        localStorage.setItem('userData', JSON.stringify(updatedUserData.userInfo));
+        localStorage.setItem('token', JSON.stringify(updatedUserData.token));
+        localStorage.setItem('isLoggedIn', JSON.stringify(updatedUserData.isLoggedIn));
+
+        setUserData(updatedUserData.userInfo);
+        setIsLoggedIn(updatedUserData.isLoggedIn);
+
         if (!rememberMe) {
             const logoutTimer = setTimeout(() => {
+                localStorage.removeItem('logoutTimer');
                 logOut();
-            }, 600000); // 10 minutes
-            localStorage.setItem('logoutTimer', logoutTimer.toString());
+            }, 60 * 1000); // 1 min
+            localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
         }
     };
+
     const logOut = () => {
+        localStorage.removeItem('userId');
         localStorage.removeItem('userData');
-        setUserData(null);
-        localStorage.removeItem('logoutTimer');
-        return <Navigate to='/login?sessionExpired=true'/>;
-    }
+        localStorage.removeItem('token');
+        localStorage.removeItem('isLoggedIn');
+        
+        setUserData(defaultUserData);
+        setIsLoggedIn(false);
+
+        if (localStorage.getItem('logoutTimer') !== null) {
+            return <Navigate to='/'/>;
+        }
+        else {
+            window.location.href = '/login?sessionExpired=true';
+        }
+    };
 
     return (
         <Router>
-          <NavBar userId={userData?.userInfo?.userId ?? 0} isLoggedIn={userData?.isLoggedIn ?? false} logOut={logOut}/>
-          <Routes>
+        <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
+        <Routes>
             <Route path='/' element={<Home/>} />
-            <Route path='/profile' element={<ProfileRoute userData={userData}/>}/>
-            <Route path='/dashboard/:userId' element={<DashboardRoute userData={userData} />} />
-            <Route path='/login' element={<LoginRoute userData={userData} onLogin={authorize} />} />
-            <Route path='/register' element={<RegisterRoute userData={userData} onRegister={authorize} />} />
-            <Route path='/test' element={<WorkFlow />} />
-          </Routes>
+            {!isLoggedIn && (
+            <>
+                <Route path='/login' element={<Login onLogin={authorize} />} />
+                <Route path='/register' element={<Register onRegister={authorize} />} />
+            </>
+            )}
+            <Route element={<PrivateOutlet />}>
+                    <Route path='/profile' element={<Profile />} />
+                    <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                    <Route path='/*' element={<Home/>}/>
+            </Route>
+            <Route path='/*' element={<Home/>}/>
+        </Routes>
         </Router>
       );
 
-}
-
-function ProfileRoute({ userData }) {
-    if(!userData?.isLoggedIn) {
-      return <Navigate to='/login' />;
-    }
-
-    return <Profile/>;
-}
-
-function DashboardRoute({ userData }) {
-    if (!userData?.isLoggedIn) {
-        return <Navigate to='/login' />;
-    }
-
-    return <Dashboard userInfo={userData.userInfo} />;
-}
-
-function LoginRoute({ userData, onLogin }) {
-    if (userData?.isLoggedIn) {
-        return <Navigate to={`/dashboard/${userData.userInfo.userId}`} />;
-    }
-
-    return <Login onLogin={onLogin} />;
-}
-
-function RegisterRoute({ userData, onRegister }) {
-    if (userData?.isLoggedIn) {
-        return <Navigate to={`/dashboard/${userData.userInfo.userId}`} />;
-    }
-
-    return <Register onRegister={onRegister} />;
 }
 
 export default App;

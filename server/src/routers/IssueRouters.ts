@@ -2,12 +2,14 @@ import { Router } from 'express';
 
 import issueController from '../controllers/IssueController';
 
-export const issueRouter = Router({ mergeParams: true });
+export const issueProjRouter = Router({ mergeParams: true });
 
-issueRouter.get('/all', issueController.getAllIssuesForProject);
-issueRouter.post('/create', issueController.createIssue);
-issueRouter.delete('/remove/:issueId', issueController.removeIssue);
-issueRouter.patch('/edit/:issueId', issueController.editIssue);
+issueProjRouter.get('/all', issueController.getAllIssuesForProject);
+issueProjRouter.post('/create', issueController.createIssue);
+issueProjRouter.delete('/remove/:issueId', issueController.removeIssue);
+issueProjRouter.patch('/edit/:issueId', issueController.editIssue);
 
+export const issueRouter = Router();
 
-
+issueRouter.get('/all', issueController.getAllIssues);
+issueRouter.get('/:issueId', issueController.getIssueById);

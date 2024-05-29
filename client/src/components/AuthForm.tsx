@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import '../styles/Auth.css';
 
 interface AuthProps {
-  onSubmit: (data: any, rememberMe: boolean) => void;
+  onSubmit: (userId:number, data: any, rememberMe: boolean, token: string) => void;
   formType: 'login' | 'register';
 }
 
-interface LocalData {
-  userId: number;
+export interface LocalData {
   firstName: string;
   lastName: string;
   email: string;
@@ -19,6 +19,7 @@ interface LocalData {
 type FormData = Omit<LocalData, 'userId'>;
 
 function AuthForm({ onSubmit, formType }: AuthProps) {
+  const [userId, setUserId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -44,7 +45,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const isPasswordStrong = (password: string): boolean => {
     return /^(?=.*[a-zA-Z])(?=.*\d).{7,}$/.test(password);
   }
-
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -77,21 +77,21 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
 
   async function authUser(formData: FormData) {
     try {
-      const response = await fetch(`http://localhost:3001/auth/${formType}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
+      const response = await fetch(`http://0.0.0.0:3001/auth/${formType}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
       });
-  
+      
       if (response.status === 400) {
         setMessage(`${formType === 'login' ? 'Wrong email or password!' : 
-          'Email is already used!'} `);
+        'Email is already used!'} `);
         setLoading(false);
         throw new Error('Bad request');
       }
-  
+      
       if (response.status === 500 || !response.ok) {
         setMessage('Internal error!');
         setLoading(false);
@@ -101,17 +101,18 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       const data = await response.json();
   
       setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
-  
+
+      const localUserId = data.currentUser.id;
+      setUserId(data.currentUser.id);
       const localData: LocalData = {
-        userId: data.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email
+        firstName: data.currentUser.firstName,
+        lastName: data.currentUser.lastName,
+        email: data.currentUser.email,
       }
   
       setSuccess(true);
       setLoading(false);
-      onSubmit(localData, rememberMe);
+      onSubmit(localUserId, localData, rememberMe, data.token);
     } catch (error) {
       console.error(`${formType} error:`, error);
     }
@@ -138,7 +139,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
           return;
         }
       }
-
       const formData = { firstName, lastName, email, password };
       await authUser(formData);
   };
@@ -177,7 +177,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
         }
         <button onClick={() => setMessage('')} className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>
         {loading && <div className="loading-indicator"></div>}
-        {success && <Navigate to='/dashboard'/>}
         {message && <p>{message}</p>}
       </form>
     </div>

@@ -40,5 +40,3 @@ export function numberPriorityToString(priority: number) {
             return 'Bug';
     }
 }
-
-// export function 

@@ -180,10 +180,10 @@ function Issues() {
                   <span className="field-label">Assigned To:</span>
                   <span className="field-value">{issue.assignedTo}</span>
                 </li>
-                <li className="issue-field">
+                {/* <li className="issue-field">
                   <span className="field-label">Deadline:</span>
                   <span className="field-value">{issue.deadline}</span>
-                </li>
+                </li> */}
                 <li className="issue-field">
                 <button className="remove-button"
                           // data-issueId={issue.id}

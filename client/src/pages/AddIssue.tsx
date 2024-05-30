@@ -13,7 +13,7 @@ interface Issue {
     description: string;
     priority: string;
     assignedTo: string;
-    deadline: string;
+    // deadline: string;
 }
 
 const defaultProject = {id: 0, title: ''};
@@ -27,7 +27,7 @@ function AddIssue() {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
-  const [deadline, setDeadline] = useState("");
+  // const [deadline, setDeadline] = useState("");
   const addIssue = async(newIssue: Issue | undefined) => {
     try {
       if (!newIssue) {
@@ -65,7 +65,6 @@ function AddIssue() {
       description: description || "",
       priority: priority || "",
       assignedTo: assignedTo || "",
-      deadline: deadline || ""
     };
 
     const crrProject = getProjectInfo();
@@ -87,12 +86,7 @@ function AddIssue() {
       addIssue(newIssue);
       setIsProjectSet(false); // Нулиране на isProjectSet след извикването на addIssue
     }
-
-    // setTitle("");
-    // setDescription("");
-    // setPriority("");
-    // setAssignedTo("");
-    // setDeadline("");
+    
   }, [project, isProjectSet, newIssue]);
   return (
     <div className="add-issue-container">
@@ -139,7 +133,7 @@ function AddIssue() {
             required
           />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Deadline</label>
           <input
             type="date"
@@ -147,7 +141,7 @@ function AddIssue() {
             onChange={(e) => setDeadline(e.target.value)}
             className="input-field"
           />
-        </div>
+        </div> */}
         <div className="form-group">
           <button type="submit" className="submit-button">
             Add Issue

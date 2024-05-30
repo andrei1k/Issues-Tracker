@@ -12,6 +12,6 @@ export function verifyToken(token: string): void {
         jwt.verify(token, secretKey);
     }
     catch {
-        throw Error('');
+        throw Error('wrong-key');
     }
   }

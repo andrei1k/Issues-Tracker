@@ -17,6 +17,7 @@ import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
 import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
+import { WorkFlow } from './components/Workflow.tsx';
 
 const defaultUserData: LocalData = {
     firstName: '', lastName: '', email: ''

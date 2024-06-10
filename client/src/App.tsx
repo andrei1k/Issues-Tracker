@@ -60,9 +60,9 @@ function App() {
             const logoutTimer = setTimeout(() => {
                 localStorage.removeItem('logoutTimer');
                 logOut();
-            }, 60 * 1000); // 1 min
-            localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
-        }
+                }, 10 * 60 * 1000); // 20 min
+                localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
+                }
     };
 
     const logOut = () => {
@@ -86,9 +86,9 @@ function App() {
         <Router>
         <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
         <Routes>
-            <Route path='/' element={<Home/>} />
             {!isLoggedIn && (
             <>
+                <Route path='/' element={<Home/>} />
                 <Route path='/login' element={<Login onLogin={authorize} />} />
                 <Route path='/register' element={<Register onRegister={authorize} />} />
             </>

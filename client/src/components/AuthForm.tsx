@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import '../styles/Auth.css';
 
@@ -33,7 +33,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [loading, setLoading] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
 
-
+  const navigate = useNavigate();
   const isEmailValid = (email: string): boolean => {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   };
@@ -113,6 +113,8 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       setSuccess(true);
       setLoading(false);
       onSubmit(localUserId, localData, rememberMe, data.token);
+
+      navigate('/home');
     } catch (error) {
       console.error(`${formType} error:`, error);
     }
@@ -141,7 +143,8 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       }
       const formData = { firstName, lastName, email, password };
       await authUser(formData);
-  };
+    };
+
 
   return (
     <div>{sessionExpired && <div className='session-expire'>Session has expired, please log in again!</div>}

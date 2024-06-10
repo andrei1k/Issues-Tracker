@@ -45,9 +45,9 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
           (<FiAlignJustify className='menu-button' onClick={toggleMenu}/>)
         }
           <div ref={menuRef} className={`navigation ${menuVisible ? 'open' : ''}`}>
-            <Link to='/' className='menu-item'>Home</Link>
              {isLoggedIn ? (
                 <>
+                  <Link to='/home' className='menu-item'>Home</Link>
                   <Link to={`/dashboard/${userId}`} className='menu-item'>
                     Dashboard
                   </Link>
@@ -61,6 +61,7 @@ function NavBar({ userId, isLoggedIn, logOut } : NavBarProps) {
                 </>
             ) : (
                 <>
+                  <Link to='/' className='menu-item'>Home</Link>
                   <Link to='/login' className='menu-item'>
                     Login
                   </Link>

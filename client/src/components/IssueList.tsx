@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/IssueList.css";
 import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
+import { Helmet } from "react-helmet";
 
 interface Issue {
   title: string;
@@ -61,6 +62,9 @@ function IssueList() {
 
   return (
     <div className="issue-list">
+      <Helmet>
+        <title>Issues | Issue Tracker</title>
+      </Helmet>
       <h2>Issue List</h2>
       <FilterForm
         filter={filter}

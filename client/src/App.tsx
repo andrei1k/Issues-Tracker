@@ -99,7 +99,7 @@ function App() {
                     <Route path='/issues' element={<IssueList />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
-                    <Route path='/*' element={<Home/>}/>
+                    <Route path='/*' element={<HomeLoggedIn />}/>
             </Route>
             <Route path='/*' element={<Home/>}/>
         </Routes>

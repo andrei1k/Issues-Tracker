@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from "react";
+import { Helmet } from "react-helmet";
 import "../styles/AddIssue.css";
 
 function AddIssue() {
@@ -40,6 +41,9 @@ function AddIssue() {
 
   return (
     <div className="add-issue-container">
+      <Helmet>
+        <title>Add Issue | Issue Tracker</title>
+      </Helmet>
       <h2>Add New Issue</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

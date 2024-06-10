@@ -1,59 +1,46 @@
 import React, { useEffect, useState } from "react";
-// import { Status, StatusService } from "../services/StatusService";
-
-export interface Status {
-    id: number
-    name: string
-    createdAt: Date
-    followingStatuses?: Status[]
-}
-
-export class StatusService {
-
-    async getStatuses(): Promise<Status[]> {
-        const response = await fetch(`http://localhost:3001/statuses`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-
-        if (!response.ok) {
-            throw new Error('Error fetching projects');
-        }
-
-        return await response.json();
-    }
-}
+import statusService, { Status } from "../services/StatusService.ts";
+import WorkFlowForm from "./WorkFlowForm.tsx";
+import RemoveStatus from "./RemoveStatus.tsx";
+import AddStatus from "./AddStatus.tsx";
 
 export function WorkFlow() {
 
-    const [data, setData] = useState<Status[]>()
+    const [statuses, setStatuses] = useState<Status[]>()
 
-    const a = async () => {
-            const statusService = new StatusService()
+
+    const fetchData = async () => {
             const statuses = await statusService.getStatuses()
-            setData(statuses)
-            console.log(statuses);
+            setStatuses(statuses)
+            // console.log(statuses);
             
         }
 
     useEffect(() => {
-        
+        fetchData()
+    }, [])
 
-        a()
-    }, [data?.length])
 
     return (
         <>
-        {data ? data.map(status => {
+            {statuses && <AddStatus statuses={statuses} fetchData={fetchData} />}
+            {statuses && <RemoveStatus statuses={statuses} fetchData={fetchData} />}
+            {statuses && <WorkFlowForm statuses={statuses} fetchData={fetchData} />}
             
-            return <div key={status.id}>
-                <p>{status.id}</p>
-                <p>{status.name}</p>
-                
+            <div>
+                {
+                    statuses?.map(status => {
+                        return status.followingStatuses?.map(followingStatus => 
+                            <p key={`${status.id}${followingStatus.id}`}>
+                                {status.name} -&gt; {followingStatus.name}
+                            </p>)
+                    })
+                }
             </div>
-        }) : <p>lolo</p>}
         </>
+
+
     )
+
+    
 }

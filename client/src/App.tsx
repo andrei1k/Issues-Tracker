@@ -12,6 +12,7 @@ import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
 import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
+import { WorkFlow } from './components/Workflow.tsx';
 
 const defaultUserData: LocalData = {
     firstName: '', lastName: '', email: ''
@@ -81,6 +82,7 @@ function App() {
         <Router>
         <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
         <Routes>
+            <Route path='/flow' element={<WorkFlow/>}></Route>
             <Route path='/' element={<Home/>} />
             {!isLoggedIn && (
             <>

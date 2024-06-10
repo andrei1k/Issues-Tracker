@@ -94,9 +94,9 @@ function App() {
             </>
             )}
             <Route element={<PrivateOutlet />}>
-                    <Route path="/" element={<HomeLoggedIn />} />
-                    <Route path="/add-issue" element={<AddIssue />} />
-                    <Route path="/issues" element={<IssueList />} />
+                    <Route path='/home' element={<HomeLoggedIn />} />
+                    <Route path='/add-issue' element={<AddIssue />} />
+                    <Route path='/issues' element={<IssueList />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
                     <Route path='/*' element={<Home/>}/>

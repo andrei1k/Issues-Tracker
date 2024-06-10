@@ -6,6 +6,11 @@ import { LocalData } from './components/AuthForm.tsx';
 
 import PrivateOutlet from './routes/PrivateOutlet.tsx';
 
+import NavBarLoggedIn from "./components/NavBarLoggedIn";
+import HomeLoggedIn from "./components/HomeLoggedIn";
+import AddIssue from "./components/AddIssue";
+import IssueList from "./components/IssueList";
+
 import Home from './pages/Home.tsx';
 import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';
@@ -89,6 +94,9 @@ function App() {
             </>
             )}
             <Route element={<PrivateOutlet />}>
+                    <Route path="/" element={<HomeLoggedIn />} />
+                    <Route path="/add-issue" element={<AddIssue />} />
+                    <Route path="/issues" element={<IssueList />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
                     <Route path='/*' element={<Home/>}/>

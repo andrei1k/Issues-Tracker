@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaAlignJustify, FaPlusCircle, FaHome, FaRegUserCircle } from "react-icons/fa";
 
-import "../styles/NavBarLoggedIn";
+import "../styles/NavBarLoggedIn.css";
 
 function NavBarLoggedIn() {
   return (

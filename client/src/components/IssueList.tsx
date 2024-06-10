@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/IssueList.css";
-import FilterForm from "./FilterForm";
-import IssueItem from "./IssueItem";
+import FilterForm from "./FilterForm.tsx";
+import IssueItem from "./IssueItem.tsx";
 
 interface Issue {
   title: string;

@@ -6,10 +6,10 @@ import { LocalData } from './components/AuthForm.tsx';
 
 import PrivateOutlet from './routes/PrivateOutlet.tsx';
 
-import NavBarLoggedIn from "./components/NavBarLoggedIn";
-import HomeLoggedIn from "./components/HomeLoggedIn";
-import AddIssue from "./components/AddIssue";
-import IssueList from "./components/IssueList";
+import NavBarLoggedIn from "./components/NavBarLoggedIn.tsx";
+import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
+import AddIssue from "./components/AddIssue.tsx";
+import IssueList from "./components/IssueList.tsx";
 
 import Home from './pages/Home.tsx';
 import Login from './pages/Login.tsx';

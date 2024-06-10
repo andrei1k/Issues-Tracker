@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import statusService, { Status } from "../services/StatusService.ts";
-import WorkFlowForm from "./WorkFlowForm.tsx";
-import RemoveStatus from "./RemoveStatus.tsx";
-import AddStatus from "./AddStatus.tsx";
+import WorkFlowForm from "../components/WorkFlowForm.tsx";
+import RemoveStatus from "../components/RemoveStatus.tsx";
+import AddStatus from "../components/AddStatus.tsx";
+import { Helmet } from "react-helmet";
 
 export function WorkFlow() {
 
@@ -28,6 +29,9 @@ export function WorkFlow() {
             {statuses && <WorkFlowForm statuses={statuses} fetchData={fetchData} />}
             
             <div>
+            <Helmet>
+                <title>Workflow | Issue Tracker</title>
+            </Helmet>
                 {
                     statuses?.map(status => {
                         return status.followingStatuses?.map(followingStatus => 

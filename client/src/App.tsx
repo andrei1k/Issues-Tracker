@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import NavBar from './components/NavBar.tsx';
+import NavBar from './components/NavBarOld.tsx';
 import { LocalData } from './components/AuthForm.tsx';
 
 import PrivateOutlet from './routes/PrivateOutlet.tsx';
 
-import NavBarLoggedIn from "./components/NavBarLoggedIn.tsx";
+import NavBarLoggedIn from "./components/NavBar.tsx";
 import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
 import AddIssue from "./components/AddIssue.tsx";
 import IssueList from "./components/IssueList.tsx";
@@ -17,10 +17,9 @@ import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
 import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
-import { WorkFlow } from './components/WorkFlow.tsx';
+import { WorkFlow } from './pages/WorkFlow.tsx';
 
 import './styles/App.css';
-import WorkFlowForm from './components/WorkFlowForm.tsx';
 const defaultUserData: LocalData = {
     firstName: '', lastName: '', email: ''
 };
@@ -107,7 +106,7 @@ function App() {
                         <Route path='/issues' element={<IssueList />} />
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
-                        <Route path='/statuses' element={<WorkFlow/>}/>
+                        <Route path='/workflow' element={<WorkFlow/>}/>
                         <Route path='/*' element={<HomeLoggedIn />}/>
                 </Route>
                 <Route path='/*' element={<Home/>}/>

@@ -20,7 +20,7 @@ function matchUserId(userId: number) {
                   window.location.pathname === '/' || 
                   window.location.pathname === '/issues' || 
                   window.location.pathname === '/add-issue' || 
-                  window.location.pathname === '/statuses' || 
+                  window.location.pathname === '/workflow' || 
                   window.location.pathname === '/profile';
 
   if (matchDashboard) {

@@ -18,6 +18,7 @@ import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
 import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
 
+import './styles/App.css';
 const defaultUserData: LocalData = {
     firstName: '', lastName: '', email: ''
 };
@@ -83,27 +84,35 @@ function App() {
     };
 
     return (
-        <Router>
-        <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
-        <Routes>
-            {!isLoggedIn && (
-            <>
-                <Route path='/' element={<Home/>} />
-                <Route path='/login' element={<Login onLogin={authorize} />} />
-                <Route path='/register' element={<Register onRegister={authorize} />} />
-            </>
-            )}
-            <Route element={<PrivateOutlet />}>
-                    <Route path='/home' element={<HomeLoggedIn />} />
-                    <Route path='/add-issue' element={<AddIssue />} />
-                    <Route path='/issues' element={<IssueList />} />
-                    <Route path='/profile' element={<Profile />} />
-                    <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
-                    <Route path='/*' element={<HomeLoggedIn />}/>
-            </Route>
-            <Route path='/*' element={<Home/>}/>
-        </Routes>
-        </Router>
+        <div className='container'>
+            <Router>
+            <div className='sidebar'>
+                <NavBarLoggedIn userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
+            </div>
+            <div className='content'>
+            {/* <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/> */}
+            <Routes>
+                {!isLoggedIn && (
+                <>
+                    <Route path='/' element={<Home/>} />
+                    <Route path='/login' element={<Login onLogin={authorize} />} />
+                    <Route path='/register' element={<Register onRegister={authorize} />} />
+                </>
+                )}
+                <Route element={<PrivateOutlet />}>
+                        <Route path='/home' element={<HomeLoggedIn />} />
+                        <Route path='/add-issue' element={<AddIssue />} />
+                        <Route path='/issues' element={<IssueList />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                        <Route path='/statuses' />
+                        <Route path='/*' element={<HomeLoggedIn />}/>
+                </Route>
+                <Route path='/*' element={<Home/>}/>
+            </Routes>
+            </div>
+            </Router>
+        </div>
       );
 
 }

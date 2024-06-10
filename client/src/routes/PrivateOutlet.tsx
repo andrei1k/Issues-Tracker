@@ -17,9 +17,10 @@ function PrivateOutlet () {
 function matchUserId(userId: number) {
   const matchDashboard = window.location.pathname.match(/^\/dashboard\/(\d+)$/);
   const matchOther = window.location.pathname === '/home' ||
+                  window.location.pathname === '/' || 
                   window.location.pathname === '/issues' || 
                   window.location.pathname === '/add-issue' || 
-                  window.location.pathname === '/' || 
+                  window.location.pathname === '/statuses' || 
                   window.location.pathname === '/profile';
 
   if (matchDashboard) {

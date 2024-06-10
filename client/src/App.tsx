@@ -10,6 +10,7 @@ import NavBarLoggedIn from "./components/NavBarLoggedIn.tsx";
 import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
 import AddIssue from "./components/AddIssue.tsx";
 import IssueList from "./components/IssueList.tsx";
+
 import Home from './pages/Home.tsx';
 import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';

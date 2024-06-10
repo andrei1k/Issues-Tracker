@@ -20,6 +20,7 @@ import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from
 import { WorkFlow } from './components/WorkFlow.tsx';
 
 import './styles/App.css';
+import WorkFlowForm from './components/WorkFlowForm.tsx';
 const defaultUserData: LocalData = {
     firstName: '', lastName: '', email: ''
 };
@@ -106,7 +107,7 @@ function App() {
                         <Route path='/issues' element={<IssueList />} />
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
-                        <Route path='/statuses' />
+                        <Route path='/statuses' element={<WorkFlow/>}/>
                         <Route path='/*' element={<HomeLoggedIn />}/>
                 </Route>
                 <Route path='/*' element={<Home/>}/>

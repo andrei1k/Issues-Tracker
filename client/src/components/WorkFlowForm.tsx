@@ -11,7 +11,7 @@ export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[],
     const addHandler = async (e: React.MouseEvent<HTMLInputElement>) => {
         e.preventDefault();
 
-        let isExistingFlow = statuses.find(status => status.id == fromStatus)?.followingStatuses
+        let isExistingFlow = statuses.find(status => status.id === fromStatus)?.followingStatuses
                              ?.map(status => status.id).includes(toStatus)
 
         // console.log(fromStatus, toStatus)
@@ -30,7 +30,7 @@ export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[],
     const removeHandler = async (e: React.MouseEvent<HTMLInputElement>) => {
         e.preventDefault();
         // console.log(fromStatus, toStatus)
-        let isExistingFlow = statuses.find(status => status.id == fromStatus)?.followingStatuses
+        let isExistingFlow = statuses.find(status => status.id === fromStatus)?.followingStatuses
                              ?.map(status => status.id).includes(toStatus)
 
         if (!isExistingFlow) {
@@ -48,7 +48,7 @@ export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[],
         <>
         
             <form>
-                {errorMessage != '' && <p>{errorMessage}</p>}
+                {errorMessage !== '' && <p>{errorMessage}</p>}
                 <p>From:</p>
                 <select value={fromStatus} onChange={e => 
                 {

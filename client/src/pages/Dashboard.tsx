@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import '../styles/Dashboard.css';
 
@@ -17,8 +18,10 @@ interface UserData {
 
 function Dashboard({ userId, userInfo, token }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
-    const [projects, setProjects] = useState<{ title: string, createdAt: string }[]>([]);
+    const [projects, setProjects] = useState<{ id:Number, title: string, createdAt: string }[]>([]);
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+
     const viewProjects = async () => {
         try {
             const response = await fetch(`http://localhost:3001/projects/view/${userId}`, {
@@ -121,6 +124,14 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
         await removeProject(String(crrProjectName), true);
     };
 
+    const handleView: React.MouseEventHandler<HTMLTableDataCellElement> = (event) => {
+        event.preventDefault();
+        const crrProjectId = event.currentTarget.getAttribute('data-projectid');
+        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
+        localStorage.setItem('project', JSON.stringify({crrProjectId, crrProjectName}));
+        navigate(`../${userId}/projects/${crrProjectName}`);
+    };
+
     return (
         <div>
             <Helmet>
@@ -143,22 +154,26 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th></th>
+                            <th></th>
                             <th>Created at</th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {projects.map((project, index) => (
                             <tr key={index}>
-                                <td>{project.title}</td>
-                                <td>{new Date(project.createdAt).toUTCString()}</td>
+                                <td className='project-view'
+                                    onClick={handleView} 
+                                    data-projectid={project.id}
+                                    data-projectname={project.title}>{project.title}
+                                </td>
                                 <td className='button'>
                                     <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
                                 </td>
                                 <td className='button'>
                                     <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
                                 </td>
+                                <td>{new Date(project.createdAt).toUTCString()}</td>
                             </tr>
                         ))}
                     </tbody>

@@ -15,6 +15,10 @@
     text-align: center;
 }
 
+.project-view {
+    cursor: pointer;
+}
+
 
 @media (max-width: 450px) {
     .project-table {

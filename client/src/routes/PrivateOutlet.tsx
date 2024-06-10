@@ -15,7 +15,9 @@ function PrivateOutlet () {
 }
 
 function matchUserId(userId: number) {
-  const matchDashboard = window.location.pathname.match(/^\/dashboard\/(\d+)$/);
+  // const matchDashboard = window.location.pathname.match(/^\/dashboard\/(\d+)$/);
+  const matchDashboard = window.location.pathname.match(/^\/(\d+)\/dashboard$/);
+  const matchProject = window.location.pathname.match(/^\/\d+\/projects\/([^/]+)$/);
   const matchOther = window.location.pathname === '/home' ||
                   window.location.pathname === '/' || 
                   window.location.pathname === '/issues' || 
@@ -25,6 +27,10 @@ function matchUserId(userId: number) {
 
   if (matchDashboard) {
     const urlUserId = parseInt(matchDashboard[1]);
+    return userId === urlUserId;
+  } 
+  else if (matchProject) {
+    const urlUserId = parseInt(matchProject[0]);
     return userId === urlUserId;
   } 
   else if (matchOther) {

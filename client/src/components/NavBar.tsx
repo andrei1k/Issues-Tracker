@@ -24,17 +24,17 @@ function NavBarLoggedIn({ userId, isLoggedIn, logOut } : NavBarProps) {
           </Link>
         </li>
         <li className="navbar-item">
-          <Link to={`/dashboard/${userId}`} className="navbar-link">
+          <Link to={`/${userId}/dashboard`} className="navbar-link">
             <FaTachometerAlt className="navbar-icon" />
             <span className="navbar-name">Dashboard</span>
           </Link>
         </li>
-        <li className="navbar-item">
+        {/* <li className="navbar-item">
           <Link to="/issues" className="navbar-link">
             <FaAlignJustify className="navbar-icon" />
             <span className="navbar-name">Issue List</span>
           </Link>
-        </li>
+        </li> */}
         <li className="navbar-item">
           <Link to="/add-issue" className="navbar-link">
             <FaPlusCircle className="navbar-icon" />

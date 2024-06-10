@@ -105,7 +105,8 @@ function App() {
                         <Route path='/add-issue' element={<AddIssue />} />
                         <Route path='/issues' element={<IssueList />} />
                         <Route path='/profile' element={<Profile />} />
-                        <Route path='/dashboard/:userId' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                        <Route path='/:userId/dashboard' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                        <Route path='/:userId/projects/:projectTitle' element={<IssueList/>}/>
                         <Route path='/workflow' element={<WorkFlow/>}/>
                         <Route path='/*' element={<HomeLoggedIn />}/>
                 </Route>

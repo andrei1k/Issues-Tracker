@@ -14,7 +14,7 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.22.3",
+    "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
     "use-history": "^1.4.1",
     "useref": "^1.4.4",

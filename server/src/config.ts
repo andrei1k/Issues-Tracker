@@ -24,13 +24,13 @@ export const config = convict({
     password: {
       doc: 'The postgresql password',
       env: 'DB_PASSWORD',
-      default: 'password'
+      default: 'postgres'
     },
     name: {
       doc: 'The postgresql database name',
       env: 'DB_NAME',
       type: '*',
-      default: 'books'
+      default: 'issuetracker'
     },
   },
 })

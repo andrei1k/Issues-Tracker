@@ -4,6 +4,7 @@ import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
 import { Helmet } from "react-helmet";
 import { getProjectInfo, getToken } from "../utils/Data.tsx";
+import { Link } from "react-router-dom";
 
 interface Issue {
   id?: number;
@@ -151,6 +152,7 @@ function IssueList() {
         handleBoxClick={handleBoxClick}
         gridView={gridView}
       />
+      <Link to={`/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link>
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filteredIssues.map((issue, index) => (
           <IssueItem key={index} issue={issue} />

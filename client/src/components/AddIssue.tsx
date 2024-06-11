@@ -1,42 +1,72 @@
 import React, { useState, FormEvent } from "react";
 import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom";
 import "../styles/AddIssue.css";
 
-function AddIssue() {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [priority, setPriority] = useState<string>("");
-  const [assignedTo, setAssignedTo] = useState<string>("");
-  const [deadline, setDeadline] = useState<string>("");
+interface Issue {
+  id?: number;
+  title: string;
+  description: string;
+  priority: number;
+  assignedTo: number;
+  projectId: number;
+}
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+interface Project {
+  id: number;
+  title: string;
+}
+
+const defaultProject: Project = { id: 0, title: '' };
+
+function AddIssue() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState(1);
+  const [assignedTo, setAssignedTo] = useState(1);
+
+  const { projectId } = useParams<{ projectId: string }>();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
-    // Проверка за празни полета
-    const currentDate = new Date().toLocaleDateString();
-    const newIssue = {
-      title: title || "No title provided",
-      description: description || "No description provided",
-      priority: priority || "No priority was set",
-      assignedTo: assignedTo || "Not assigned",
-      deadline: deadline || "No deadline provided",
-      creationDate: currentDate,
+    if (!projectId) {
+      console.error("Project ID is missing.");
+      return;
+    }
+
+    const newIssue : Issue = {
+      title,
+      description,
+      priority,
+      assignedTo,
+      projectId: parseInt(projectId),
     };
 
-    // Запазване на issue в localStorage
-    let issues: any[] = [];
-    const storedIssues = localStorage.getItem("issues");
-    if (storedIssues !== null) {
-      issues = JSON.parse(storedIssues);
-    }
-    issues.push(newIssue);
-    localStorage.setItem("issues", JSON.stringify(issues));
+    try {
+      const response = await fetch(`http://localhost:3001/projects/${projectId}/add-issue`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newIssue),
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to add issue");
+      }
+
+      // Issue added successfully
+      console.log("Issue added successfully");
+    } catch (error) {
+      console.error("Error adding issue:", error);
+    }
+
+    // Clear form fields
     setTitle("");
     setDescription("");
-    setPriority("");
-    setAssignedTo("");
-    setDeadline("");
+    setPriority(0);
+    setAssignedTo(0);
   };
 
   return (
@@ -68,13 +98,13 @@ function AddIssue() {
           <label>Priority</label>
           <select
             value={priority}
-            onChange={(e) => setPriority(e.target.value)}
+            onChange={(e) => setPriority(parseInt(e.target.value))}
             className="select-field"
           >
             <option value="">Select priority</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
           </select>
         </div>
         <div className="form-group">
@@ -82,18 +112,9 @@ function AddIssue() {
           <input
             type="text"
             value={assignedTo}
-            onChange={(e) => setAssignedTo(e.target.value)}
+            onChange={(e) => setAssignedTo(parseInt(e.target.value))}
             className="input-field"
             required
-          />
-        </div>
-        <div className="form-group">
-          <label>Deadline</label>
-          <input
-            type="date"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
-            className="input-field"
           />
         </div>
         <div className="form-group">
@@ -104,6 +125,6 @@ function AddIssue() {
       </form>
     </div>
   );
-};
+}
 
 export default AddIssue;

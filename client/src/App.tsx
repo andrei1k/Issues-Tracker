@@ -102,7 +102,7 @@ function App() {
                 )}
                 <Route element={<PrivateOutlet />}>
                         <Route path='/home' element={<HomeLoggedIn />} />
-                        <Route path='/add-issue' element={<AddIssue />} />
+                        <Route path='/projects/:projectId/add-issue' element={<AddIssue />} />
                         <Route path='/issues' element={<IssueList />} />
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/:userId/dashboard' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />

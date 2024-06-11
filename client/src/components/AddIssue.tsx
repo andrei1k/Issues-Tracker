@@ -10,6 +10,7 @@ interface Issue {
   description: string;
   priority: number;
   assignedTo: number;
+  status: number;
   projectId: number;
 }
 
@@ -23,8 +24,9 @@ const defaultProject: Project = { id: 0, title: '' };
 function AddIssue() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState(1);
-  const [assignedTo, setAssignedTo] = useState(1);
+  const [priority, setPriority] = useState(0);
+  const [assignedTo, setAssignedTo] = useState(0);
+  const [status, setStatus] = useState(0);
 
   const { projectId } = useParams<{ projectId: string }>();
 
@@ -41,6 +43,7 @@ function AddIssue() {
       description,
       priority,
       assignedTo,
+      status,
       projectId: parseInt(projectId),
     };
 
@@ -69,6 +72,7 @@ function AddIssue() {
     setDescription("");
     setPriority(0);
     setAssignedTo(0);
+    setStatus(0);
   };
 
   return (
@@ -118,6 +122,20 @@ function AddIssue() {
             className="input-field"
             required
           />
+        </div>
+        <div className="form-group">
+          <label>Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(parseInt(e.target.value))}
+            className="select-field"
+          >
+            <option value="0">Select status</option>
+            <option value="1">TO DO</option>
+            <option value="2">Doing</option>
+            <option value="3">Done</option>
+            <option value="4">Bug</option>
+          </select>
         </div>
         <div className="form-group">
           <button type="submit" className="submit-button">

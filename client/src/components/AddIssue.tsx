@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import "../styles/AddIssue.css";
+import { getToken } from "../utils/Data.tsx";
 
 interface Issue {
   id?: number;
@@ -44,10 +45,11 @@ function AddIssue() {
     };
 
     try {
-      const response = await fetch(`http://localhost:3001/projects/${projectId}/add-issue`, {
+      const response = await fetch(`http://localhost:3001/projects/${projectId}/issues/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${getToken()}`
         },
         body: JSON.stringify(newIssue),
       });

@@ -1,0 +1,64 @@
+/* полета за избор на филтър */
+.filter-input,
+.priority-select,
+.assignee-select {
+    margin: 0.25em;
+    padding: 0.5em;
+    border: 0.1em solid #ccc;
+    border-radius: 0.25em;
+    font-size: 16px;
+}
+
+.filter-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.icon {
+    font-size: 30px;
+    margin-right: 0.025em;
+}
+
+.clicked {
+    background-color: rgb(218, 218, 218);
+    border-radius: 15%;
+}
+
+/*списъци с опции */
+.priority-select,
+.assignee-select {
+    width: 8.5em;
+}
+
+@media screen and (max-width: 768px) {
+
+    .filter-input,
+    .priority-select,
+    .assignee-select {
+        margin: 0.20em;
+        padding: 0.35em;
+        border: 0.12em solid #ccc;
+        font-size: 15px;
+    }
+
+    .icon {
+        font-size: 28px;
+    }
+
+}
+
+@media only screen and (max-width: 480px) {
+    .filter-input,
+    .priority-select,
+    .assignee-select {
+        margin: 0.16em;
+        padding: 0.25em;
+        border: 0.16em solid #ccc;
+        font-size: 13px;
+    }
+
+    .icon {
+        font-size: 25px;
+    }
+}

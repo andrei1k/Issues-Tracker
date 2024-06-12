@@ -20,8 +20,7 @@ interface Project {
   title: string;
 }
 
-const defaultProject = {id: 0, title: ''};
-
+const defaultProject = { id: 0, title: "" };
 
 function IssueList() {
   const [project, setProject] = useState<Project>(defaultProject);
@@ -39,7 +38,7 @@ function IssueList() {
   //   const issuesFromLocalStorage: Issue[] = JSON.parse(localStorage.getItem("issues") || "[]");
   //   setIssues(issuesFromLocalStorage);
   //   setFilteredIssues(issuesFromLocalStorage);
-  
+
   //   const uniqueAssignees: string[] = Array.from(
   //     new Set(issuesFromLocalStorage.map((issue) => issue.assignedTo))
   //   );
@@ -49,25 +48,29 @@ function IssueList() {
   useEffect(() => {
     const crrProjectInfo = getProjectInfo();
     setUserId(getUserId());
-    setProject({ id: parseInt(crrProjectInfo.crrProjectId), title: crrProjectInfo.crrProjectName });
+    setProject({
+      id: parseInt(crrProjectInfo.crrProjectId),
+      title: crrProjectInfo.crrProjectName,
+    });
   }, []);
-  
+
   useEffect(() => {
     if (project.id !== defaultProject.id) {
       viewIssues();
     }
   }, [project]);
 
-  
-
   useEffect(() => {
     const filterIssues = () => {
       let filtered: Issue[] = issues.filter((issue) => {
-        const textMatch: boolean = issue.title.toLowerCase().includes(filter.toLowerCase()) ||
+        const textMatch: boolean =
+          issue.title.toLowerCase().includes(filter.toLowerCase()) ||
           issue.description.toLowerCase().includes(filter.toLowerCase());
-        const priorityMatch: boolean = selectedPriority === "" ||
+        const priorityMatch: boolean =
+          selectedPriority === "" ||
           issue.priority.toLowerCase() === selectedPriority.toLowerCase();
-        const assigneeMatch: boolean = selectedAssignee === "" ||
+        const assigneeMatch: boolean =
+          selectedAssignee === "" ||
           issue.assignedTo.toLowerCase() === selectedAssignee.toLowerCase();
 
         return textMatch && priorityMatch && assigneeMatch;
@@ -83,7 +86,7 @@ function IssueList() {
     if (project.id !== defaultProject.id) {
       viewIssues();
     }
-  }, [project]);  
+  }, [project]);
 
   const handleGridClick = () => {
     setGridView(true);
@@ -91,56 +94,62 @@ function IssueList() {
 
   const handleBoxClick = () => {
     setGridView(false);
-  }
+  };
 
   const removeIssue = async (event) => {
     try {
-      const currentIssueId = event.currentTarget.getAttribute('data-issueId');
-      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/remove/${currentIssueId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getToken()}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error removing project');
+      const currentIssueId = event.currentTarget.getAttribute("data-issueId");
+      const response = await fetch(
+        `http://localhost:3001/projects/${project.id}/issues/remove/${currentIssueId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+          },
         }
+      );
 
-        await viewIssues();
+      if (!response.ok) {
+        throw new Error("Error removing project");
+      }
+
+      await viewIssues();
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
-  }
+  };
 
   const viewIssues = async () => {
     try {
-      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getToken()}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error fetching projects');
+      const response = await fetch(
+        `http://localhost:3001/projects/${project.id}/issues/all/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+          },
         }
+      );
 
-        const data = await response.json();
-        setIssues(data);
-        return data;
+      if (!response.ok) {
+        throw new Error("Error fetching projects");
+      }
+
+      const data = await response.json();
+      setIssues(data);
+      return data;
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
-  }
-  
+  };
+
   const handleAddIssueButton = (e) => {
     e.preventDefault();
     // navigate();
     navigate(`../${userId}/projects/${project.id}/add-issue`);
-  }
+  };
 
   return (
     <div className="issue-list">
@@ -148,20 +157,25 @@ function IssueList() {
         <title>Issues | Issue Tracker</title>
       </Helmet>
       <h2>Issue List</h2>
-      <FilterForm
-        filter={filter}
-        setFilter={setFilter}
-        selectedPriority={selectedPriority}
-        setSelectedPriority={setSelectedPriority}
-        selectedAssignee={selectedAssignee}
-        setSelectedAssignee={setSelectedAssignee}
-        assignees={assignees}
-        handleGridClick={handleGridClick}
-        handleBoxClick={handleBoxClick}
-        gridView={gridView}
-      />
-      <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
-      {/* <Link to={`${userId}/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link> */}
+      <div className="filter-form">
+        <FilterForm
+          filter={filter}
+          setFilter={setFilter}
+          selectedPriority={selectedPriority}
+          setSelectedPriority={setSelectedPriority}
+          selectedAssignee={selectedAssignee}
+          setSelectedAssignee={setSelectedAssignee}
+          assignees={assignees}
+          handleGridClick={handleGridClick}
+          handleBoxClick={handleBoxClick}
+          gridView={gridView}
+        />
+        <button onClick={handleAddIssueButton} className="add-issue-button">
+          Add Issue
+        </button>
+        {/* <Link to={`${userId}/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link> */}
+      </div>
+
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filteredIssues.map((issue, index) => (
           <IssueItem key={index} issue={issue} />

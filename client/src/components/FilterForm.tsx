@@ -1,5 +1,6 @@
 import React from "react";
 import { CiGrid41, CiBoxList } from "react-icons/ci";
+import "../styles/FilterForm.css";
 
 interface FilterFormProps {
   filter: string;

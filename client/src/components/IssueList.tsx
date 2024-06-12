@@ -138,7 +138,6 @@ function IssueList() {
   
   const handleAddIssueButton = (e) => {
     e.preventDefault();
-    // navigate();
     navigate(`../${userId}/projects/${project.id}/add-issue`);
   }
 

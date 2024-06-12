@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { getUserId } from '../utils/Data.tsx';
 import '../styles/HomeLoggedIn.css';
 
 function HomeLoggedIn() {
@@ -13,8 +14,8 @@ function HomeLoggedIn() {
       <h1 className="home-title">Issue Tracker App</h1> 
       <p className="home-description">Welcome to our issue tracker application!</p>
       <div className="home-buttons">
-        <Link to="/add-issue" className="home-button">Add New Issue</Link>
-        <Link to="/issues" className="home-button">View Issues</Link>
+        <Link to={`/${getUserId()}/dashboard`} className="home-button">View Projects</Link>
+        <Link to="/profile" className="home-button">View Profile</Link>
       </div> 
       <img src='./images/tasks.svg' className='image-tasks' alt="tasks"/>
     </div>

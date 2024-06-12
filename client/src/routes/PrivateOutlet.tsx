@@ -1,6 +1,6 @@
 import React from 'react';
 import {Outlet, Navigate} from 'react-router-dom';
-import { getProjectInfo, getToken, getUserId, getUserInfo } from '../utils/Data.tsx';
+import { getProjectInfo, getToken, getUserId } from '../utils/Data.tsx';
 
 function PrivateOutlet () {
     const token = getToken();

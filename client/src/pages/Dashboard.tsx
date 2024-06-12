@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import '../styles/Dashboard.css';
 
-
 interface DashboardProps {
     userId: number;
     userInfo: UserData;
@@ -27,6 +26,7 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
             const response = await fetch(`http://localhost:3001/projects/view/${userId}`, {
                 method: 'GET',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}` 
                 }
             });

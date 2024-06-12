@@ -1,12 +1,13 @@
 import React from 'react';
 import {Outlet, Navigate} from 'react-router-dom';
-import { getToken, getUserId, getUserInfo } from '../utils/Data.tsx';
+import { getProjectInfo, getToken, getUserId, getUserInfo } from '../utils/Data.tsx';
+import { Project } from '../../../server/src/models/Project.ts';
 
 function PrivateOutlet () {
     const token = getToken();
     const userId = getUserId();
-
-    if (token !== '' && matchUserId(userId)) {
+    const projectId = getProjectInfo().crrProjectId;
+    if (token !== '' && matchUrl(userId, projectId)) {
       return <Outlet/>;
     }
     else {
@@ -14,29 +15,30 @@ function PrivateOutlet () {
     }
 }
 
-function matchUserId(userId: number) {
+function matchUrl(userId: number, projectId: number) {
   // const matchDashboard = window.location.pathname.match(/^\/dashboard\/(\d+)$/);
   const matchDashboard = window.location.pathname.match(/^\/(\d+)\/dashboard$/);
-  const matchProject = window.location.pathname.match(/^\/\d+\/projects\/([^/]+)$/);
-  
+  const matchProject = window.location.pathname.match(/^\/\d+\/projects\/(\d+)$/);
+  const matchAddIssue = window.location.pathname.match(/^\/(\d+)\/projects\/(\d+)\/add-issue$/);
+
   const matchOther = window.location.pathname === '/home' ||
                   window.location.pathname === '/' || 
                   window.location.pathname === '/issues' || 
-                  window.location.pathname === '/add-issue' || 
                   window.location.pathname === '/workflow' || 
                   window.location.pathname === '/profile' ||
                   matchProject;
 
   if (matchDashboard) {
     const urlUserId = parseInt(matchDashboard[1]);
-    console.log(urlUserId);
     return userId === urlUserId;
-
   } 
   // else if (matchProject) {
-  //   console.log(matchProject[0]);
-  //   const urlUserId = parseInt(matchProject[1]);
-  //   return userId === urlUserId;
+  //   console.log(matchProject);
+  //   const urlUserId = parseInt(matchProject[0]);
+  //   // console.log("url user id " + urlUserId);
+  //   const urlProjectId = parseInt(matchProject[1]);
+  //   // console.log("url proj id " + urlProjectId);
+  //   return userId === urlUserId && projectId === urlProjectId;
   // } 
   else if (matchOther) {
     return true; 
@@ -44,6 +46,15 @@ function matchUserId(userId: number) {
   else {
     return false;
   }
+}
+
+function extractNumbersFromMatch(match) {
+  if (!Array.isArray(match) || match.length < 2) {
+      return [];
+  }
+
+  const numbers = match.slice(1).map(Number);
+  return numbers.filter(num => !isNaN(num)); // Филтрираме невалидните числа
 }
 
 export default PrivateOutlet;

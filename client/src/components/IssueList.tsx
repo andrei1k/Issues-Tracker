@@ -129,7 +129,6 @@ function IssueList() {
         }
 
         const data = await response.json();
-        console.log(data);
         setIssues(data);
         return data;
     } catch (error) {

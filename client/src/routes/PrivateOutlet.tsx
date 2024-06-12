@@ -16,7 +16,6 @@ function PrivateOutlet () {
 }
 
 function matchUrl(userId: number, projectId: number) {
-  // const matchDashboard = window.location.pathname.match(/^\/dashboard\/(\d+)$/);
   const matchDashboard = window.location.pathname.match(/^\/(\d+)\/dashboard$/);
   const matchProject = window.location.pathname.match(/^\/\d+\/projects\/(\d+)$/);
   const matchAddIssue = window.location.pathname.match(/^\/(\d+)\/projects\/(\d+)\/add-issue$/);
@@ -26,7 +25,7 @@ function matchUrl(userId: number, projectId: number) {
                   window.location.pathname === '/issues' || 
                   window.location.pathname === '/workflow' || 
                   window.location.pathname === '/profile' ||
-                  matchProject;
+                  matchProject || matchAddIssue;
 
   if (matchDashboard) {
     const urlUserId = parseInt(matchDashboard[1]);
@@ -46,15 +45,6 @@ function matchUrl(userId: number, projectId: number) {
   else {
     return false;
   }
-}
-
-function extractNumbersFromMatch(match) {
-  if (!Array.isArray(match) || match.length < 2) {
-      return [];
-  }
-
-  const numbers = match.slice(1).map(Number);
-  return numbers.filter(num => !isNaN(num)); // Филтрираме невалидните числа
 }
 
 export default PrivateOutlet;

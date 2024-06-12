@@ -76,7 +76,7 @@ function AddIssue() {
     setAssignedTo(0);
     setStatusId(0);
 
-    navigate(`../${getUserId()}/projects/${projectId}`);
+    navigate(`../${getUserId()}/projects/${projectId}`); 
   };
 
   return (

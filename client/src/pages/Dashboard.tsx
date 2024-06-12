@@ -129,7 +129,7 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
         const crrProjectId = event.currentTarget.getAttribute('data-projectid');
         const crrProjectName = event.currentTarget.getAttribute('data-projectname');
         localStorage.setItem('project', JSON.stringify({crrProjectId, crrProjectName}));
-        navigate(`../${userId}/projects/${crrProjectName}`);
+        navigate(`../${userId}/projects/${crrProjectId}`);
     };
 
     return (

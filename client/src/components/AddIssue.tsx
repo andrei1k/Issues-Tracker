@@ -1,8 +1,8 @@
 import React, { useState, FormEvent } from "react";
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/AddIssue.css";
-import { getToken } from "../utils/Data.tsx";
+import { getToken, getUserId } from "../utils/Data.tsx";
 
 interface Issue {
   id?: number;
@@ -10,7 +10,7 @@ interface Issue {
   description: string;
   priority: number;
   assignedTo: number;
-  status: number;
+  statusId: number;
   projectId: number;
 }
 
@@ -26,9 +26,11 @@ function AddIssue() {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(0);
   const [assignedTo, setAssignedTo] = useState(0);
-  const [status, setStatus] = useState(0);
+  const [statusId, setStatusId] = useState(0);
 
   const { projectId } = useParams<{ projectId: string }>();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -43,7 +45,7 @@ function AddIssue() {
       description,
       priority,
       assignedTo,
-      status,
+      statusId,
       projectId: parseInt(projectId),
     };
 
@@ -72,7 +74,9 @@ function AddIssue() {
     setDescription("");
     setPriority(0);
     setAssignedTo(0);
-    setStatus(0);
+    setStatusId(0);
+
+    navigate(`../${getUserId()}/projects/${projectId}`);
   };
 
   return (
@@ -126,8 +130,8 @@ function AddIssue() {
         <div className="form-group">
           <label>Status</label>
           <select
-            value={status}
-            onChange={(e) => setStatus(parseInt(e.target.value))}
+            value={statusId}
+            onChange={(e) => setStatusId(parseInt(e.target.value))}
             className="select-field"
           >
             <option value="0">Select status</option>

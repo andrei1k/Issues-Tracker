@@ -102,11 +102,11 @@ function App() {
                 )}
                 <Route element={<PrivateOutlet />}>
                         <Route path='/home' element={<HomeLoggedIn />} />
-                        <Route path='/projects/:projectId/add-issue' element={<AddIssue />} />
                         <Route path='/issues' element={<IssueList />} />
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/:userId/dashboard' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
-                        <Route path='/:userId/projects/:projectTitle' element={<IssueList/>}/>
+                        <Route path='/:userId/projects/:projectId' element={<IssueList/>}/>
+                        <Route path='/:userId/projects/:projectId/add-issue' element={<AddIssue />} />
                         <Route path='/workflow' element={<WorkFlow/>}/>
                         <Route path='/*' element={<HomeLoggedIn />}/>
                 </Route>

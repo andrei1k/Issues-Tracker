@@ -16,19 +16,17 @@ interface UserData {
     email: string;
 }
 
-function Dashboard({ userId, userInfo, token }: DashboardProps ) {
+function Dashboard({ userId, userInfo }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
     const [projects, setProjects] = useState<Project[]>([]);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
 
-    // PROBLEM WITH SETTING DATA
     const viewProjects = async () => {
         try {
             const data = await projectService.viewProjects(userId);
             setProjects(data);
-            console.log(data);
         }
         catch(error) {
             console.log(error.message);
@@ -42,7 +40,7 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
 
     const addProject = async (projectName: string) => {
         try {
-            projectService.addProject(userId, projectName);
+            await projectService.addProject(userId, projectName);
             setMessage('Project created successfully!');
             await viewProjects();
         } catch (error) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import '../styles/Dashboard.css';
+import projectService, { Project } from '../services/ProjectService.ts';
 
 interface DashboardProps {
     userId: number;
@@ -17,77 +18,33 @@ interface UserData {
 
 function Dashboard({ userId, userInfo, token }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
-    const [projects, setProjects] = useState<{ id:Number, title: string, createdAt: string }[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
+
+    // PROBLEM WITH SETTING DATA
     const viewProjects = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/projects/view/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
-                }
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error fetching projects');
-            }
-    
-            const data = await response.json();
-            setProjects(data.projects);
-            return data;
-        } catch (error) {
+            const data = await projectService.viewProjects(userId);
+            setProjects(data);
+            console.log(projects);
+        }
+        catch(error) {
             console.log(error.message);
         }
     };
     
     const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
-        try {
-            const response = await fetch(`http://localhost:3001/projects/remove/${userId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
-                },
-                body: JSON.stringify( {projectName, mustBeDeleted} )
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error deleting projects');
-            }
-            
-            viewProjects();
-        } catch(error) {
-            setMessage(error.message);
-        }
+        await projectService.removeProject(userId, projectName, mustBeDeleted);
+        await viewProjects();
     };
 
     const addProject = async (projectName: string) => {
         try {
-            if (projectName === '') {
-                throw new Error('empty-string');
-            }
-            const response = await fetch(`http://localhost:3001/projects/add/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ projectName })
-            });
-
-            if (response.status === 400) {
-                throw new Error('already-used-name');
-            }
-
-            if (!response.ok) {
-                throw new Error('Error creating project');
-            }
-
+            projectService.addProject(userId, projectName);
             setMessage('Project created successfully!');
-            viewProjects();
+            await viewProjects();
         } catch (error) {
             console.error('Error creating project:', error);
             if (error.message === 'already-used-name') {
@@ -160,7 +117,7 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                         </tr>
                     </thead>
                     <tbody>
-                        {projects.map((project, index) => (
+                        {projects.length > 0 && projects.map((project, index) => (
                             <tr key={index}>
                                 <td className='project-view'
                                     onClick={handleView} 

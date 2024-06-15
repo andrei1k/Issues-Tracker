@@ -3,8 +3,9 @@ import "../styles/IssueList.css";
 import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
 import { Helmet } from "react-helmet";
-import { getProjectInfo, getToken, getUserId } from "../utils/Data.tsx";
+import { getProjectInfo, getUserId } from "../utils/Data.tsx";
 import { Link, useNavigate } from "react-router-dom";
+import issueService from "../services/IssueService.ts";
 
 interface Issue {
   id?: number;
@@ -93,46 +94,23 @@ function IssueList() {
     setGridView(false);
   }
 
-  const removeIssue = async (event) => {
+  const removeIssue = async (issueId: number ) => {
     try {
-      const currentIssueId = event.currentTarget.getAttribute('data-issueId');
-      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/remove/${currentIssueId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getToken()}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error removing project');
-        }
-
-        await viewIssues();
-    } catch (error) {
-        console.log(error.message);
+      const data = await issueService.removeIssue(project.id, issueId);
+      await viewIssues();
+    }
+    catch(error) {
+      console.log(error.message);
     }
   }
 
   const viewIssues = async () => {
     try {
-      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getToken()}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error fetching projects');
-        }
-
-        const data = await response.json();
-        setIssues(data);
-        return data;
-    } catch (error) {
-        console.log(error.message);
+      const data =  await issueService.getIssues(project.id);
+      setIssues(data);
+    }
+    catch(error) {
+      console.log(error.message);
     }
   }
   
@@ -163,7 +141,7 @@ function IssueList() {
       {/* <Link to={`${userId}/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link> */}
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filteredIssues.map((issue, index) => (
-          <IssueItem key={index} issue={issue} />
+            <IssueItem key={index} issue={issue} />
         ))}
       </ul>
     </div>

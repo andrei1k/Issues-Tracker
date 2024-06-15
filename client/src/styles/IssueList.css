@@ -77,6 +77,14 @@
     margin-bottom: 0.25em;
 }
 
+.button-field {
+    list-style: none;
+    font-size: 1.25em;
+    text-align: right;
+    margin-bottom: 0.25em;
+    cursor: pointer;
+}
+
 .field-label {
     font-weight: bold;
 }
@@ -87,7 +95,7 @@
 
 @media screen and (max-width: 768px) {
     .grid-view .issue-item{
-      width: 40%; /* Променете ширината според вашите изисквания */
+      width: 40%;
     }
     
 }

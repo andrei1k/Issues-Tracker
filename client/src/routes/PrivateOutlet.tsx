@@ -5,7 +5,7 @@ import { getProjectInfo, getToken, getUserId } from '../utils/Data.tsx';
 function PrivateOutlet () {
     const token = getToken();
     const userId = getUserId();
-    const projectId = getProjectInfo().crrProjectId;
+    const projectId = getProjectInfo()?.crrProjectId;
     if (token !== '' && matchUrl(userId, projectId)) {
       return <Outlet/>;
     }

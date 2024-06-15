@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import statusService, { Status } from "../services/StatusService.ts";
+import '../styles/Workflow.css';
+import '../styles/AddIssue.css';
+
 
 
 export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[], fetchData: () => Promise<void>}) {
@@ -46,11 +49,10 @@ export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[],
 
     return (
         <>
-        
-            <form>
+            <form className='work-flow-form'>
                 {errorMessage !== '' && <p>{errorMessage}</p>}
-                <p>From:</p>
-                <select value={fromStatus} onChange={e => 
+                <label form="fromStatus">From:</label>
+                <select id="fromStatus" className="select-field" value={fromStatus} onChange={e => 
                 {
                     setFromStatus(Number.parseInt(e.currentTarget.value))
                     setErrorMessage('')
@@ -59,8 +61,8 @@ export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[],
                         statuses?.map(status => <option key={`from${status.id}`} value={status.id}>{status.name}</option>)
                     }
                 </select>
-                <p>To:</p>
-                <select value={toStatus} onChange={e => 
+                <label form="toStatus">To:</label>
+                <select id="toStatus" className="select-field" value={toStatus} onChange={e => 
                 {
                     setToStatus(Number.parseInt(e.currentTarget.value))
                     setErrorMessage('')
@@ -69,8 +71,8 @@ export default function WorkFlowForm({statuses, fetchData}: {statuses: Status[],
                         statuses?.map(status => <option key={`to${status.id}`} value={status.id}>{status.name}</option>)
                     }
                 </select>
-                <input type="submit" value="Add" onClick={addHandler}></input>
-                <input type="submit" value="Remove" onClick={removeHandler}></input>
+                <input className="submit-button" type="submit" value="Add" onClick={addHandler}></input>
+                <input className="submit-button" type="submit" value="Remove" onClick={removeHandler}></input>
             </form>
         </>
     )

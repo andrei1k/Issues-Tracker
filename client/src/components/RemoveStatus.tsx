@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import statusService, { Status } from "../services/StatusService.ts"
+import "../styles/AddIssue.css";
 
 
 export default function RemoveStatus({statuses, fetchData}: {statuses: Status[], fetchData: () => Promise<void>}) {
@@ -25,7 +26,7 @@ export default function RemoveStatus({statuses, fetchData}: {statuses: Status[],
         <>
             <form>
                 {error && 'Issues with this status exist. Can not delete it.'}
-                <select value={status} onChange={e => 
+                <select className="select-field" value={status} onChange={e => 
                     {
                         setStatus(Number.parseInt(e.currentTarget.value))
                         setError(false)
@@ -34,7 +35,7 @@ export default function RemoveStatus({statuses, fetchData}: {statuses: Status[],
                             statuses?.map(status => <option key={status.id} value={status.id}>{status.name}</option>)
                         }
                 </select>
-                <input type="submit" value="Remove" onClick={removeHandler}></input>
+                <input className="submit-button" type="submit" value="Remove" onClick={removeHandler}></input>
 
             </form>
         </>

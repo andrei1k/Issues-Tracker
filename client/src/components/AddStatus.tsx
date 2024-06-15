@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import statusService, { Status } from "../services/StatusService.ts";
+import "../styles/AddIssue.css";
 
 export default function AddStatus({statuses, fetchData}: {statuses: Status[], fetchData: () => Promise<void>}) {
 
@@ -31,7 +32,7 @@ export default function AddStatus({statuses, fetchData}: {statuses: Status[], fe
         <>
             {error && 'This status already exists.'}
             <form onSubmit={addHandler}>
-                <input type="text" onChange={inputHandler} value={inputValue}/>
+                <input className="input-field" type="text" onChange={inputHandler} value={inputValue}/>
                 
             </form>
         </>

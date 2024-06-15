@@ -38,6 +38,8 @@ h2 {
     background-size: 1em 1em;
     background-position: right;
     background-origin: content-box;
+
+    min-width: 80px;
 } 
 
 .submit-button {

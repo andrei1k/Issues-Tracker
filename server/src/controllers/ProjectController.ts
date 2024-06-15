@@ -13,7 +13,7 @@ export class ProjectController {
         }
         try {
             const projects = await projectService.viewProjects(Number(userId));
-            res.status(200).json({ projects });
+            res.status(200).json(projects);
         } catch (error) {
             console.error('Error while fetching projects:', error);
             res.status(500).json({ error: 'Internal Server Error' });

@@ -1,7 +1,7 @@
 import { getToken } from "../utils/Data.tsx";
 
 export interface Project {
-    id: Number;
+    id: number;
     title: string;
     createdAt: string;
 }

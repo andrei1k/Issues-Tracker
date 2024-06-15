@@ -28,7 +28,7 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
         try {
             const data = await projectService.viewProjects(userId);
             setProjects(data);
-            console.log(projects);
+            console.log(data);
         }
         catch(error) {
             console.log(error.message);
@@ -117,8 +117,8 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
                         </tr>
                     </thead>
                     <tbody>
-                        {projects.length > 0 && projects.map((project, index) => (
-                            <tr key={index}>
+                        { projects.length > 0 && projects.map(project => (
+                            <tr key={project.id}>
                                 <td className='project-view'
                                     onClick={handleView} 
                                     data-projectid={project.id}

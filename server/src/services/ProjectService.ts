@@ -1,7 +1,7 @@
 import { Project } from '../models/Project';
 import { User } from '../models/User';
 
-export class ProjectService {
+class ProjectService {
     async addProject(userId: number, projectName: string): Promise<void> {
         await User.relatedQuery('projects').for(userId).insert({title: projectName});
     }
@@ -31,9 +31,20 @@ export class ProjectService {
         const projectUsers = await project?.$relatedQuery('users');
 
         if (projectUsers?.length === 1) {
-            await await user?.$relatedQuery('projects').deleteById(projectId);
+            await user?.$relatedQuery('projects').deleteById(projectId);
         } else {
             await user?.$relatedQuery('projects').unrelate().where('id', projectId);
         }
     }
+
+    async getUsersFromProject(projectId: number): Promise<User[] | undefined> {
+        const project = await Project.query().findById(projectId);
+        const projectUsers = await project?.$relatedQuery('users');
+        if (projectUsers !== undefined) {
+            return projectUsers;
+        }
+        return undefined;
+    }
 }
+
+export default new ProjectService();

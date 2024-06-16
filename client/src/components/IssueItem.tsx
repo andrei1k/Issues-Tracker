@@ -31,10 +31,6 @@ function IssueItem({ issue, removeIssue }: Props) {
   return (
     <li className="issue-item">
       <ul className="issues">
-      {/* <li className="issue-field">
-          <span className="field-label">Id:</span>
-          <span className="field-value">{issue.id}</span>
-        </li> */}
         <li className="issue-field">
           <span className="field-label">Title:</span>
           <span className="field-value">{issue.title}</span>

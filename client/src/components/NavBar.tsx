@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaAlignJustify, FaPlusCircle, FaHome, FaRegUserCircle, 
+import { FaHome, FaRegUserCircle, 
   FaSignOutAlt, FaSignInAlt, FaTachometerAlt, FaProjectDiagram, FaUserPlus } from "react-icons/fa";
 
 import "../styles/NavBar.css";

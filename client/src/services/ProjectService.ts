@@ -58,6 +58,23 @@ export class ProjectService {
             throw new Error('Error creating project');
         }
     }
+
+    async getUsersFromProject(projectId: number) {
+            const response = await fetch(`http://localhost:3001/projects/users`, {
+                method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`,
+              },
+              body: JSON.stringify({ projectId })
+            });
+    
+            if (!response.ok) {
+              throw new Error("Failed to fetch users");
+            }
+    
+            return await response.json();
+    }
 };
 
 const projectService = new ProjectService();

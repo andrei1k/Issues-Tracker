@@ -1,8 +1,9 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/AddIssue.css";
 import { getToken, getUserId } from "../utils/Data.tsx";
+import projectService from "../services/ProjectService.ts";
 
 interface Issue {
   id?: number;
@@ -14,24 +15,40 @@ interface Issue {
   projectId: number;
 }
 
-interface Project {
+interface User {
   id: number;
-  title: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
-const defaultProject: Project = { id: 0, title: '' };
 
 function AddIssue() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(0);
   const [assignedTo, setAssignedTo] = useState(0);
+  const [users, setUsers] = useState<User[]>();
   const [statusId, setStatusId] = useState(0);
 
   const { projectId } = useParams<{ projectId: string }>();
 
   const navigate = useNavigate();
-
+  const getUsersForProject = async () => {
+    try {
+      if (!projectId) {
+        return;
+      }
+      const users = await projectService.getUsersFromProject(parseInt(projectId));
+      setUsers(users);
+    } catch (error) {
+      console.error("Error fetching users: ", error);
+    }
+  }
+  useEffect(() => {
+    console.log("ZADR");
+    getUsersForProject();
+  }, []);
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
@@ -48,7 +65,8 @@ function AddIssue() {
       statusId,
       projectId: parseInt(projectId),
     };
-
+    
+    
     try {
       const response = await fetch(`http://localhost:3001/projects/${projectId}/issues/create`, {
         method: "POST",
@@ -66,14 +84,6 @@ function AddIssue() {
     } catch (error) {
       console.error("Error adding issue:", error);
     }
-
-    // Clear form fields
-    setTitle("");
-    setDescription("");
-    setPriority(0);
-    setAssignedTo(0);
-    setStatusId(0);
-
     navigate(`../${getUserId()}/projects/${projectId}`); 
   };
 
@@ -117,13 +127,17 @@ function AddIssue() {
         </div>
         <div className="form-group">
           <label>Assigned To</label>
-          <input
-            type="text"
+          <select
             value={assignedTo}
             onChange={(e) => setAssignedTo(parseInt(e.target.value))}
-            className="input-field"
+            className="select-field"
             required
-          />
+          >
+            <option value="">Select user</option>
+            {users?.map(user => (
+              <option key={user.id} value={user.id}>{user.firstName} {user.lastName} - {user.email}</option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label>Status</label>

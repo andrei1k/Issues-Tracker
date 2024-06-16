@@ -35,17 +35,6 @@ function IssueList() {
   const [userId, setUserId] = useState<number>();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const issuesFromLocalStorage: Issue[] = JSON.parse(localStorage.getItem("issues") || "[]");
-  //   setIssues(issuesFromLocalStorage);
-  //   setFilteredIssues(issuesFromLocalStorage);
-  
-  //   const uniqueAssignees: string[] = Array.from(
-  //     new Set(issuesFromLocalStorage.map((issue) => issue.assignedTo))
-  //   );
-  //   setAssignees(uniqueAssignees);
-  // }, []);
-
   useEffect(() => {
     const crrProjectInfo = getProjectInfo();
     setUserId(getUserId());
@@ -57,8 +46,6 @@ function IssueList() {
       viewIssues();
     }
   }, [project]);
-
-  
 
   useEffect(() => {
     const filterIssues = () => {
@@ -137,7 +124,6 @@ function IssueList() {
         gridView={gridView}
       />
       <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
-      {/* <Link to={`${userId}/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link> */}
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filteredIssues.map((issue) => (
             <IssueItem issue={issue} removeIssue={removeIssue} />

@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import { ProjectService } from '../services/ProjectService';
+import projectService from '../services/ProjectService';
 import { isIdValid, isTitleValid } from '../utils/Validations';
-const projectService = new ProjectService();
 
-export class ProjectController {
-    static async viewProjects(req: Request, res: Response): Promise<void> {
+class ProjectController {
+    async viewProjects(req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
         
         if (!isIdValid(userId)) {
@@ -20,7 +19,7 @@ export class ProjectController {
         }
     }
 
-    static async addProject(req: Request, res: Response): Promise<void> {
+    async addProject(req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
         const projectName = req.body.projectName;
 
@@ -42,7 +41,7 @@ export class ProjectController {
         }
     }
 
-    static async removeProject(req: Request, res: Response): Promise<void> {
+    async removeProject(req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
         const projectId = req.body.projectId;
         const mustBeDeleted = req.body.mustBeDeleted;
@@ -65,4 +64,16 @@ export class ProjectController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+    async getAllUsersFromProject(req: Request, res: Response): Promise<void> {
+        const projectId = req.body.projectId;
+        try {
+            const users = await projectService.getUsersFromProject(projectId);
+            res.status(200).send(users);
+        } catch (error) {
+            res.status(500).json({error: 'Cannot get users'});
+        }
+    }
 }
+
+
+export default new ProjectController();

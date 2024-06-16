@@ -124,3 +124,8 @@
     border-bottom: 2px solid #007bff;
     padding-bottom: 5px;
 }
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+}

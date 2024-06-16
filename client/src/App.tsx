@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-import NavBar from './components/NavBarOld.tsx';
 import { LocalData } from './components/AuthForm.tsx';
 
 import PrivateOutlet from './routes/PrivateOutlet.tsx';
@@ -91,7 +89,6 @@ function App() {
                 <NavBarLoggedIn userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
             </div>
             <div className='content'>
-            {/* <NavBar userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/> */}
             <Routes>
                 {!isLoggedIn && (
                 <>

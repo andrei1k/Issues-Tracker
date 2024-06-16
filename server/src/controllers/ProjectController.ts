@@ -59,7 +59,7 @@ class ProjectController {
                 await projectService.leaveProject(Number(userId), projectId);
             }
             res.status(200).send('Success');
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error while removing project:', error);
             res.status(500).json({ error: 'Internal Server Error' });
         }
@@ -70,7 +70,28 @@ class ProjectController {
             const users = await projectService.getUsersFromProject(projectId);
             res.status(200).send(users);
         } catch (error) {
-            res.status(500).json({error: 'Cannot get users'});
+            res.status(500).json({ error: 'Cannot get users' });
+        }
+    }
+
+    async addUserInProject(req: Request, res: Response): Promise<void> {
+        const projectId = req.body.projectId;
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const email = req.body.email;
+        try {
+            await projectService.addUserInProject(projectId, firstName, lastName, email);
+            res.status(200).send();
+        } catch (error: any) {
+            if (error.message === 'user-doesnt-exist') {
+                res.status(404).json({error: 'User does not exist!'});
+            }
+            else if(error.message === 'user-already-added') {
+                res.status(400).json({error: 'User is already added!'});
+            }
+            else {
+                res.status(500).json({error: 'Cannot add user in project'});
+            }
         }
     }
 }

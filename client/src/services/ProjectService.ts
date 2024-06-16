@@ -75,6 +75,27 @@ export class ProjectService {
     
             return await response.json();
     }
+
+    async addUserInProject(projectId: number, firstName: string, lastName: string, email: string) {
+        const response = await fetch(`http://localhost:3001/projects/add-user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`,
+            },
+            body: JSON.stringify({projectId, firstName, lastName, email})
+        });
+
+        if (response.status === 400) {
+            throw new Error('User is already added');
+        }
+        else if (response.status === 404) {
+            throw new Error('User is not found');
+        }
+        else if(!response.ok) {            
+            throw new Error("Failed to add user in project");
+        }
+    }
 };
 
 const projectService = new ProjectService();

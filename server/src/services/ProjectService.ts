@@ -1,5 +1,6 @@
 import { Project } from '../models/Project';
 import { User } from '../models/User';
+import { isEmailValid, isNameValid } from '../utils/Validations';
 
 class ProjectService {
     async addProject(userId: number, projectName: string): Promise<void> {
@@ -44,6 +45,38 @@ class ProjectService {
             return projectUsers;
         }
         return undefined;
+    }
+
+    async addUserInProject(projectId: number, 
+        firstName: string, 
+        lastName:string, 
+        email: string): Promise<void> 
+    {
+        if (!isEmailValid(email) ||
+            !isNameValid(firstName) ||
+            !isNameValid(lastName)) 
+        {
+            throw new Error('date-error');
+        }
+        const user = await User.query().where('email', email)
+            .where('firstName', firstName)
+            .where('lastName', lastName).first();
+
+        if (!user) {
+            throw Error('user-doesnt-exist');
+        }
+
+        const project = await user
+            .$relatedQuery('projects')
+            .where('projects.id', projectId)
+            .first();
+
+        if (project) {
+            throw Error('user-already-added');
+        }
+        else {
+            await user.$relatedQuery('projects').relate(projectId);
+        }
     }
 }
 

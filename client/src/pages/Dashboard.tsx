@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { FaTrashAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaTrashAlt, FaSignOutAlt, FaUserPlus } from "react-icons/fa";
 import '../styles/Dashboard.css';
 import projectService, { Project } from '../services/ProjectService.ts';
+import Modal from '../components/Modal.tsx';
+import AddIssue from '../components/AddIssue.tsx';
+import UserForm from '../components/UserForm.tsx';
 
 interface DashboardProps {
     userId: number;
@@ -21,8 +24,18 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
     const [projectName, setProjectName] = useState('');
     const [projects, setProjects] = useState<Project[]>([]);
     const [message, setMessage] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const[currentProjectId, setCurrentProjectId] = useState(0);
     const navigate = useNavigate();
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const viewProjects = async () => {
         try {
@@ -72,6 +85,15 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
         event.preventDefault();
         await addProject(projectName);
     };
+
+    const handleAddUser: React.MouseEventHandler<SVGAElement> = async (event) => {
+        event.preventDefault();
+        const projectId = event.currentTarget.getAttribute('data-projectid');
+        if (projectId !== null) {
+            setCurrentProjectId(parseInt(projectId));
+        }
+        openModal();
+    } 
 
     const handleLeave: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
@@ -129,6 +151,17 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
                             </div>
                             <div className="project-actions">
                                 <div className='action'>
+                                    <FaUserPlus 
+                                        data-projectid={project.id} 
+                                        onClick={handleAddUser}/>
+                                    <span className='action-name'>Add user</span>
+                                    <Modal 
+                                        isOpen={isModalOpen} 
+                                        onClose={closeModal} 
+                                        children={<UserForm projectId={currentProjectId} closeModal={closeModal}/>}>
+                                    </Modal>
+                                </div>
+                                <div className='action'>
                                     <FaSignOutAlt 
                                         data-projectid={project.id}
                                         onClick={handleLeave}
@@ -142,6 +175,7 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
                                     />
                                     <span className='action-name'>Delete</span>
                                 </div>
+
                             </div>
                         </div>
                     ))}

@@ -9,5 +9,6 @@ projectRouter.get('/view/:userId', projectController.viewProjects);
 projectRouter.post('/add/:userId', projectController.addProject);
 projectRouter.delete('/remove/:userId', projectController.removeProject);
 projectRouter.post('/users', projectController.getAllUsersFromProject);
+projectRouter.post('/add-user', projectController.addUserInProject);
 
 projectRouter.use('/:projectId/issues', issueProjRouter);

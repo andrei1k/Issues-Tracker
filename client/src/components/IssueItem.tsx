@@ -27,7 +27,19 @@ function IssueItem({ issue, removeIssue }: Props) {
     }
 
   }
-
+  const getPriorityText = (priority: string) => {
+    switch (parseInt(priority)) {
+      case 1:
+        return 'High';
+      case 2:
+        return 'Medium';
+      case 3:
+        return 'Low';
+      default:
+        return 'Unknown';
+    }
+  }
+  
   return (
     <li className="issue-item">
       <ul className="issues">
@@ -41,7 +53,7 @@ function IssueItem({ issue, removeIssue }: Props) {
         </li>
         <li className="issue-field">
           <span className="field-label">Priority:</span>
-          <span className="field-value">{issue.priority}</span>
+          <span className="field-value">{getPriorityText(issue.priority)}</span>
         </li>
         <li className="issue-field">
           <span className="field-label">Assigned To:</span>

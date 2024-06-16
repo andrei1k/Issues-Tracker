@@ -117,6 +117,7 @@ function AddIssue() {
             value={priority}
             onChange={(e) => setPriority(parseInt(e.target.value))}
             className="select-field"
+            required
           >
             <option value="">Select priority</option>
             <option value="1">High</option>
@@ -146,8 +147,9 @@ function AddIssue() {
             value={statusId}
             onChange={(e) => setStatusId(parseInt(e.target.value))}
             className="select-field"
+            required
           >
-            <option value="0">Select status</option>
+            <option value="">Select status</option>
             <option value="1">TO DO</option>
             <option value="2">Doing</option>
             <option value="3">Done</option>

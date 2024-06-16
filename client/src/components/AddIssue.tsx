@@ -149,7 +149,7 @@ function AddIssue() {
             className="select-field"
             required
           >
-            <option value="0">Select status</option>
+            <option value="">Select status</option>
             <option value="1">TO DO</option>
             <option value="2">Doing</option>
             <option value="3">Done</option>

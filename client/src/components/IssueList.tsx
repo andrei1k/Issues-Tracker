@@ -7,6 +7,8 @@ import { getProjectInfo, getUserId } from "../utils/Data.tsx";
 import { useNavigate } from "react-router-dom";
 import issueService, { Issue } from "../services/IssueService.ts";
 import projectService from "../services/ProjectService.ts";
+import Modal from "./Modal.tsx";
+import AddIssue from './AddIssue.tsx';
 
 interface Project {
   id: number;
@@ -32,8 +34,16 @@ function IssueList() {
   const [assignees, setAssignees] = useState<User[]>([]);
   const [gridView, setGridView] = useState<boolean>(true);
   const [userId, setUserId] = useState<number>();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const getUsersForProject = async () => {
     try {
@@ -110,7 +120,8 @@ function IssueList() {
   
   const handleAddIssueButton = (e) => {
     e.preventDefault();
-    navigate(`../${userId}/projects/${project.id}/add-issue`);
+    openModal();
+    // navigate(`../${userId}/projects/${project.id}/add-issue`);
   }
 
   return (
@@ -119,6 +130,11 @@ function IssueList() {
         <title>Issues | Issue Tracker</title>
       </Helmet>
       <h2>Issue List</h2>
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        children={<AddIssue closeModal={closeModal} viewIssues={viewIssues}/>}>
+      </Modal>
       <FilterForm
         filter={filter}
         setFilter={setFilter}

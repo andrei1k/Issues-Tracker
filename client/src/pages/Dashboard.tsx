@@ -5,7 +5,6 @@ import { FaTrashAlt, FaSignOutAlt, FaUserPlus } from "react-icons/fa";
 import '../styles/Dashboard.css';
 import projectService, { Project } from '../services/ProjectService.ts';
 import Modal from '../components/Modal.tsx';
-import AddIssue from '../components/AddIssue.tsx';
 import UserForm from '../components/UserForm.tsx';
 
 interface DashboardProps {

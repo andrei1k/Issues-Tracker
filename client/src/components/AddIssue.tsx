@@ -22,8 +22,12 @@ interface User {
   email: string;
 }
 
+interface ModalProp {
+  closeModal: () => void; 
+  viewIssues: () => void;
+}
 
-function AddIssue() {
+function AddIssue({closeModal, viewIssues}: ModalProp ) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(0);
@@ -83,7 +87,9 @@ function AddIssue() {
     } catch (error) {
       console.error("Error adding issue:", error);
     }
-    navigate(`../${getUserId()}/projects/${projectId}`); 
+    viewIssues();
+    closeModal();
+
   };
 
   return (

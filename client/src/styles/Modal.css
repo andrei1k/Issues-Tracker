@@ -21,9 +21,10 @@
 
 .close-btn {
     position: absolute;
+    font-size: 1.25em;
     top: 10px;
     right: 10px;
     cursor: pointer;
-    color: red;
+    color: black;
     font-weight: bold;
 }

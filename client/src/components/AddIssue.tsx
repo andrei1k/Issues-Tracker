@@ -46,7 +46,6 @@ function AddIssue() {
     }
   }
   useEffect(() => {
-    console.log("ZADR");
     getUsersForProject();
   }, []);
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -135,7 +134,9 @@ function AddIssue() {
           >
             <option value="">Select user</option>
             {users?.map(user => (
-              <option key={user.id} value={user.id}>{user.firstName} {user.lastName} - {user.email}</option>
+              <option key={user.id} value={user.id}>
+                {user.firstName} {user.lastName} - {user.email}
+              </option>
             ))}
           </select>
         </div>

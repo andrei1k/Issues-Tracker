@@ -1,5 +1,7 @@
 import React from "react";
 import { CiGrid41, CiBoxList } from "react-icons/ci";
+import { User } from "./IssueList.tsx";
+
 
 interface FilterFormProps {
   filter: string;
@@ -8,7 +10,7 @@ interface FilterFormProps {
   setSelectedPriority: React.Dispatch<React.SetStateAction<string>>;
   selectedAssignee: string;
   setSelectedAssignee: React.Dispatch<React.SetStateAction<string>>;
-  assignees: string[];
+  assignees: User[];
   handleGridClick: () => void;
   handleBoxClick: () => void;
   gridView: boolean;
@@ -49,9 +51,9 @@ function FilterForm({
         className="priority-select"
       >
         <option value="">All Priorities</option>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
+        <option value="3">High</option>
+        <option value="2">Medium</option>
+        <option value="1">Low</option>
       </select>
       <select
         value={selectedAssignee}
@@ -59,9 +61,11 @@ function FilterForm({
         className="assignee-select"
       >
         <option value="">All Assignees</option>
-        {assignees.map((assignee, index) => (
-          <option key={index} value={assignee}>
-            {assignee}
+        {assignees?.map(user => (
+          <option 
+            key={user.id} 
+            value={`${user.firstName} ${user.lastName}`}>
+              {user.firstName} {user.lastName} - {user.email}
           </option>
         ))}
       </select>

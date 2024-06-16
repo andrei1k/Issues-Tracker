@@ -6,14 +6,7 @@ import { Helmet } from "react-helmet";
 import { getProjectInfo, getUserId } from "../utils/Data.tsx";
 import { useNavigate } from "react-router-dom";
 import issueService, { Issue } from "../services/IssueService.ts";
-
-// interface Issue {
-//   id?: number;
-//   title: string;
-//   description: string;
-//   priority: string;
-//   assignedTo: string;
-// }
+import projectService from "../services/ProjectService.ts";
 
 interface Project {
   id: number;
@@ -22,6 +15,12 @@ interface Project {
 
 const defaultProject = {id: 0, title: ''};
 
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 function IssueList() {
   const [project, setProject] = useState<Project>(defaultProject);
@@ -30,47 +29,56 @@ function IssueList() {
   const [selectedAssignee, setSelectedAssignee] = useState<string>("");
   const [issues, setIssues] = useState<Issue[]>([]);
   const [filteredIssues, setFilteredIssues] = useState<Issue[]>([]);
-  const [assignees, setAssignees] = useState<string[]>([]);
+  const [assignees, setAssignees] = useState<User[]>([]);
   const [gridView, setGridView] = useState<boolean>(true);
   const [userId, setUserId] = useState<number>();
   const navigate = useNavigate();
 
+
+  const getUsersForProject = async () => {
+    try {
+      if (!project.id) {
+        return;
+      }
+      const users = await projectService.getUsersFromProject(project.id);
+      setAssignees(users);
+    } catch(error) {
+      console.error("Error fetching users: ", error);
+    }
+  }
+
+  const filterIssues = () => {
+    let filtered: Issue[] = issues.filter((issue) => {
+      const textMatch: boolean = issue.title.toLowerCase().includes(filter.toLowerCase()) ||
+        issue.description.toLowerCase().includes(filter.toLowerCase());
+      const priorityMatch: boolean = selectedPriority === "" ||
+        parseInt(issue.priority) === parseInt(selectedPriority);
+      const assigneeMatch: boolean = selectedAssignee === "" ||
+        issue.assignedTo === selectedAssignee;
+      return textMatch && priorityMatch && assigneeMatch;
+    });
+
+    setFilteredIssues(filtered);
+  };
+
   useEffect(() => {
     const crrProjectInfo = getProjectInfo();
     setUserId(getUserId());
-    setProject({ id: parseInt(crrProjectInfo.crrProjectId), title: crrProjectInfo.crrProjectName });
+    setProject({ id: parseInt(crrProjectInfo.crrProjectId), 
+      title: crrProjectInfo.crrProjectName });
   }, []);
   
   useEffect(() => {
     if (project.id !== defaultProject.id) {
       viewIssues();
+      getUsersForProject();
     }
   }, [project]);
 
   useEffect(() => {
-    const filterIssues = () => {
-      let filtered: Issue[] = issues.filter((issue) => {
-        const textMatch: boolean = issue.title.toLowerCase().includes(filter.toLowerCase()) ||
-          issue.description.toLowerCase().includes(filter.toLowerCase());
-        const priorityMatch: boolean = selectedPriority === "" ||
-          issue.priority.toLowerCase() === selectedPriority.toLowerCase();
-        const assigneeMatch: boolean = selectedAssignee === "" ||
-          issue.assignedTo.toLowerCase() === selectedAssignee.toLowerCase();
-
-        return textMatch && priorityMatch && assigneeMatch;
-      });
-
-      setFilteredIssues(filtered);
-    };
 
     filterIssues();
   }, [filter, selectedPriority, selectedAssignee, issues]);
-
-  useEffect(() => {
-    if (project.id !== defaultProject.id) {
-      viewIssues();
-    }
-  }, [project]);  
 
   const handleGridClick = () => {
     setGridView(true);
@@ -82,7 +90,7 @@ function IssueList() {
 
   const removeIssue = async (issueId: number ) => {
     try {
-      const data = await issueService.removeIssue(project.id, issueId);
+      await issueService.removeIssue(project.id, issueId);
       await viewIssues();
     }
     catch(error) {

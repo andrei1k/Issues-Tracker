@@ -39,7 +39,6 @@ class IssueController {
         try {
             const projectId = parseInt(req.params.projectId);
             const issues = await issueService.getAllIssuesForProject(projectId);
-            console.log(issues);
             res.status(200).json(issues);
         } catch(err) {
             res.status(500).json({error: 'Server error' });

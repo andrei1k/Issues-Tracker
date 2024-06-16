@@ -4,17 +4,16 @@ import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
 import { Helmet } from "react-helmet";
 import { getProjectInfo, getUserId } from "../utils/Data.tsx";
-import { Link, useNavigate } from "react-router-dom";
-import issueService from "../services/IssueService.ts";
+import { useNavigate } from "react-router-dom";
+import issueService, { Issue } from "../services/IssueService.ts";
 
-interface Issue {
-  id?: number;
-  title: string;
-  description: string;
-  priority: string;
-  assignedTo: string;
-  deadline: string;
-}
+// interface Issue {
+//   id?: number;
+//   title: string;
+//   description: string;
+//   priority: string;
+//   assignedTo: string;
+// }
 
 interface Project {
   id: number;
@@ -140,8 +139,8 @@ function IssueList() {
       <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
       {/* <Link to={`${userId}/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link> */}
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
-        {filteredIssues.map((issue, index) => (
-            <IssueItem key={index} issue={issue} />
+        {filteredIssues.map((issue) => (
+            <IssueItem issue={issue} removeIssue={removeIssue} />
         ))}
       </ul>
     </div>

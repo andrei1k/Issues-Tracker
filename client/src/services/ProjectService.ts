@@ -22,14 +22,14 @@ export class ProjectService {
         return await response.json();
     }
 
-    async removeProject(userId: number, projectName: string, mustBeDeleted: boolean) {
+    async removeProject(userId: number, projectId: number, mustBeDeleted: boolean) {
             const response = await fetch(`http://localhost:3001/projects/remove/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${getToken()}` 
                 },
-                body: JSON.stringify( {projectName, mustBeDeleted} )
+                body: JSON.stringify( {projectId, mustBeDeleted} )
             });
 
             if (!response.ok) {

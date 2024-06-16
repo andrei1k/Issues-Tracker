@@ -28,7 +28,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [passwordStrong, setPasswordStrong] = useState(true);
   const [message, setMessage] = useState('');
-  const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
@@ -110,7 +109,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
         email: data.currentUser.email,
       }
   
-      setSuccess(true);
       setLoading(false);
       onSubmit(localUserId, localData, rememberMe, data.token);
 

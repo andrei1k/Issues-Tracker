@@ -63,8 +63,6 @@ function AddIssue() {
         throw new Error("Failed to add issue");
       }
 
-      // Issue added successfully
-      console.log("Issue added successfully");
     } catch (error) {
       console.error("Error adding issue:", error);
     }

@@ -44,20 +44,20 @@ export class ProjectController {
 
     static async removeProject(req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
-        const projectName = req.body.projectName;
+        const projectId = req.body.projectId;
         const mustBeDeleted = req.body.mustBeDeleted;
         
-        if (!isTitleValid(projectName) || !isIdValid(userId)) {
+        if (!isIdValid(userId)) {
             res.status(400).json({ error: 'invalid-data' });
             return;
         }
         
         try {
             if (mustBeDeleted) {
-                await projectService.removeProject(Number(userId), projectName);
+                await projectService.removeProject(Number(userId), projectId);
             }
             else {
-                await projectService.leaveProject(Number(userId), projectName);
+                await projectService.leaveProject(Number(userId), projectId);
             }
             res.status(200).send('Success');
         } catch (error) {

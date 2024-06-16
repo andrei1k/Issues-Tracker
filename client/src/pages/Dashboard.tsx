@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { FaTrashAlt, FaSignOutAlt } from "react-icons/fa";
 import '../styles/Dashboard.css';
 import projectService, { Project } from '../services/ProjectService.ts';
 
@@ -33,9 +34,14 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
         }
     };
     
-    const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
-        await projectService.removeProject(userId, projectName, mustBeDeleted);
-        await viewProjects();
+    const removeProject = async (projectId: number, mustBeDeleted: boolean) => {
+        try {
+            await projectService.removeProject(userId, projectId, mustBeDeleted);
+            await viewProjects();
+        }
+        catch (error) {
+            console.log(error.message);
+        }
     };
 
     const addProject = async (projectName: string) => {
@@ -67,16 +73,16 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
         await addProject(projectName);
     };
 
-    const handleLeave: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+    const handleLeave: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
-        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
-        await removeProject(String(crrProjectName), false);
+        const projectId = event.currentTarget.getAttribute('data-projectid');
+        await removeProject(Number(projectId), false);
     };
 
-    const handleRemove: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+    const handleRemove: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
-        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
-        await removeProject(String(crrProjectName), true);
+        const projectId = event.currentTarget.getAttribute('data-projectid');
+        await removeProject(Number(projectId), true);
     };
 
     const handleView: React.MouseEventHandler<HTMLTableDataCellElement> = (event) => {
@@ -94,45 +100,52 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
             </Helmet>
             <div>
                 <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2>
-                <form onSubmit={handleSubmit}>
+                <form className='project-form' onSubmit={handleSubmit}>
                     <input 
+                        className='project-input'
                         type="text" 
                         placeholder="Enter project name" 
                         value={projectName} 
                         onChange={(e) => setProjectName(e.target.value)} 
                     />
-                    <button type="submit">Create Project</button>
+                    <button className='project-button' type="submit">Create Project</button>
                 </form>
-                {message && <p>{message}</p>}
-                <h3>My Projects:</h3>
-                <table className='project-table'>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th></th>
-                            <th></th>
-                            <th>Created at</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { projects.length > 0 && projects.map(project => (
-                            <tr key={project.id}>
-                                <td className='project-view'
-                                    onClick={handleView} 
+                {message && <p className='message'>{message}</p>}
+                <h3 className='section-title'>My Projects:</h3>
+                <div className='project-container'>
+                 {projects.map((project) => (
+                        <div className="project" key={project.id}>
+                            <div className="project-header">
+                                <div 
+                                    className="project-title" 
                                     data-projectid={project.id}
-                                    data-projectname={project.title}>{project.title}
-                                </td>
-                                <td className='button'>
-                                    <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
-                                </td>
-                                <td className='button'>
-                                    <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
-                                </td>
-                                <td>{new Date(project.createdAt).toUTCString()}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                    data-projectname={project.title}
+                                    onClick={handleView}>
+                                    {project.title}
+                                </div>
+                                <div className="project-date">
+                                    Created at: {new Date(project.createdAt).toUTCString()}
+                                </div>
+                            </div>
+                            <div className="project-actions">
+                                <div className='action'>
+                                    <FaSignOutAlt 
+                                        data-projectid={project.id}
+                                        onClick={handleLeave}
+                                    />
+                                    <span className='action-name'>Leave</span>
+                                </div>
+                                <div className='action'>
+                                    <FaTrashAlt
+                                        data-projectid={project.id} 
+                                        onClick={handleRemove}
+                                    />
+                                    <span className='action-name'>Delete</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    </div>
             </div>
         </div>
     );

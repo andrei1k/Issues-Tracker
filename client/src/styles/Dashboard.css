@@ -1,40 +1,126 @@
-.project-table {
-    width: 100%;
-    border-collapse: collapse;
+.project-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 10px;
-    max-width: 750px;
+    max-width: 100%;
     background-color: #f2f2f2;
-}
-.project-table tbody {
-    background-color: white;
-}
-.project-table th,
-.project-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.project-view {
+.project {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #ddd;
+    margin: 0.75em 0;
+    width: 100%;
+    padding: 15px;
+    padding-bottom: 5px;
+    border-radius: 1.75em;
+    box-shadow: 0 2px 4px #1A000000;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-title {
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
 }
 
+.project-date {
+    font-size: 14px;
+    color: #888;
+}
+
+.project-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.action {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.5em;
+    margin-top: 5px;
+}
+
+.action-name {
+    display: inline;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    font-size: 0.6em;
+    margin-top: 5px;
+}
+
+.action:hover .action-name {
+    opacity: 1;
+}
 
 @media (max-width: 450px) {
-    .project-table {
+    .project-container {
         width: 350px;
-        margin: 10px;
+        padding: 10px;
     }
 }
-.action-button {
-    cursor: pointer;
-    background-color: white;
-    font-size: 14px;
-    max-width: 50px;
-    border: none;
-    transition: background-color 0.5s ease;
-    border-radius: 5px;
+
+
+.project-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
-.action-button:hover {
-    background-color: lightcoral;
+
+.project-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.project-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0 5px 5px 0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.project-button:hover {
+    background-color: #0056b3;
+}
+
+.message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
 }

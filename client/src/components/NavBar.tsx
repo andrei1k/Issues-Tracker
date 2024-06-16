@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaAlignJustify, FaPlusCircle, FaHome, FaRegUserCircle, 
   FaSignOutAlt, FaSignInAlt, FaTachometerAlt, FaProjectDiagram, FaUserPlus } from "react-icons/fa";
 
-import "../styles/NavBarLoggedIn.css";
+import "../styles/NavBar.css";
 
 interface NavBarProps {
   userId: number,

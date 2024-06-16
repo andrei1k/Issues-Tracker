@@ -20,20 +20,20 @@ export class ProjectService {
         }        
     }
 
-    async removeProject(userId: number, projectName: string): Promise<void> {
+    async removeProject(userId: number, projectId: number): Promise<void> {
         const user = await User.query().findById(userId);
-        await user?.$relatedQuery('projects').delete().where('title', projectName);
+        await user?.$relatedQuery('projects').deleteById(projectId);
     }
 
-    async leaveProject(userId: number, projectName: string): Promise<void> {
+    async leaveProject(userId: number, projectId: number): Promise<void> {
         const user = await User.query().findById(userId);
-        const project = await Project.query().findOne({ title: projectName });
+        const project = await Project.query().findById(projectId);
         const projectUsers = await project?.$relatedQuery('users');
 
         if (projectUsers?.length === 1) {
-            await await user?.$relatedQuery('projects').delete().where('title', projectName);
+            await await user?.$relatedQuery('projects').deleteById(projectId);
         } else {
-            await user?.$relatedQuery('projects').unrelate().where('title', projectName);
+            await user?.$relatedQuery('projects').unrelate().where('id', projectId);
         }
     }
 }

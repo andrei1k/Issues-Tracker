@@ -16,7 +16,10 @@ const UserForm = ({ projectId, closeModal }: UserFormProps) => {
         event.preventDefault();
         try {
             await projectService.addUserInProject(projectId, firstName, lastName, email);
-            closeModal();
+            setMessage('Successfully added user!');
+            setTimeout(() => {
+                closeModal();
+            }, 1500);
         } catch(error) {       
             if (error.message === 'User is already added') {
                 setMessage('User is already added!');

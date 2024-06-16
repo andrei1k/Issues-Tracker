@@ -58,7 +58,8 @@ class ProjectService {
         {
             throw new Error('date-error');
         }
-        const user = await User.query().where('email', email)
+        const user = await User.query()
+            .where('email', email)
             .where('firstName', firstName)
             .where('lastName', lastName).first();
 

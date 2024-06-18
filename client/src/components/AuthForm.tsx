@@ -19,7 +19,6 @@ export interface LocalData {
 type FormData = Omit<LocalData, 'userId'>;
 
 function AuthForm({ onSubmit, formType }: AuthProps) {
-  // const [userId, setUserId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');

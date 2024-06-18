@@ -9,6 +9,19 @@ export interface IssueServiceModel {
     assignedTo?: number
 }
 
+const mapIssues = (issues: Issue[]) => {
+    return issues.map(issue => ({
+        id: issue.id,
+        title: issue.title,
+        description: issue.description,
+        priority: issue.priority,
+        status: issue.status?.name,
+        assignedTo: issue.assignedUser
+            ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}`
+            : null
+    }));
+};
+
 class IssueService {
 
     async createIssue(issueData: Partial<IssueServiceModel>) {  
@@ -16,7 +29,6 @@ class IssueService {
             const addedIssue = await Issue.query().insert(issueData);
             return addedIssue;
         } catch(err) {
-            console.log("here");
             throw new Error('Could not create issues');
         }
     }
@@ -46,21 +58,43 @@ class IssueService {
                                 .withGraphFetched('assignedUser')
                                 .withGraphFetched('status');
           
-            const issuesMapped = issues.map(issue => {
-                return {
-                    id: issue.id,
-                    title: issue.title,
-                    description: issue.description,
-                    priority: issue.priority,
-                    status: issue.status?.name,
-                    assignedTo: issue.assignedUser 
-                    ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}` 
-                    : null
-                }
-            });
+            const issuesMapped = mapIssues(issues);
+
             return issuesMapped;
         } catch(err) {
             throw new Error('Could not fetch issues'); 
+        }
+    }
+
+    async getAllIssuesForProjectByAssignee(projId: number, userId: number) {
+        try {
+            const issues = await Issue.query()
+                                .where('projectId', projId)
+                                .where('assignedTo', userId)
+                                .withGraphFetched('assignedUser')
+                                .withGraphFetched('status');
+                
+            const issuesMapped = mapIssues(issues);
+
+            return issuesMapped;
+        } catch (err) {
+            throw new Error('Could not fetch issues by assignee');
+        }
+    }
+
+    async getAllIssuesForProjectByPriority(projId: number, priority: number) {
+        try {
+            const issues = await Issue.query()
+                                .where('projectId', projId)
+                                .where('priority', priority)
+                                .withGraphFetched('assignedUser')
+                                .withGraphFetched('status');
+
+            const issuesMapped = mapIssues(issues);
+
+            return issuesMapped;
+        } catch(err) {
+            throw new Error('Could not fetch issues by priority'); 
         }
     }
 

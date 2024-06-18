@@ -11,7 +11,6 @@ interface NavBarProps {
   logOut: () => void;
 }
 
-
 function NavBarLoggedIn({ userId, isLoggedIn, logOut } : NavBarProps) {
   return (
     <nav className="navbar">

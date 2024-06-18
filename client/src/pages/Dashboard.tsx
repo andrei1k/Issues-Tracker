@@ -6,6 +6,7 @@ import '../styles/Dashboard.css';
 import projectService, { Project } from '../services/ProjectService.ts';
 import Modal from '../components/Modal.tsx';
 import UserForm from '../components/UserForm.tsx';
+import AddProjectForm from '../components/AddProject.tsx';
 
 interface DashboardProps {
     userId: number;
@@ -20,17 +21,24 @@ interface UserData {
 }
 
 function Dashboard({ userId, userInfo }: DashboardProps ) {
-    const [projectName, setProjectName] = useState('');
     const [projects, setProjects] = useState<Project[]>([]);
-    const [message, setMessage] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const[currentProjectId, setCurrentProjectId] = useState(0);
+    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const [projectSearch, setProjectSearch] = useState('');
+    const [currentProjectId, setCurrentProjectId] = useState(0);
     const navigate = useNavigate();
 
     const openModal = () => {
         setIsModalOpen(true);
     };
+
+    const openProjectModal = () => {
+        setIsProjectModalOpen(true);
+    };
+
+    const closeProjectModal = () => {
+        setIsProjectModalOpen(false);
+    }
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -56,34 +64,9 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
         }
     };
 
-    const addProject = async (projectName: string) => {
-        try {
-            await projectService.addProject(userId, projectName);
-            setMessage('Project created successfully!');
-            await viewProjects();
-        } catch (error) {
-            console.error('Error creating project:', error);
-            if (error.message === 'already-used-name') {
-                setMessage('Project name is already used!');
-            }
-            else if (error.message === 'empty-string') {
-                setMessage('Project must have a name!');
-            }
-            else {
-                setMessage('Failed to create project!');
-            }
-        }
-    };
-    
-
     useEffect(() => {
         viewProjects();
     }, []);
-
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
-        event.preventDefault();
-        await addProject(projectName);
-    };
 
     const handleAddUser: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
@@ -93,6 +76,11 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
         }
         openModal();
     } 
+
+    const handleCreateClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault();
+        openProjectModal();
+    }
 
     const handleLeave: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
@@ -106,12 +94,47 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
         await removeProject(Number(projectId), true);
     };
 
-    const handleView: React.MouseEventHandler<HTMLTableDataCellElement> = (event) => {
+    const handleView: React.MouseEventHandler<HTMLTableCellElement> = (event) => {
         event.preventDefault();
         const crrProjectId = event.currentTarget.getAttribute('data-projectid');
         const crrProjectName = event.currentTarget.getAttribute('data-projectname');
         localStorage.setItem('project', JSON.stringify({crrProjectId, crrProjectName}));
         navigate(`../${userId}/projects/${crrProjectId}`);
+    };
+
+    const sortByDate: React.ChangeEventHandler<HTMLSelectElement> = async (e) => {
+        e.preventDefault();
+        const option = e.target.value;
+        if (option === 'newer') {
+            const data = await projectService.viewSortedProjectsByDate(userId, true);
+            setProjects(data);
+        }
+        else if (option === 'older') {
+            const data = await projectService.viewSortedProjectsByDate(userId, false);
+            setProjects(data);
+        }
+    }
+
+    const sortByName: React.ChangeEventHandler<HTMLSelectElement> = async (e) => {
+        e.preventDefault();
+        const option = e.target.value;
+        if (option === 'a-z') {
+            const data = await projectService.viewSortedProjectsByDate(userId, true);
+            setProjects(data);
+        }
+        else if (option === 'z-a') {
+            const data = await projectService.viewSortedProjectsByDate(userId, false);
+            setProjects(data);
+        }
+    }
+
+    const filterProjects = (): Project[] => {
+        if (projectSearch.trim() === '') {
+            return projects;
+        }
+        return projects.filter((project) =>
+            project.title.toLowerCase().includes(projectSearch.toLowerCase())
+        );
     };
 
     return (
@@ -121,20 +144,42 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
             </Helmet>
             <div>
                 <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2>
-                <form className='project-form' onSubmit={handleSubmit}>
-                    <input 
+                <form className='project-sort-container'>
+                    <input
                         className='project-input'
                         type="text" 
-                        placeholder="Enter project name" 
-                        value={projectName} 
-                        onChange={(e) => setProjectName(e.target.value)} 
+                        placeholder="Search project by name" 
+                        value={projectSearch}
+                        onChange={(e) => setProjectSearch(e.target.value)}
                     />
-                    <button className='project-button' type="submit">Create Project</button>
+                    <select className='project-select-sort' onChange={sortByDate}>
+                        <option disabled selected hidden>By Date</option>
+                        <option className='project-option-sort' value='newer'>Newer projects first</option>
+                        <option className='project-option-sort' value='older'>Older projects first</option>
+                    </select>
+                    <select className='project-select-sort' onChange={sortByName}>
+                        <option disabled selected hidden>By Name</option>
+                        <option className='project-option-sort' value='a-z'>A-Z</option>
+                        <option className='project-option-sort' value='z-a'>Z-A</option>
+                    </select>
                 </form>
-                {message && <p className='message'>{message}</p>}
+
+                <form className='project-form'>
+                    <button 
+                        className='project-button' 
+                        type="submit"
+                        onClick={handleCreateClick}>
+                            Create Project
+                    </button>
+                </form>
+                <Modal
+                    isOpen={isProjectModalOpen}
+                    onClose={closeProjectModal}
+                    children={<AddProjectForm closeModal={closeProjectModal} viewProjects={viewProjects}/>}>
+                </Modal>
                 <h3 className='section-title'>My Projects:</h3>
                 <div className='project-container'>
-                 {projects.map((project) => (
+                 {filterProjects().map((project) => (
                         <div className="project" key={project.id}>
                             <div className="project-header">
                                 <div 

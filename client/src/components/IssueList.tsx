@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import "../styles/IssueList.css";
+import { Helmet } from "react-helmet";
+
 import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
-import { Helmet } from "react-helmet";
-import { getProjectInfo, getUserId } from "../utils/Data.tsx";
-import { useNavigate } from "react-router-dom";
-import issueService, { Issue } from "../services/IssueService.ts";
-import projectService from "../services/ProjectService.ts";
+import { getProjectInfo } from "../utils/Data.tsx";
 import Modal from "./Modal.tsx";
 import AddIssue from './AddIssue.tsx';
+import issueService, { Issue } from "../services/IssueService.ts";
+import projectService from "../services/ProjectService.ts";
+
+import "../styles/IssueList.css";
 
 interface Project {
   id: number;
@@ -26,16 +27,13 @@ export interface User {
 
 function IssueList() {
   const [project, setProject] = useState<Project>(defaultProject);
-  const [filter, setFilter] = useState<string>("");
+  const [issueSearch, setIssueSearch] = useState('');
   const [selectedPriority, setSelectedPriority] = useState<string>("");
-  const [selectedAssignee, setSelectedAssignee] = useState<string>("");
+  const [selectedAssignee, setSelectedAssignee] = useState<number>(0);
   const [issues, setIssues] = useState<Issue[]>([]);
-  const [filteredIssues, setFilteredIssues] = useState<Issue[]>([]);
   const [assignees, setAssignees] = useState<User[]>([]);
   const [gridView, setGridView] = useState<boolean>(true);
-  const [userId, setUserId] = useState<number>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -57,23 +55,36 @@ function IssueList() {
     }
   }
 
-  const filterIssues = () => {
-    let filtered: Issue[] = issues.filter((issue) => {
-      const textMatch: boolean = issue.title.toLowerCase().includes(filter.toLowerCase()) ||
-        issue.description.toLowerCase().includes(filter.toLowerCase());
-      const priorityMatch: boolean = selectedPriority === "" ||
-        parseInt(issue.priority) === parseInt(selectedPriority);
-      const assigneeMatch: boolean = selectedAssignee === "" ||
-        issue.assignedTo === selectedAssignee;
-      return textMatch && priorityMatch && assigneeMatch;
-    });
+  const filterByAssignee = async (userId: number) => {
+    try {
+      const data = await issueService.getIssuesByAssignee(project.id, userId);
+      setIssues(data);
+    } catch(err) {
 
-    setFilteredIssues(filtered);
+    }
+  }
+
+  const filterByPriority = async (priority: string) => {
+    try {
+      const data =  await issueService.getIssuesByPriority(project.id, parseInt(priority));
+      setIssues(data);
+    } catch(err) {
+
+    }
+  }
+
+  const filterIssues = (): Issue[] => {
+    if (issueSearch.trim() === '') {
+      return issues;
+    }
+    return issues.filter((issue) => 
+      issue.title.toLowerCase().includes(issueSearch.toLowerCase()) ||
+      issue.description.toLowerCase().includes(issueSearch.toLowerCase())
+    );
   };
 
   useEffect(() => {
     const crrProjectInfo = getProjectInfo();
-    setUserId(getUserId());
     setProject({ id: parseInt(crrProjectInfo.crrProjectId), 
       title: crrProjectInfo.crrProjectName });
   }, []);
@@ -86,9 +97,24 @@ function IssueList() {
   }, [project]);
 
   useEffect(() => {
-
     filterIssues();
-  }, [filter, selectedPriority, selectedAssignee, issues]);
+  }, [issueSearch, issues]);
+
+  useEffect(() => {
+    if (!parseInt(selectedPriority)) {
+      viewIssues();
+    } else {
+      filterByPriority(selectedPriority);
+    }
+  }, [selectedPriority]);
+
+  useEffect(() => {
+    if (!selectedAssignee) {
+      viewIssues();
+    } else {
+      filterByAssignee(selectedAssignee);
+    }
+  }, [selectedAssignee]);
 
   const handleGridClick = () => {
     setGridView(true);
@@ -121,7 +147,6 @@ function IssueList() {
   const handleAddIssueButton = (e) => {
     e.preventDefault();
     openModal();
-    // navigate(`../${userId}/projects/${project.id}/add-issue`);
   }
 
   return (
@@ -136,8 +161,8 @@ function IssueList() {
         children={<AddIssue closeModal={closeModal} viewIssues={viewIssues}/>}>
       </Modal>
       <FilterForm
-        filter={filter}
-        setFilter={setFilter}
+        issueSearch={issueSearch}
+        setIssueSearch={setIssueSearch}
         selectedPriority={selectedPriority}
         setSelectedPriority={setSelectedPriority}
         selectedAssignee={selectedAssignee}
@@ -149,7 +174,7 @@ function IssueList() {
       />
       <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
-        {filteredIssues.map((issue) => (
+        {filterIssues().map((issue) => (
             <IssueItem issue={issue} removeIssue={removeIssue} />
         ))}
       </ul>

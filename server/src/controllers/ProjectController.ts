@@ -19,6 +19,40 @@ class ProjectController {
         }
     }
 
+    async getSortByDate(req: Request, res: Response): Promise<void> {
+        const userId = req.params.userId;
+        const order = req.params.order;
+         try {
+            if (order === 'increasing') {
+                const projects = await projectService.viewSortedByDate(parseInt(userId), true);
+                res.status(200).json(projects);
+            }
+            else if(order === 'decreasing') {
+                const projects = await projectService.viewSortedByDate(parseInt(userId), false);
+                res.status(200).json(projects);
+            }
+        } catch(error) {
+            res.status(500).json( {error: 'error-getting-projects'} );
+        }
+    }
+
+    async getSortByName(req: Request, res: Response): Promise<void> {
+        const userId=req.params.userId;
+        const order = req.params.order;
+        try {
+            if (order === 'a-z') {
+                const projects = await projectService.viewSortedByName(parseInt(userId), true);
+                res.status(200).json(projects);
+            }
+            else if(order === 'z-a') {
+                const projects = await projectService.viewSortedByName(parseInt(userId), false);
+                res.status(200).json(projects);
+            }
+        } catch(error) {
+            res.status(500).json( {error: 'error-getting-projects'} );
+        }
+    }
+
     async addProject(req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
         const projectName = req.body.projectName;

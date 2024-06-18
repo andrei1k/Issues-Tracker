@@ -22,6 +22,43 @@ export class ProjectService {
         return await response.json();
     }
 
+    async viewSortedProjectsByDate(userId: number, increasing: boolean) {
+        const wayOfSort = increasing  ? 'increasing' : 'decreasing';
+        const response = await fetch(
+                `http://localhost:3001/projects/view/sorted-date/${wayOfSort}/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error fetching sorted projects by date');
+        }
+
+        return await response.json();
+    }
+
+    async viewSortedProjectsByName(userId: number, increasing: boolean) {
+        const wayOfSort = increasing ? 'a-z' : 'z-a';
+
+        const response = await 
+            fetch(`http://localhost:3001/projects/view/sorted-name/${wayOfSort}/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error fetching sorted projects by name');
+        }
+
+        return await response.json();
+    }
+
     async removeProject(userId: number, projectId: number, mustBeDeleted: boolean) {
             const response = await fetch(`http://localhost:3001/projects/remove/${userId}`, {
                 method: 'DELETE',

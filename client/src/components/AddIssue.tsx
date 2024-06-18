@@ -1,9 +1,11 @@
 import React, { useState, FormEvent, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useNavigate, useParams } from "react-router-dom";
-import "../styles/AddIssue.css";
-import { getToken, getUserId } from "../utils/Data.tsx";
+import { useParams } from "react-router-dom";
+
+import { getToken } from "../utils/Data.tsx";
 import projectService from "../services/ProjectService.ts";
+
+import "../styles/AddIssue.css";
 
 interface Issue {
   id?: number;
@@ -37,7 +39,6 @@ function AddIssue({closeModal, viewIssues}: ModalProp ) {
 
   const { projectId } = useParams<{ projectId: string }>();
 
-  const navigate = useNavigate();
   const getUsersForProject = async () => {
     try {
       if (!projectId) {

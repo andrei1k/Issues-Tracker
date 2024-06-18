@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import projectService from '../services/ProjectService.ts';
 import '../styles/UserForm.css';
+
 interface UserFormProps {
     projectId: number;
     closeModal: () => void;
@@ -37,6 +38,7 @@ const UserForm = ({ projectId, closeModal }: UserFormProps) => {
     return (
         <form onSubmit={closeModal}>
             <div className='user-form'>
+                <h2>Add user in the project</h2>
                 <label htmlFor="name">First name:</label>
                 <input
                     type="text"
@@ -55,9 +57,9 @@ const UserForm = ({ projectId, closeModal }: UserFormProps) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
+                {message && <p>{message}</p>}
+                <button onClick={handleSubmit} type="submit">Submit</button>
             </div>
-            {message && <p>{message}</p>}
-            <button onClick={handleSubmit} type="submit">Submit</button>
         </form>
     );
 };

@@ -12,6 +12,31 @@ class ProjectService {
         return projects;
     }
 
+    async viewSortedByDate(userId: number, increasing: boolean): Promise<Project[] | undefined> {
+        const user = await User.query().findById(userId);
+        let projects: Project[] | undefined;
+        if (increasing === true) {
+            projects = await user?.$relatedQuery('projects').orderBy('createdAt', 'desc');
+        }
+        else {
+            projects = await user?.$relatedQuery('projects').orderBy('createdAt', 'asc');
+        }
+
+        return projects;
+    }
+    
+    async viewSortedByName(userId: number, increasing: boolean): Promise<Project[] | undefined> {
+        const user = await User.query().findById(userId);
+        let projects: Project[] | undefined;
+        if (increasing === true) {
+            projects = await user?.$relatedQuery('projects').orderBy('title', 'desc');
+        }
+        else {
+            projects = await user?.$relatedQuery('projects').orderBy('title', 'asc');
+        }
+
+        return projects;
+    }
     async checkAlreadyCreated(projectName: string, userId: number): Promise<void> {
         const user = await User.query().findById(userId);
         const projects = await user?.$relatedQuery('projects');

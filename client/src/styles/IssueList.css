@@ -7,6 +7,7 @@
     border: 0.1em solid #ccc;
     border-radius: 0.25em;
     font-size: 16px;
+    outline: none;
 }
 
 .filter-form{
@@ -18,6 +19,7 @@
 .icon {
     font-size: 30px;
     margin-right: 0.025em;
+    cursor: pointer;
 }
 
 .clicked {
@@ -29,6 +31,7 @@
 .priority-select,
 .assignee-select {
     width: 8.5em;
+    cursor: pointer;
 }
 
 /* списък с issues */
@@ -77,6 +80,14 @@
     margin-bottom: 0.25em;
 }
 
+.button-field {
+    list-style: none;
+    font-size: 1.25em;
+    text-align: right;
+    margin-bottom: 0.25em;
+    cursor: pointer;
+}
+
 .field-label {
     font-weight: bold;
 }
@@ -87,7 +98,7 @@
 
 @media screen and (max-width: 768px) {
     .grid-view .issue-item{
-      width: 40%; /* Променете ширината според вашите изисквания */
+      width: 40%;
     }
     
 }

@@ -1,18 +1,44 @@
 import React from "react";
+import { FaTrashCan } from "react-icons/fa6";
+import '../styles/IssueList.css';
 
 interface Issue {
+  id?: number;
   title: string;
   description: string;
   priority: string;
   assignedTo: string;
-  deadline: string;
 }
 
 interface Props {
   issue: Issue;
+  removeIssue: (issueId: number) => void;
 }
 
-function IssueItem({ issue }: Props) {
+
+
+function IssueItem({ issue, removeIssue }: Props) {
+
+  const handleClickRemove = (e) => {
+    e.preventDefault();
+    if (issue.id) {
+      removeIssue(issue.id);
+    }
+
+  }
+  const getPriorityText = (priority: string) => {
+    switch (parseInt(priority)) {
+      case 1:
+        return 'High';
+      case 2:
+        return 'Medium';
+      case 3:
+        return 'Low';
+      default:
+        return 'Unknown';
+    }
+  }
+  
   return (
     <li className="issue-item">
       <ul className="issues">
@@ -26,15 +52,14 @@ function IssueItem({ issue }: Props) {
         </li>
         <li className="issue-field">
           <span className="field-label">Priority:</span>
-          <span className="field-value">{issue.priority}</span>
+          <span className="field-value">{getPriorityText(issue.priority)}</span>
         </li>
         <li className="issue-field">
           <span className="field-label">Assigned To:</span>
           <span className="field-value">{issue.assignedTo}</span>
         </li>
-        <li className="issue-field">
-          <span className="field-label">Deadline:</span>
-          <span className="field-value">{issue.deadline}</span>
+        <li className="button-field">
+          <FaTrashCan onClick={handleClickRemove}/>
         </li>
       </ul>
     </li>

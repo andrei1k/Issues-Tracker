@@ -1,22 +1,24 @@
-import React from "react";
+import React, {useRef} from "react";
 import { CiGrid41, CiBoxList } from "react-icons/ci";
+import { User } from "./IssueList.tsx";
+
 
 interface FilterFormProps {
-  filter: string;
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
+  issueSearch: string;
+  setIssueSearch: React.Dispatch<React.SetStateAction<string>>;
   selectedPriority: string;
   setSelectedPriority: React.Dispatch<React.SetStateAction<string>>;
-  selectedAssignee: string;
-  setSelectedAssignee: React.Dispatch<React.SetStateAction<string>>;
-  assignees: string[];
+  selectedAssignee: number;
+  setSelectedAssignee: React.Dispatch<React.SetStateAction<number>>;
+  assignees: User[];
   handleGridClick: () => void;
   handleBoxClick: () => void;
   gridView: boolean;
 }
 
 function FilterForm({
-  filter,
-  setFilter,
+  issueSearch,
+  setIssueSearch,
   selectedPriority,
   setSelectedPriority,
   selectedAssignee,
@@ -26,6 +28,7 @@ function FilterForm({
   handleBoxClick,
   gridView,
 }: FilterFormProps) {
+
   return (
     <div className="filter-form">
       <CiGrid41
@@ -38,8 +41,8 @@ function FilterForm({
       />
       <input
         type="text"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
+        value={issueSearch}
+        onChange={(e) => setIssueSearch(e.target.value)}
         placeholder="Search..."
         className="filter-input"
       />
@@ -49,19 +52,21 @@ function FilterForm({
         className="priority-select"
       >
         <option value="">All Priorities</option>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
+        <option value="1">High</option>
+        <option value="2">Medium</option>
+        <option value="3">Low</option>
       </select>
       <select
         value={selectedAssignee}
-        onChange={(e) => setSelectedAssignee(e.target.value)}
+        onChange={(e) => setSelectedAssignee(parseInt(e.target.value))}
         className="assignee-select"
       >
         <option value="">All Assignees</option>
-        {assignees.map((assignee, index) => (
-          <option key={index} value={assignee}>
-            {assignee}
+        {assignees?.map(user => (
+          <option 
+            key={user.id} 
+            value={user.id}>
+              {user.firstName} {user.lastName} - {user.email}
           </option>
         ))}
       </select>

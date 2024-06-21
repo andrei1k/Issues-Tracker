@@ -19,7 +19,6 @@ export interface LocalData {
 type FormData = Omit<LocalData, 'userId'>;
 
 function AuthForm({ onSubmit, formType }: AuthProps) {
-  const [userId, setUserId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +27,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [passwordStrong, setPasswordStrong] = useState(true);
   const [message, setMessage] = useState('');
-  const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
@@ -103,14 +101,13 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
 
       const localUserId = data.currentUser.id;
-      setUserId(data.currentUser.id);
+      // setUserId(data.currentUser.id);
       const localData: LocalData = {
         firstName: data.currentUser.firstName,
         lastName: data.currentUser.lastName,
         email: data.currentUser.email,
       }
   
-      setSuccess(true);
       setLoading(false);
       onSubmit(localUserId, localData, rememberMe, data.token);
 

@@ -1,16 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaAlignJustify, FaPlusCircle, FaHome, FaRegUserCircle, 
+import { FaHome, FaRegUserCircle, 
   FaSignOutAlt, FaSignInAlt, FaTachometerAlt, FaProjectDiagram, FaUserPlus } from "react-icons/fa";
 
-import "../styles/NavBarLoggedIn.css";
+import "../styles/NavBar.css";
 
 interface NavBarProps {
   userId: number,
   isLoggedIn: boolean;
   logOut: () => void;
 }
-
 
 function NavBarLoggedIn({ userId, isLoggedIn, logOut } : NavBarProps) {
   return (

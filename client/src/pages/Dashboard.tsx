@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { FaTrashAlt, FaSignOutAlt, FaUserPlus } from "react-icons/fa";
 import '../styles/Dashboard.css';
+import projectService, { Project } from '../services/ProjectService.ts';
+import Modal from '../components/Modal.tsx';
+import UserForm from '../components/UserForm.tsx';
+import AddProjectForm from '../components/AddProject.tsx';
 
 interface DashboardProps {
     userId: number;
     userInfo: UserData;
-    token: string; 
 }
 
 interface UserData {
@@ -15,121 +19,121 @@ interface UserData {
     email: string;
 }
 
-function Dashboard({ userId, userInfo, token }: DashboardProps ) {
-    const [projectName, setProjectName] = useState('');
-    const [projects, setProjects] = useState<{ id:Number, title: string, createdAt: string }[]>([]);
-    const [message, setMessage] = useState('');
+function Dashboard({ userId, userInfo }: DashboardProps ) {
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const [projectSearch, setProjectSearch] = useState('');
+    const [currentProjectId, setCurrentProjectId] = useState(0);
     const navigate = useNavigate();
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const openProjectModal = () => {
+        setIsProjectModalOpen(true);
+    };
+
+    const closeProjectModal = () => {
+        setIsProjectModalOpen(false);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const viewProjects = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/projects/view/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
-                }
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error fetching projects');
-            }
-    
-            const data = await response.json();
-            setProjects(data.projects);
-            return data;
-        } catch (error) {
+            const data = await projectService.viewProjects(userId);
+            setProjects(data);
+        }
+        catch(error) {
             console.log(error.message);
         }
     };
     
-    const removeProject = async (projectName: string, mustBeDeleted: boolean) => {
+    const removeProject = async (projectId: number, mustBeDeleted: boolean) => {
         try {
-            const response = await fetch(`http://localhost:3001/projects/remove/${userId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
-                },
-                body: JSON.stringify( {projectName, mustBeDeleted} )
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error deleting projects');
-            }
-            
-            viewProjects();
-        } catch(error) {
-            setMessage(error.message);
+            await projectService.removeProject(userId, projectId, mustBeDeleted);
+            await viewProjects();
+        }
+        catch (error) {
+            console.log(error.message);
         }
     };
-
-    const addProject = async (projectName: string) => {
-        try {
-            if (projectName === '') {
-                throw new Error('empty-string');
-            }
-            const response = await fetch(`http://localhost:3001/projects/add/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ projectName })
-            });
-
-            if (response.status === 400) {
-                throw new Error('already-used-name');
-            }
-
-            if (!response.ok) {
-                throw new Error('Error creating project');
-            }
-
-            setMessage('Project created successfully!');
-            viewProjects();
-        } catch (error) {
-            console.error('Error creating project:', error);
-            if (error.message === 'already-used-name') {
-                setMessage('Project name is already used!');
-            }
-            else if (error.message === 'empty-string') {
-                setMessage('Project must have a name!');
-            }
-            else {
-                setMessage('Failed to create project!');
-            }
-        }
-    };
-    
 
     useEffect(() => {
         viewProjects();
     }, []);
 
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    const handleAddUser: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
-        await addProject(projectName);
+        const projectId = event.currentTarget.getAttribute('data-projectid');
+        if (projectId !== null) {
+            setCurrentProjectId(parseInt(projectId));
+        }
+        openModal();
+    } 
+
+    const handleCreateClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault();
+        openProjectModal();
+    }
+
+    const handleLeave: React.MouseEventHandler<SVGAElement> = async (event) => {
+        event.preventDefault();
+        const projectId = event.currentTarget.getAttribute('data-projectid');
+        await removeProject(Number(projectId), false);
     };
 
-    const handleLeave: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+    const handleRemove: React.MouseEventHandler<SVGAElement> = async (event) => {
         event.preventDefault();
-        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
-        await removeProject(String(crrProjectName), false);
+        const projectId = event.currentTarget.getAttribute('data-projectid');
+        await removeProject(Number(projectId), true);
     };
 
-    const handleRemove: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
-        event.preventDefault();
-        const crrProjectName = event.currentTarget.getAttribute('data-projectname');
-        await removeProject(String(crrProjectName), true);
-    };
-
-    const handleView: React.MouseEventHandler<HTMLTableDataCellElement> = (event) => {
+    const handleView: React.MouseEventHandler<HTMLTableCellElement> = (event) => {
         event.preventDefault();
         const crrProjectId = event.currentTarget.getAttribute('data-projectid');
         const crrProjectName = event.currentTarget.getAttribute('data-projectname');
         localStorage.setItem('project', JSON.stringify({crrProjectId, crrProjectName}));
         navigate(`../${userId}/projects/${crrProjectId}`);
+    };
+
+    const sortByDate: React.ChangeEventHandler<HTMLSelectElement> = async (e) => {
+        e.preventDefault();
+        const option = e.target.value;
+        if (option === 'newer') {
+            const data = await projectService.viewSortedProjectsByDate(userId, true);
+            setProjects(data);
+        }
+        else if (option === 'older') {
+            const data = await projectService.viewSortedProjectsByDate(userId, false);
+            setProjects(data);
+        }
+    }
+
+    const sortByName: React.ChangeEventHandler<HTMLSelectElement> = async (e) => {
+        e.preventDefault();
+        const option = e.target.value;
+        if (option === 'a-z') {
+            const data = await projectService.viewSortedProjectsByDate(userId, true);
+            setProjects(data);
+        }
+        else if (option === 'z-a') {
+            const data = await projectService.viewSortedProjectsByDate(userId, false);
+            setProjects(data);
+        }
+    }
+
+    const filterProjects = (): Project[] => {
+        if (projectSearch.trim() === '') {
+            return projects;
+        }
+        return projects.filter((project) =>
+            project.title.toLowerCase().includes(projectSearch.toLowerCase())
+        );
     };
 
     return (
@@ -139,45 +143,86 @@ function Dashboard({ userId, userInfo, token }: DashboardProps ) {
             </Helmet>
             <div>
                 <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2>
-                <form onSubmit={handleSubmit}>
-                    <input 
+                <form className='project-sort-container'>
+                    <input
+                        className='project-input'
                         type="text" 
-                        placeholder="Enter project name" 
-                        value={projectName} 
-                        onChange={(e) => setProjectName(e.target.value)} 
+                        placeholder="Search project by name" 
+                        value={projectSearch}
+                        onChange={(e) => setProjectSearch(e.target.value)}
                     />
-                    <button type="submit">Create Project</button>
+                    <select className='project-select-sort' onChange={sortByDate}>
+                        <option disabled selected hidden>By Date</option>
+                        <option className='project-option-sort' value='newer'>Newer projects first</option>
+                        <option className='project-option-sort' value='older'>Older projects first</option>
+                    </select>
+                    <select className='project-select-sort' onChange={sortByName}>
+                        <option disabled selected hidden>By Name</option>
+                        <option className='project-option-sort' value='a-z'>A-Z</option>
+                        <option className='project-option-sort' value='z-a'>Z-A</option>
+                    </select>
                 </form>
-                {message && <p>{message}</p>}
-                <h3>My Projects:</h3>
-                <table className='project-table'>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th></th>
-                            <th></th>
-                            <th>Created at</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {projects.map((project, index) => (
-                            <tr key={index}>
-                                <td className='project-view'
-                                    onClick={handleView} 
+
+                <form className='project-form'>
+                    <button 
+                        className='project-button' 
+                        type="submit"
+                        onClick={handleCreateClick}>
+                            Create Project
+                    </button>
+                </form>
+                <Modal
+                    isOpen={isProjectModalOpen}
+                    onClose={closeProjectModal}
+                    children={<AddProjectForm closeModal={closeProjectModal} viewProjects={viewProjects}/>}>
+                </Modal>
+                <h3 className='section-title'>My Projects:</h3>
+                <div className='project-container'>
+                 {filterProjects().map((project) => (
+                        <div className="project" key={project.id}>
+                            <div className="project-header">
+                                <div 
+                                    className="project-title" 
                                     data-projectid={project.id}
-                                    data-projectname={project.title}>{project.title}
-                                </td>
-                                <td className='button'>
-                                    <button className='action-button' onClick={handleLeave} data-projectname={project.title}>Leave</button>
-                                </td>
-                                <td className='button'>
-                                    <button className='action-button' onClick={handleRemove} data-projectname={project.title}>Delete</button>
-                                </td>
-                                <td>{new Date(project.createdAt).toUTCString()}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                    data-projectname={project.title}
+                                    onClick={handleView}>
+                                    {project.title}
+                                </div>
+                                <div className="project-date">
+                                    Created at: {new Date(project.createdAt).toUTCString()}
+                                </div>
+                            </div>
+                            <div className="project-actions">
+                                <div className='action'>
+                                    <FaUserPlus 
+                                        data-projectid={project.id} 
+                                        onClick={handleAddUser}/>
+                                    <span className='action-name'>Add user</span>
+                                    <Modal 
+                                        isOpen={isModalOpen} 
+                                        onClose={closeModal} 
+                                        children={<UserForm projectId={currentProjectId} closeModal={closeModal}/>}>
+                                    </Modal>
+                                </div>
+                                <div className='action'>
+                                    <FaSignOutAlt 
+                                        data-projectid={project.id}
+                                        onClick={handleLeave}
+                                    />
+                                    <span className='action-name'>Leave</span>
+                                </div>
+                                <div className='action'>
+                                    <FaTrashAlt
+                                        data-projectid={project.id} 
+                                        onClick={handleRemove}
+                                    />
+                                    <span className='action-name'>Delete</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    ))}
+                    </div>
             </div>
         </div>
     );

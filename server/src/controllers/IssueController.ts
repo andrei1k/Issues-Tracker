@@ -45,6 +45,28 @@ class IssueController {
         }
     }
 
+    async getAllIssueForProjectByAssignee(req: Request, res: Response) {
+        try {
+            const projectId = parseInt(req.params.projectId);
+            const userId = parseInt(req.params.userId);
+            const issues = await issueService.getAllIssuesForProjectByAssignee(projectId, userId);
+            res.status(200).json(issues);
+        } catch(err) {
+            res.status(500).json({error: err});
+        }
+    }
+
+    async getAllIssueForProjectByPriority(req: Request, res: Response) {
+        try {
+            const projectId = parseInt(req.params.projectId);
+            const priority = parseInt(req.params.priority);
+            const issues = await issueService.getAllIssuesForProjectByPriority(projectId, priority);
+            res.status(200).json(issues);
+        } catch(err) {
+            res.status(500).json({error: err});
+        }
+    }
+
     async getIssueById(req: Request, res: Response) {
         try {
             const issueId = parseInt(req.params.issueId);

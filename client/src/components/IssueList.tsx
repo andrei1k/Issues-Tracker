@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
-import "../styles/IssueList.css";
+import { Helmet } from "react-helmet";
+
 import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
-import { Helmet } from "react-helmet";
-import { getProjectInfo, getToken, getUserId } from "../utils/Data.tsx";
-import { Link, useNavigate } from "react-router-dom";
+import { getProjectInfo } from "../utils/Data.tsx";
+import Modal from "./Modal.tsx";
+import AddIssue from './AddIssue.tsx';
+import issueService, { Issue } from "../services/IssueService.ts";
+import projectService from "../services/ProjectService.ts";
 
-interface Issue {
-  id?: number;
-  title: string;
-  description: string;
-  priority: string;
-  assignedTo: string;
-  deadline: string;
-}
+import "../styles/IssueList.css";
 
 interface Project {
   id: number;
@@ -22,68 +18,103 @@ interface Project {
 
 const defaultProject = {id: 0, title: ''};
 
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 function IssueList() {
   const [project, setProject] = useState<Project>(defaultProject);
-  const [filter, setFilter] = useState<string>("");
+  const [issueSearch, setIssueSearch] = useState('');
   const [selectedPriority, setSelectedPriority] = useState<string>("");
-  const [selectedAssignee, setSelectedAssignee] = useState<string>("");
+  const [selectedAssignee, setSelectedAssignee] = useState<number>(0);
   const [issues, setIssues] = useState<Issue[]>([]);
-  const [filteredIssues, setFilteredIssues] = useState<Issue[]>([]);
-  const [assignees, setAssignees] = useState<string[]>([]);
+  const [assignees, setAssignees] = useState<User[]>([]);
   const [gridView, setGridView] = useState<boolean>(true);
-  const [userId, setUserId] = useState<number>();
-  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   const issuesFromLocalStorage: Issue[] = JSON.parse(localStorage.getItem("issues") || "[]");
-  //   setIssues(issuesFromLocalStorage);
-  //   setFilteredIssues(issuesFromLocalStorage);
-  
-  //   const uniqueAssignees: string[] = Array.from(
-  //     new Set(issuesFromLocalStorage.map((issue) => issue.assignedTo))
-  //   );
-  //   setAssignees(uniqueAssignees);
-  // }, []);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const getUsersForProject = async () => {
+    try {
+      if (!project.id) {
+        return;
+      }
+      const users = await projectService.getUsersFromProject(project.id);
+      setAssignees(users);
+    } catch(error) {
+      console.error("Error fetching users: ", error);
+    }
+  }
+
+  const filterByAssignee = async (userId: number) => {
+    try {
+      const data = await issueService.getIssuesByAssignee(project.id, userId);
+      setIssues(data);
+    } catch(err) {
+
+    }
+  }
+
+  const filterByPriority = async (priority: string) => {
+    try {
+      const data =  await issueService.getIssuesByPriority(project.id, parseInt(priority));
+      setIssues(data);
+    } catch(err) {
+
+    }
+  }
+
+  const filterIssues = (): Issue[] => {
+    if (issueSearch.trim() === '') {
+      return issues;
+    }
+    return issues.filter((issue) => 
+      issue.title.toLowerCase().includes(issueSearch.toLowerCase()) ||
+      issue.description.toLowerCase().includes(issueSearch.toLowerCase())
+    );
+  };
 
   useEffect(() => {
     const crrProjectInfo = getProjectInfo();
-    setUserId(getUserId());
-    setProject({ id: parseInt(crrProjectInfo.crrProjectId), title: crrProjectInfo.crrProjectName });
+    setProject({ id: parseInt(crrProjectInfo.crrProjectId), 
+      title: crrProjectInfo.crrProjectName });
   }, []);
   
   useEffect(() => {
     if (project.id !== defaultProject.id) {
       viewIssues();
+      getUsersForProject();
     }
   }, [project]);
 
-  
-
   useEffect(() => {
-    const filterIssues = () => {
-      let filtered: Issue[] = issues.filter((issue) => {
-        const textMatch: boolean = issue.title.toLowerCase().includes(filter.toLowerCase()) ||
-          issue.description.toLowerCase().includes(filter.toLowerCase());
-        const priorityMatch: boolean = selectedPriority === "" ||
-          issue.priority.toLowerCase() === selectedPriority.toLowerCase();
-        const assigneeMatch: boolean = selectedAssignee === "" ||
-          issue.assignedTo.toLowerCase() === selectedAssignee.toLowerCase();
-
-        return textMatch && priorityMatch && assigneeMatch;
-      });
-
-      setFilteredIssues(filtered);
-    };
-
     filterIssues();
-  }, [filter, selectedPriority, selectedAssignee, issues]);
+  }, [issueSearch, issues]);
 
   useEffect(() => {
-    if (project.id !== defaultProject.id) {
+    if (!parseInt(selectedPriority)) {
       viewIssues();
+    } else {
+      filterByPriority(selectedPriority);
     }
-  }, [project]);  
+  }, [selectedPriority]);
+
+  useEffect(() => {
+    if (!selectedAssignee) {
+      viewIssues();
+    } else {
+      filterByAssignee(selectedAssignee);
+    }
+  }, [selectedAssignee]);
 
   const handleGridClick = () => {
     setGridView(true);
@@ -93,52 +124,29 @@ function IssueList() {
     setGridView(false);
   }
 
-  const removeIssue = async (event) => {
+  const removeIssue = async (issueId: number ) => {
     try {
-      const currentIssueId = event.currentTarget.getAttribute('data-issueId');
-      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/remove/${currentIssueId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getToken()}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error removing project');
-        }
-
-        await viewIssues();
-    } catch (error) {
-        console.log(error.message);
+      await issueService.removeIssue(project.id, issueId);
+      await viewIssues();
+    }
+    catch(error) {
+      console.log(error.message);
     }
   }
 
   const viewIssues = async () => {
     try {
-      const response = await fetch(`http://0.0.0.0:3001/projects/${project.id}/issues/all/`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getToken()}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error fetching projects');
-        }
-
-        const data = await response.json();
-        setIssues(data);
-        return data;
-    } catch (error) {
-        console.log(error.message);
+      const data =  await issueService.getIssues(project.id);
+      setIssues(data);
+    }
+    catch(error) {
+      console.log(error.message);
     }
   }
   
   const handleAddIssueButton = (e) => {
     e.preventDefault();
-    navigate(`../${userId}/projects/${project.id}/add-issue`);
+    openModal();
   }
 
   return (
@@ -147,9 +155,14 @@ function IssueList() {
         <title>Issues | Issue Tracker</title>
       </Helmet>
       <h2>Issue List</h2>
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        children={<AddIssue closeModal={closeModal} viewIssues={viewIssues}/>}>
+      </Modal>
       <FilterForm
-        filter={filter}
-        setFilter={setFilter}
+        issueSearch={issueSearch}
+        setIssueSearch={setIssueSearch}
         selectedPriority={selectedPriority}
         setSelectedPriority={setSelectedPriority}
         selectedAssignee={selectedAssignee}
@@ -160,10 +173,9 @@ function IssueList() {
         gridView={gridView}
       />
       <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
-      {/* <Link to={`${userId}/projects/${project.id}/add-issue`} className="home-button">Add Issue</Link> */}
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
-        {filteredIssues.map((issue, index) => (
-          <IssueItem key={index} issue={issue} />
+        {filterIssues().map((issue) => (
+            <IssueItem issue={issue} removeIssue={removeIssue} />
         ))}
       </ul>
     </div>

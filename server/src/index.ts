@@ -21,7 +21,7 @@ app.use(express.json());
 app.use('/auth',authRouter);
 app.use('/projects', authMiddleware, projectRouter);
 app.use('/issues', authMiddleware, issueRouter);
-app.use('/statuses', statusRouter);
+app.use('/statuses', authMiddleware, statusRouter);
 
 app.listen(port, () => {
   console.log(`listening on ${port}`);

@@ -11,7 +11,6 @@ import AddProjectForm from '../components/AddProject.tsx';
 interface DashboardProps {
     userId: number;
     userInfo: UserData;
-    token: string; 
 }
 
 interface UserData {

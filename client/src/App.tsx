@@ -6,7 +6,6 @@ import PrivateOutlet from './routes/PrivateOutlet.tsx';
 
 import NavBarLoggedIn from "./components/NavBar.tsx";
 import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
-import AddIssue from "./components/AddIssue.tsx";
 import IssueList from "./components/IssueList.tsx";
 
 import Home from './pages/Home.tsx';
@@ -14,7 +13,7 @@ import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
-import { getIsLoggedIn, getToken, getUserId, getUserInfo, isEmptyUserData } from './utils/Data.tsx';
+import { getIsLoggedIn, getToken, isTokenExpired, getUserId, getUserInfo, isEmptyUserData, setToken, removeToken } from './utils/Data.tsx';
 import { WorkFlow } from './pages/WorkFlow.tsx';
 
 import './styles/App.css';
@@ -25,11 +24,16 @@ const defaultUserData: LocalData = {
 function App() {
     const [userData, setUserData] = useState<LocalData>(defaultUserData);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const token = getToken();
     const userId = getUserId();
+    const [rememberUser, setRememberUser] = useState<boolean>(false);
 
 
     useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (isTokenExpired() && !rememberUser && getToken()) {
+                logOut();
+            }
+        }, 30 * 60 * 1000);
         if (isEmptyUserData()) {
             const fetchedUserData = getUserInfo();
             const fetchedLogData = getIsLoggedIn();
@@ -39,10 +43,11 @@ function App() {
         else {
             localStorage.setItem('userId', JSON.stringify(0));
             localStorage.setItem('userData', JSON.stringify(defaultUserData));
-            localStorage.setItem('token', JSON.stringify(''));
             localStorage.setItem('isLoggedIn', JSON.stringify(false));
             setUserData(defaultUserData);
         }
+
+        return () => clearInterval(intervalId);
     }, []);
 
     const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string) => {
@@ -50,35 +55,28 @@ function App() {
 
         localStorage.setItem('userId', JSON.stringify(userId));
         localStorage.setItem('userData', JSON.stringify(updatedUserData.userInfo));
-        localStorage.setItem('token', JSON.stringify(updatedUserData.token));
         localStorage.setItem('isLoggedIn', JSON.stringify(updatedUserData.isLoggedIn));
-
+        
         setUserData(updatedUserData.userInfo);
         setIsLoggedIn(updatedUserData.isLoggedIn);
-
-        if (!rememberMe) {
-            const logoutTimer = setTimeout(() => {
-                localStorage.removeItem('logoutTimer');
-                logOut();
-                }, 10 * 60 * 1000); // 20 min
-                localStorage.setItem('logoutTimer', JSON.stringify(logoutTimer));
-                }
+        setRememberUser(rememberMe);
+        setToken(updatedUserData.token, rememberUser);
     };
 
     const logOut = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('userData');
-        localStorage.removeItem('token');
         localStorage.removeItem('isLoggedIn');
-        
+        removeToken();
+
         setUserData(defaultUserData);
         setIsLoggedIn(false);
+        setRememberUser(false);
 
-        if (localStorage.getItem('logoutTimer') !== null) {
+        if (getToken() && isTokenExpired()) {
+                window.location.href = '/login?sessionExpired=true';
+        } else {
             return <Navigate to='/'/>;
-        }
-        else {
-            window.location.href = '/login?sessionExpired=true';
         }
     };
 
@@ -101,9 +99,8 @@ function App() {
                         <Route path='/home' element={<HomeLoggedIn />} />
                         <Route path='/issues' element={<IssueList />} />
                         <Route path='/profile' element={<Profile />} />
-                        <Route path='/:userId/dashboard' element={<Dashboard userId={userId} userInfo={userData} token={token} />} />
+                        <Route path='/:userId/dashboard' element={<Dashboard userId={userId} userInfo={userData} />} />
                         <Route path='/:userId/projects/:projectId' element={<IssueList/>}/>
-                        <Route path='/:userId/projects/:projectId/add-issue' element={<AddIssue />} />
                         <Route path='/workflow' element={<WorkFlow/>}/>
                         <Route path='/*' element={<HomeLoggedIn />}/>
                 </Route>

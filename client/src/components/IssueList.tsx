@@ -10,6 +10,7 @@ import issueService, { Issue } from "../services/IssueService.ts";
 import projectService from "../services/ProjectService.ts";
 
 import "../styles/IssueList.css";
+import EditIssue from "./EditIssue.tsx";
 
 interface Project {
   id: number;
@@ -137,6 +138,7 @@ function IssueList() {
   const viewIssues = async () => {
     try {
       const data =  await issueService.getIssues(project.id);
+      console.log(data)
       setIssues(data);
     }
     catch(error) {
@@ -172,10 +174,11 @@ function IssueList() {
         handleBoxClick={handleBoxClick}
         gridView={gridView}
       />
-      <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
+      <button onClick={
+        handleAddIssueButton} className="home-button">Add Issue</button>
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filterIssues().map((issue) => (
-            <IssueItem issue={issue} removeIssue={removeIssue} />
+            <IssueItem issue={issue} removeIssue={removeIssue}/>
         ))}
       </ul>
     </div>

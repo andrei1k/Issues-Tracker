@@ -1,6 +1,7 @@
 import { getToken } from "../utils/Data.tsx";
 
 export interface Issue {
+    statusId: number;
     id: number;
     title: string;
     description: string;
@@ -11,7 +12,7 @@ export interface Issue {
 
 export class IssueService {
     async getIssues(projectId: number): Promise<Issue[]> {
-            const response = await fetch(`http://0.0.0.0:3001/projects/${projectId}/issues/all/`, {
+            const response = await fetch(`http://127.0.0.1:3001/projects/${projectId}/issues/all/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,6 +74,22 @@ export class IssueService {
         if (!response.ok) {
             throw new Error('Error removing project');
         }
+    }
+
+    async getIssue(issueId: number): Promise<Issue> {
+        const response = await fetch(`http://127.0.0.1:3001/issues/${issueId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error fetching issue');
+        }
+
+        return await response.json();
     }
 }
 

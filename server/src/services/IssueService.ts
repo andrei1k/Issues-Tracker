@@ -108,10 +108,8 @@ class IssueService {
                 title: issue.title,
                 description: issue.description,
                 priority: issue.priority,
-                status: issue.status?.name,
-                assignedTo: issue.assignedUser 
-                ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}` 
-                : null,
+                statusId: issue.statusId,
+                assignedTo: issue.assignedTo,
                 projectId: issue.projectId
             }
         } catch(err) {

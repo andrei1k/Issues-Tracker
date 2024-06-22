@@ -98,7 +98,7 @@ export class ProjectService {
 
     async getUsersFromProject(projectId: number) {
             const response = await fetch(`http://localhost:3001/projects/users`, {
-                method: 'POST',
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`,

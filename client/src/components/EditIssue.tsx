@@ -26,7 +26,7 @@ interface User {
 interface ModalProp {
   issueId?: number;
   closeModal: () => void; 
-  viewIssues: () => void;
+  viewIssues: () => Promise<void>;
 }
 
 function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
@@ -113,6 +113,7 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
     } catch (error) {
       console.error("Error updating issue:", error);
     }
+    
     await viewIssues();
     closeModal();
   };

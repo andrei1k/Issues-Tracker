@@ -99,6 +99,7 @@ function IssueList() {
 
   useEffect(() => {
     filterIssues();
+    console.log('edited');
   }, [issueSearch, issues]);
 
   useEffect(() => {
@@ -138,7 +139,6 @@ function IssueList() {
   const viewIssues = async () => {
     try {
       const data =  await issueService.getIssues(project.id);
-      console.log(data)
       setIssues(data);
     }
     catch(error) {
@@ -178,7 +178,7 @@ function IssueList() {
         handleAddIssueButton} className="home-button">Add Issue</button>
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filterIssues().map((issue) => (
-            <IssueItem issue={issue} removeIssue={removeIssue}/>
+            <IssueItem issue={issue} removeIssue={removeIssue} viewIssues={viewIssues}/>
         ))}
       </ul>
     </div>

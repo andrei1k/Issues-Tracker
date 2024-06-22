@@ -17,6 +17,7 @@ interface Issue {
 interface Props {
   issue: Issue;
   removeIssue: (issueId: number) => void;
+  viewIssues: () => Promise<void>;
 }
 
 interface Project {
@@ -27,7 +28,7 @@ interface Project {
 const defaultProject = {id: 0, title: ''};
 
 
-function IssueItem({ issue, removeIssue }: Props) {
+function IssueItem({ issue, removeIssue, viewIssues }: Props) {
 
   const handleClickRemove = (e) => {
     e.preventDefault();
@@ -51,7 +52,6 @@ function IssueItem({ issue, removeIssue }: Props) {
   }
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [issues, setIssues] = useState<Issue[]>([]);
   const [project, setProject] = useState<Project>(defaultProject);
   const [issueId, setIssueId] = useState<number>(0);
 
@@ -61,19 +61,7 @@ function IssueItem({ issue, removeIssue }: Props) {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    window.location.reload(); 
   };
-
-  const viewIssues = async () => {
-    try {
-      const data =  await issueService.getIssues(project.id);
-      console.log(data);
-      setIssues(data);
-    }
-    catch(error) {
-      console.log(error.message);
-    }
-  }
 
   useEffect(() => {
     const crrProjectInfo = getProjectInfo();

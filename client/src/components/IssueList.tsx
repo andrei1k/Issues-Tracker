@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom";
 
 import FilterForm from "./FilterForm.tsx";
 import IssueItem from "./IssueItem.tsx";
-import { getProjectInfo } from "../utils/Data.tsx";
 import Modal from "./Modal.tsx";
 import AddIssue from './AddIssue.tsx';
 import issueService, { Issue } from "../services/IssueService.ts";
 import projectService from "../services/ProjectService.ts";
 
 import "../styles/IssueList.css";
-import EditIssue from "./EditIssue.tsx";
-
-interface Project {
-  id: number;
-  title: string;
-}
-
-const defaultProject = {id: 0, title: ''};
 
 export interface User {
   id: number;
@@ -27,7 +19,6 @@ export interface User {
 }
 
 function IssueList() {
-  const [project, setProject] = useState<Project>(defaultProject);
   const [issueSearch, setIssueSearch] = useState('');
   const [selectedPriority, setSelectedPriority] = useState<string>("");
   const [selectedAssignee, setSelectedAssignee] = useState<number>(0);
@@ -35,6 +26,8 @@ function IssueList() {
   const [assignees, setAssignees] = useState<User[]>([]);
   const [gridView, setGridView] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { projectId } = useParams<{ projectId: string }>();
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -46,10 +39,7 @@ function IssueList() {
 
   const getUsersForProject = async () => {
     try {
-      if (!project.id) {
-        return;
-      }
-      const users = await projectService.getUsersFromProject(project.id);
+      const users = await projectService.getUsersFromProject(parseInt(projectId!));
       setAssignees(users);
     } catch(error) {
       console.error("Error fetching users: ", error);
@@ -58,19 +48,19 @@ function IssueList() {
 
   const filterByAssignee = async (userId: number) => {
     try {
-      const data = await issueService.getIssuesByAssignee(project.id, userId);
+      const data = await issueService.getIssuesByAssignee(parseInt(projectId!), userId);
       setIssues(data);
     } catch(err) {
-
+      console.log(err.message);
     }
   }
 
   const filterByPriority = async (priority: string) => {
     try {
-      const data =  await issueService.getIssuesByPriority(project.id, parseInt(priority));
+      const data =  await issueService.getIssuesByPriority(parseInt(projectId!), parseInt(priority));
       setIssues(data);
     } catch(err) {
-
+      console.log(err.message);
     }
   }
 
@@ -83,24 +73,15 @@ function IssueList() {
       issue.description.toLowerCase().includes(issueSearch.toLowerCase())
     );
   };
-
-  useEffect(() => {
-    const crrProjectInfo = getProjectInfo();
-    setProject({ id: parseInt(crrProjectInfo.crrProjectId), 
-      title: crrProjectInfo.crrProjectName });
-  }, []);
   
   useEffect(() => {
-    if (project.id !== defaultProject.id) {
-      viewIssues();
-      getUsersForProject();
-    }
-  }, [project]);
+    viewIssues();
+    getUsersForProject();
+  }, []);
 
   useEffect(() => {
     filterIssues();
-    console.log('edited');
-  }, [issueSearch, issues]);
+  }, [issueSearch]);
 
   useEffect(() => {
     if (!parseInt(selectedPriority)) {
@@ -128,7 +109,7 @@ function IssueList() {
 
   const removeIssue = async (issueId: number ) => {
     try {
-      await issueService.removeIssue(project.id, issueId);
+      await issueService.removeIssue(parseInt(projectId!), issueId);
       await viewIssues();
     }
     catch(error) {
@@ -138,7 +119,7 @@ function IssueList() {
 
   const viewIssues = async () => {
     try {
-      const data =  await issueService.getIssues(project.id);
+      const data =  await issueService.getIssues(parseInt(projectId!));
       setIssues(data);
     }
     catch(error) {

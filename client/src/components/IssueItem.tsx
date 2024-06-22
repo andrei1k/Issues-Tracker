@@ -6,12 +6,14 @@ import EditIssue from "./EditIssue.tsx";
 import issueService from "../services/IssueService.ts";
 import { getProjectInfo } from "../utils/Data.tsx";
 
-interface Issue {
+export interface Issue {
   id?: number;
   title: string;
   description: string;
   priority: string;
   assignedTo: string;
+  //vremenno shtoto vsichko e fukupnato
+  status?:string;
 }
 
 interface Props {

@@ -8,6 +8,8 @@ export interface Issue {
     priority: string;
     assignedTo: string;
     deadline: string;
+    //fukip
+    status?: string;
 }
 
 export class IssueService {

@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import statusService, { Status } from "../services/StatusService.ts";
 import "../styles/AddIssue.css";
+import "../styles/Workflow.css";
+import FloatingMessage from "./FloatingMessage.tsx";
 
-export default function AddStatus({statuses, fetchData}: {statuses: Status[], fetchData: () => Promise<void>}) {
+interface Props {
+    statuses: Status[],
+    fetchData: () => Promise<void>,
+    setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+}
 
-    const [error, setError] = useState(false)
+export default function AddStatus({statuses, fetchData, setErrorMessage}: Props) {
+
     const [inputValue, setInputValue] = useState('');
 
     const addHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -12,28 +19,27 @@ export default function AddStatus({statuses, fetchData}: {statuses: Status[], fe
 
         if (statuses.map(status => status.name.toLowerCase()).includes(inputValue.toLowerCase())) {
 
-            setError(true)
+            setErrorMessage("This status already exists.")
             return
         }
 
         await statusService.addStatus(inputValue)
-        setError(false)
+        setErrorMessage("")
         setInputValue('')
         fetchData()
         
     }
 
     const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setError(false);
+        setErrorMessage("");
         setInputValue(event.target.value);
     };
 
     return (
         <>
-            {error && 'This status already exists.'}
-            <form onSubmit={addHandler}>
-                <input className="input-field" type="text" onChange={inputHandler} value={inputValue}/>
-                
+            <form className="status-io" onSubmit={addHandler}>
+                <label form="inputStatus">Add new status:</label>
+                <input id="inputStatus" className="input-field" type="text" onChange={inputHandler} value={inputValue}/>
             </form>
         </>
     )

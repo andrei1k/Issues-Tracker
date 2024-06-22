@@ -4,10 +4,14 @@ import WorkFlowForm from "../components/WorkFlowForm.tsx";
 import RemoveStatus from "../components/RemoveStatus.tsx";
 import AddStatus from "../components/AddStatus.tsx";
 import { Helmet } from "react-helmet";
+import '../styles/Workflow.css';
+import StatusLink from "../components/StatusLink.tsx";
+import FloatingMessage from "../components/FloatingMessage.tsx";
 
 export function WorkFlow() {
 
     const [statuses, setStatuses] = useState<Status[]>()
+    const [errorMessage, setErrorMessage] = useState('')
 
 
     const fetchData = async () => {
@@ -23,10 +27,11 @@ export function WorkFlow() {
 
 
     return (
-        <>
-            {statuses && <AddStatus statuses={statuses} fetchData={fetchData} />}
-            {statuses && <RemoveStatus statuses={statuses} fetchData={fetchData} />}
-            {statuses && <WorkFlowForm statuses={statuses} fetchData={fetchData} />}
+        <div className="work-flow">
+            {errorMessage !== '' && <FloatingMessage message={errorMessage} />}
+            {statuses && <AddStatus statuses={statuses} fetchData={fetchData} setErrorMessage={setErrorMessage}/>}
+            {statuses && <RemoveStatus statuses={statuses} fetchData={fetchData} setErrorMessage={setErrorMessage}/>}
+            {statuses && <WorkFlowForm statuses={statuses} fetchData={fetchData} setErrorMessage={setErrorMessage}/>}
             
             <div>
             <Helmet>
@@ -35,13 +40,16 @@ export function WorkFlow() {
                 {
                     statuses?.map(status => {
                         return status.followingStatuses?.map(followingStatus => 
-                            <p key={`${status.id}${followingStatus.id}`}>
-                                {status.name} -&gt; {followingStatus.name}
-                            </p>)
+                            <StatusLink
+                                key={`${status.id}${followingStatus.id}`}
+                                fromStatus={status.name}
+                                toStatus={followingStatus.name}>
+                            </StatusLink>)
                     })
                 }
             </div>
-        </>
+            
+        </div>
 
 
     )

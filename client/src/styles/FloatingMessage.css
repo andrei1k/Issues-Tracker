@@ -1,0 +1,10 @@
+.float {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 1px solid rgb(60, 0, 0);
+    box-shadow: 2px 2px 8px rgb(60, 0, 0);
+    margin: 10px;
+    padding: 10px;
+    color: rgb(60, 0, 0);
+}

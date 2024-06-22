@@ -1,3 +1,5 @@
+import { getToken } from "../utils/Data.tsx";
+
 export interface Status {
     id: number
     name: string
@@ -12,6 +14,7 @@ export class StatusService {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
             },
         })
 
@@ -28,6 +31,7 @@ export class StatusService {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
             },
             body: JSON.stringify({from: fromStatus, to: toStatus}),
         })
@@ -43,6 +47,7 @@ export class StatusService {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
             },
             body: JSON.stringify({from: fromStatus, to: toStatus}),
         })
@@ -58,6 +63,7 @@ export class StatusService {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
             },
             body: JSON.stringify({status}),
         })
@@ -73,6 +79,7 @@ export class StatusService {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
             },
             body: JSON.stringify({status}),
         })

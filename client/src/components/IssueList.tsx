@@ -159,7 +159,7 @@ function IssueList() {
         handleAddIssueButton} className="home-button">Add Issue</button>
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
         {filterIssues().map((issue) => (
-            <IssueItem issue={issue} removeIssue={removeIssue} viewIssues={viewIssues}/>
+            <IssueItem key={issue.id} issue={issue} removeIssue={removeIssue} viewIssues={viewIssues}/>
         ))}
       </ul>
     </div>

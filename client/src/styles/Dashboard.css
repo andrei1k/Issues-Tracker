@@ -8,10 +8,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 10px;
+    margin-right: 1em;
     max-width: 100%;
     background-color: #f2f2f2;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
 }
 
@@ -75,22 +75,16 @@
     opacity: 1;
 }
 
-@media (max-width: 450px) {
-    .project-container {
-        width: 350px;
-        padding: 10px;
-    }
-}
-
-
 .project-sort-container {
     margin: 0.25em;
+    margin-right: 1em;
     padding: 0.5em;
     border: 0.1em solid #ccc;
     border-radius: 0.25em;
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .project-select-sort {
@@ -147,8 +141,9 @@
 .section-title {
     font-size: 20px;
     margin-bottom: 15px;
+    margin-right: 1em;
     color: #333;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #656668;
     padding-bottom: 5px;
 }
 
@@ -157,3 +152,78 @@
     flex-direction: column;
 }
 
+@media (max-width: 768px) {
+    .project-container {
+        padding: 20px;
+        margin-right: 0;
+    }
+    
+    .project-title {
+        font-size: 16px;
+    }
+
+    .project-date {
+        font-size: 12px;
+    }
+
+    .action {
+        font-size: 1.2em;
+    }
+
+    .action-name {
+        font-size: 0.5em;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .project-select-sort, .project-input, .project-button {
+        font-size: 14px;
+        padding: 8px;
+        margin: 3px;
+    }
+}
+
+@media (max-width: 450px) {
+    .project-container {
+        padding: 15px;
+    }
+
+    .project-title {
+        font-size: 14px;
+    }
+
+    .project-date {
+        font-size: 10px;
+    }
+
+    .project-actions {
+        gap: 5px;
+    }
+
+    .action {
+        font-size: 1em;
+    }
+
+    .action-name {
+        font-size: 0.4em;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .project-sort-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.25em;
+        margin: 0.25em 0;
+    }
+
+    .project-select-sort, .project-input, .project-button {
+        font-size: 12px;
+        padding: 6px;
+        margin: 2px;
+    }
+}

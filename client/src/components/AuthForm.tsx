@@ -171,8 +171,8 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
           )}
         </div>
         {formType === 'login' && 
-          <label className='remember-button'>
-            <input type='checkbox' onChange={() => setRememberMe(!rememberMe)} checked={rememberMe}/>Remember Me
+          <label className='remember-container'>
+            <input className='remember-button' type='checkbox' onChange={() => setRememberMe(!rememberMe)} checked={rememberMe}/>Remember Me
           </label>
         }
         <button onClick={() => setMessage('')} className='submit' type='submit'>{formType === 'login' ? 'Login' : 'Register'}</button>

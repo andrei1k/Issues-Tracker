@@ -29,11 +29,6 @@ function App() {
 
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            if (isTokenExpired() && !rememberUser && getToken()) {
-                logOut();
-            }
-        }, 30 * 60 * 1000);
         if (isEmptyUserData()) {
             const fetchedUserData = getUserInfo();
             const fetchedLogData = getIsLoggedIn();
@@ -47,9 +42,19 @@ function App() {
             setUserData(defaultUserData);
         }
 
-        return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        if (isLoggedIn) {
+            const intervalId = setInterval(() => {
+                if (isTokenExpired() && !rememberUser) {
+                    logOut();
+                }
+            }, 1000);
+    
+            return () => clearInterval(intervalId);
+        }
+    }, [isLoggedIn]);
     const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string) => {
         const updatedUserData = { userId, userInfo, token, isLoggedIn: true };
 
@@ -73,7 +78,7 @@ function App() {
         setIsLoggedIn(false);
         setRememberUser(false);
 
-        if (getToken() && isTokenExpired()) {
+        if (isTokenExpired()) {
                 window.location.href = '/login?sessionExpired=true';
         } else {
             return <Navigate to='/'/>;

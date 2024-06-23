@@ -22,7 +22,6 @@ export function isTokenExpired() {
 
     const expirationDate = new Date(expirationDateStr);
     const currentDate = new Date();
-    console.log(currentDate >= expirationDate);
     return currentDate >= expirationDate;
 };
 

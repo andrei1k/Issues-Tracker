@@ -15,7 +15,7 @@ const mapIssues = (issues: Issue[]) => {
         title: issue.title,
         description: issue.description,
         priority: issue.priority,
-        status: issue.status?.name,
+        statusId: issue.status?.id,
         assignedTo: issue.assignedUser
             ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}`
             : null

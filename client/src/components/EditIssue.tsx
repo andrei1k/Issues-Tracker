@@ -4,17 +4,7 @@ import { useParams } from "react-router-dom";
 import { getToken } from "../utils/Data.tsx";
 import projectService from "../services/ProjectService.ts";
 import "../styles/AddIssue.css";
-import issueService from "../services/IssueService.ts";
-
-interface Issue {
-  id?: number;
-  title: string;
-  description: string;
-  priority: number;
-  assignedTo: number;
-  statusId: number;
-  projectId: number;
-}
+import issueService, { Issue } from "../services/IssueService.ts";
 
 interface User {
   id: number;
@@ -41,19 +31,14 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
 
   const fetchIssueDetails = async () => {
     try {
-      console.log("blalalla");
-      console.log(projectId);
-      console.log(issueId);
       if (!projectId || !issueId) {
         return;
       }
-      console.log("hahahhaha");
       const issue = await issueService.getIssue(issueId);
-      console.log(issue);
       setTitle(issue.title);
       setDescription(issue.description);
-      setPriority(parseInt(issue.priority));
-      setAssignedTo(parseInt(issue.assignedTo));
+      setPriority(issue.priority);
+      setAssignedTo(issue.assignedTo);
       setStatusId(issue.statusId);
     } catch (error) {
       console.error("Error fetching issue details: ", error);

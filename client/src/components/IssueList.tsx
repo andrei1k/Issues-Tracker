@@ -10,6 +10,8 @@ import issueService, { Issue } from "../services/IssueService.ts";
 import projectService from "../services/ProjectService.ts";
 
 import "../styles/IssueList.css";
+import statusService, { Status } from "../services/StatusService.ts";
+import Column from "./Column.tsx";
 
 export interface User {
   id: number;
@@ -27,6 +29,7 @@ function IssueList() {
   const [gridView, setGridView] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { projectId } = useParams<{ projectId: string }>();
+  const [statuses, setStatuses] = useState<Status[]>()
 
 
   const openModal = () => {
@@ -36,6 +39,11 @@ function IssueList() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const fetchStatuses = async () => {
+    const statuses = await statusService.getStatuses()
+    setStatuses(statuses)   
+  }
 
   const getUsersForProject = async () => {
     try {
@@ -77,6 +85,7 @@ function IssueList() {
   useEffect(() => {
     viewIssues();
     getUsersForProject();
+    fetchStatuses()
   }, []);
 
   useEffect(() => {
@@ -157,13 +166,25 @@ function IssueList() {
       />
       <button onClick={
         handleAddIssueButton} className="home-button">Add Issue</button>
+        
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
-        {filterIssues().map((issue) => (
-            <IssueItem key={issue.id} issue={issue} removeIssue={removeIssue} viewIssues={viewIssues}/>
-        ))}
+      {
+          statuses?.map(status => {
+            return <Column 
+                      key={status.id}
+                      issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status?.name ?? ''))} 
+                      statusName={status.name} 
+                      removeIssue={removeIssue} 
+                      viewIssues={viewIssues}></Column>
+          })
+        }
       </ul>
     </div>
   );
+}
+
+function hardnotnataHilda(status2:string, status: string) {
+  return status.toLowerCase() === status2.toLowerCase()
 }
 
 export default IssueList;

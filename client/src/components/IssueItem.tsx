@@ -66,10 +66,6 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
           <span className="field-value">{getPriorityText(issue.priority)}</span>
         </li>
         <li className="issue-field">
-          <span className="field-label">Status:</span>
-          <span className="field-value">{issue.statusId}</span>
-        </li>
-        <li className="issue-field">
           <span className="field-label">Assigned To:</span>
           <span className="field-value">{issue.assignedTo}</span>
         </li>

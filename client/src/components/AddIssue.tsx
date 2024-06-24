@@ -6,6 +6,7 @@ import { getToken } from "../utils/Data.tsx";
 import projectService from "../services/ProjectService.ts";
 
 import "../styles/AddIssue.css";
+import statusService, { Status } from "../services/StatusService.ts";
 
 interface Issue {
   id?: number;
@@ -36,8 +37,14 @@ function AddIssue({closeModal, viewIssues}: ModalProp ) {
   const [assignedTo, setAssignedTo] = useState(0);
   const [users, setUsers] = useState<User[]>();
   const [statusId, setStatusId] = useState(0);
+  const [statuses, setStatuses] = useState<Status[]>()
 
   const { projectId } = useParams<{ projectId: string }>();
+
+  const fetchStatuses = async () => {
+    const statuses = await statusService.getStatuses()
+    setStatuses(statuses)   
+  }
 
   const getUsersForProject = async () => {
     try {
@@ -52,6 +59,7 @@ function AddIssue({closeModal, viewIssues}: ModalProp ) {
   }
   useEffect(() => {
     getUsersForProject();
+    fetchStatuses()
   }, []);
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -156,11 +164,9 @@ function AddIssue({closeModal, viewIssues}: ModalProp ) {
             className="select-field"
             required
           >
-            <option value="">Select status</option>
-            <option value="1">TO DO</option>
-            <option value="2">Doing</option>
-            <option value="3">Done</option>
-            <option value="4">Bug</option>
+            {
+              statuses?.map(status => <option key={status.id} value={status.id}>{status.name}</option>)
+            }
           </select>
         </div>
         <div className="form-group">

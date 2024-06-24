@@ -36,9 +36,12 @@
 
 /* списък с issues */
 .grid-view{
+    width: 100%;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    gap: 10px;
+    overflow-x: auto;
+    /* flex-wrap: wrap; */
     margin-left: 0.25em;
     padding-left: 0;
 }
@@ -52,9 +55,9 @@
 }
 
 .grid-view .issue-item{
-    width: 27%;
-    margin-top: 1.25em;
-    margin-right: 1em;
+    /* width: 27%; */
+    /* margin-top: 1.25em;
+    margin-right: 1em; */
     padding: 0.75em;
     border: 0.09em solid #ccc;
     border-radius: 0.25em;
@@ -99,7 +102,11 @@
     margin-left: 0.35em;
 }
 
-@media screen and (max-width: 768px) {
+.issue-list {
+    width: 100%;
+}
+
+ /* @media screen and (max-width: 768px) {
     .grid-view .issue-item{
       width: 40%;
     }
@@ -114,4 +121,4 @@
     .issue-list .filtered-issues .issue-item {
       width: 90%;
     }
-  }
+  } */

@@ -1,4 +1,5 @@
 import { getToken } from "../utils/Data.tsx";
+import { Status } from "./StatusService.ts";
 
 export interface Issue {
     id?: number;
@@ -6,7 +7,7 @@ export interface Issue {
     description: string;
     priority: number;
     assignedTo: number;
-    statusId: number;
+    status?: Status;
     projectId: number;
   }
   
@@ -29,7 +30,7 @@ export class IssueService {
 
     async getIssuesByAssignee(projectId: number, userId: number) {
         const response = await fetch(
-            `http://0.0.0.0:3001/projects/${projectId}/issues/assignee/${userId}`, {
+            `http://localhost:3001/projects/${projectId}/issues/assignee/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +47,7 @@ export class IssueService {
     }
     async getIssuesByPriority(projectId: number, priority: number) {
         const response = await fetch(
-            `http://0.0.0.0:3001/projects/${projectId}/issues/priority/${priority}`, {
+            `http://localhost:3001/projects/${projectId}/issues/priority/${priority}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ export class IssueService {
     }
 
     async removeIssue(projectId: number, issueId: number): Promise<void> {
-        const response = await fetch(`http://0.0.0.0:3001/projects/${projectId}/issues/remove/${issueId}`, {
+        const response = await fetch(`http://localhost:3001/projects/${projectId}/issues/remove/${issueId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

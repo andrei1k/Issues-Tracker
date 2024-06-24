@@ -17,7 +17,7 @@ function HomeLoggedIn() {
       <p className="home-description">Welcome to our issue tracker application!</p>
       <div className="home-buttons">
         <Link to={`/${getUserId()}/dashboard`} className="home-button">View Projects</Link>
-        <Link to="/profile" className="home-button">View Profile</Link>
+        <Link to={`/${getUserId()}/profile`} className="home-button">View Profile</Link>
       </div> 
       <img src='./images/tasks.svg' className='image-tasks' alt="tasks"/>
     </div>

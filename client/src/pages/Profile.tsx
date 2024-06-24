@@ -25,13 +25,13 @@ function Profile() {
             <div className='information-user'>
                 <h2>Main Info: </h2>
                 <div>
-                    {userData?.email}
+                    <span>Email: </span>{userData?.email}
                 </div>
                 <div>
-                    {userData?.firstName}
+                    <span>First Name: </span>{userData?.firstName}
                 </div>
                 <div>
-                    {userData?.lastName}
+                    <span>Last Name: </span>{userData?.lastName}
                 </div>
             </div>
         </div>

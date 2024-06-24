@@ -172,7 +172,7 @@ function IssueList() {
           statuses?.map(status => {
             return <Column 
                       key={status.id}
-                      issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status ?? ''))} 
+                      issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status?.name ?? ''))} 
                       statusName={status.name} 
                       removeIssue={removeIssue} 
                       viewIssues={viewIssues}></Column>

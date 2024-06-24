@@ -67,7 +67,7 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
         </li>
         <li className="issue-field">
           <span className="field-label">Status:</span>
-          <span className="field-value">{issue.statusId}</span>
+          <span className="field-value">{issue.status?.id}</span>
         </li>
         <li className="issue-field">
           <span className="field-label">Assigned To:</span>

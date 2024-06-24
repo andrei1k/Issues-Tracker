@@ -1,10 +1,11 @@
 import { Issue } from '../models/Issue';
+import { Status } from '../models/Status';
 
 export interface IssueServiceModel {
     title: string
     description: string
     priority: number
-    statusId: number
+    status?: Status
     projectId: number
     assignedTo?: number
 }
@@ -15,7 +16,7 @@ const mapIssues = (issues: Issue[]) => {
         title: issue.title,
         description: issue.description,
         priority: issue.priority,
-        statusId: issue.status?.id,
+        status: issue.status,
         assignedTo: issue.assignedUser
             ? `${issue.assignedUser?.firstName} ${issue.assignedUser?.lastName}`
             : null

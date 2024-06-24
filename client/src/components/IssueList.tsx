@@ -109,6 +109,8 @@ function IssueList() {
   }, [selectedAssignee]);
 
   const handleGridClick = () => {
+
+    console.log("grid clicked hahahahha")
     setGridView(true);
   };
 
@@ -172,6 +174,7 @@ function IssueList() {
           statuses?.map(status => {
             return <Column 
                       key={status.id}
+                      gridView={gridView}
                       issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status?.name ?? ''))} 
                       statusName={status.name} 
                       removeIssue={removeIssue} 

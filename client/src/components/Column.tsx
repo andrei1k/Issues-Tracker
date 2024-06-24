@@ -4,14 +4,15 @@ import { Issue } from "../services/IssueService.ts";
 import "../styles/Column.css"
 
 interface Props {
+    gridView: boolean;
     issues: Issue[];
     statusName: string;
     removeIssue: (issueId: number) => void;
     viewIssues: () => Promise<void>;
   }
 
-export default function Column({issues, statusName, removeIssue, viewIssues}: Props) {
-
+export default function Column({gridView, issues, statusName, removeIssue, viewIssues}: Props) {
+    console.log(gridView)
     return (
         <div className="column">
             <h1>{statusName}</h1>

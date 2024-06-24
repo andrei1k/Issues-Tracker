@@ -3,12 +3,10 @@ import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 
 import FilterForm from "./FilterForm.tsx";
-// import IssueItem from "./IssueItem.tsx";
 import Modal from "./Modal.tsx";
 import AddIssue from './AddIssue.tsx';
 import issueService, { Issue } from "../services/IssueService.ts";
 import projectService from "../services/ProjectService.ts";
-
 import "../styles/IssueList.css";
 import statusService, { Status } from "../services/StatusService.ts";
 import Column from "./Column.tsx";
@@ -31,7 +29,6 @@ function IssueList() {
   const { projectId } = useParams<{ projectId: string }>();
   const [statuses, setStatuses] = useState<Status[]>()
 
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -42,61 +39,64 @@ function IssueList() {
 
   const fetchStatuses = async () => {
     const statuses = await statusService.getStatuses()
-    setStatuses(statuses)   
+    setStatuses(statuses)
   }
 
   const getUsersForProject = async () => {
     try {
       const users = await projectService.getUsersFromProject(parseInt(projectId!));
       setAssignees(users);
-    } catch(error) {
+    } catch (error) {
       console.error("Error fetching users: ", error);
     }
   }
 
-  const filterByAssignee = async (userId: number) => {
+  const viewIssues = async () => {
     try {
-      const data = await issueService.getIssuesByAssignee(parseInt(projectId!), userId);
+      const data = await issueService.getIssues(parseInt(projectId!));
       setIssues(data);
-    } catch(err) {
-      console.log(err.message);
     }
-  }
-
-  const filterByPriority = async (priority: string) => {
-    try {
-      const data =  await issueService.getIssuesByPriority(parseInt(projectId!), parseInt(priority));
-      setIssues(data);
-    } catch(err) {
-      console.log(err.message);
+    catch (error) {
+      console.log(error.message);
     }
   }
 
   const filterIssues = (): Issue[] => {
-    if (issueSearch.trim() === '') {
-      return issues;
+    let filteredIssues = issues;
+
+    if (issueSearch.trim() !== '') {
+      filteredIssues = filteredIssues.filter((issue) =>
+        issue.title.toLowerCase().includes(issueSearch.toLowerCase()) ||
+        issue.description.toLowerCase().includes(issueSearch.toLowerCase())
+      );
     }
-    return issues.filter((issue) => 
-      issue.title.toLowerCase().includes(issueSearch.toLowerCase()) ||
-      issue.description.toLowerCase().includes(issueSearch.toLowerCase())
-    );
+
+    if (selectedPriority) {
+      filteredIssues = filteredIssues.filter(issue => issue.priority.toString() === selectedPriority);
+    }
+
+    if (selectedAssignee) {
+      filteredIssues = filteredIssues.filter(issue => issue.assignedTo === selectedAssignee);
+    }
+
+    return filteredIssues;
   };
-  
+
   useEffect(() => {
     viewIssues();
     getUsersForProject();
-    fetchStatuses()
+    fetchStatuses();
   }, []);
 
   useEffect(() => {
     filterIssues();
-  }, [issueSearch]);
+  }, [issueSearch, selectedPriority, selectedAssignee]);
 
   useEffect(() => {
     if (!parseInt(selectedPriority)) {
       viewIssues();
     } else {
-      filterByPriority(selectedPriority);
+      filterIssues();
     }
   }, [selectedPriority]);
 
@@ -104,7 +104,7 @@ function IssueList() {
     if (!selectedAssignee) {
       viewIssues();
     } else {
-      filterByAssignee(selectedAssignee);
+      filterIssues();
     }
   }, [selectedAssignee]);
 
@@ -116,26 +116,16 @@ function IssueList() {
     setGridView(false);
   }
 
-  const removeIssue = async (issueId: number ) => {
+  const removeIssue = async (issueId: number) => {
     try {
       await issueService.removeIssue(parseInt(projectId!), issueId);
       await viewIssues();
     }
-    catch(error) {
+    catch (error) {
       console.log(error.message);
     }
   }
 
-  const viewIssues = async () => {
-    try {
-      const data =  await issueService.getIssues(parseInt(projectId!));
-      setIssues(data);
-    }
-    catch(error) {
-      console.log(error.message);
-    }
-  }
-  
   const handleAddIssueButton = (e) => {
     e.preventDefault();
     openModal();
@@ -147,10 +137,10 @@ function IssueList() {
         <title>Issues | Issue Tracker</title>
       </Helmet>
       <h2>Issue List</h2>
-      <Modal 
-        isOpen={isModalOpen} 
-        onClose={closeModal} 
-        children={<AddIssue closeModal={closeModal} viewIssues={viewIssues}/>}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        children={<AddIssue closeModal={closeModal} viewIssues={viewIssues} />}>
       </Modal>
       <FilterForm
         issueSearch={issueSearch}
@@ -164,18 +154,16 @@ function IssueList() {
         handleBoxClick={handleBoxClick}
         gridView={gridView}
       />
-      <button onClick={
-        handleAddIssueButton} className="home-button">Add Issue</button>
-        
+      <button onClick={handleAddIssueButton} className="home-button">Add Issue</button>
       <ul className={`filtered-issues ${gridView ? "grid-view" : "box-view"}`}>
-      {
+        {
           statuses?.map(status => {
-            return <Column 
-                      key={status.id}
-                      issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status?.name ?? ''))} 
-                      statusName={status.name} 
-                      removeIssue={removeIssue} 
-                      viewIssues={viewIssues}></Column>
+            return <Column
+              key={status.id}
+              issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status?.name ?? ''))}
+              statusName={status.name}
+              removeIssue={removeIssue}
+              viewIssues={viewIssues}></Column>
           })
         }
       </ul>
@@ -183,7 +171,7 @@ function IssueList() {
   );
 }
 
-function hardnotnataHilda(status2:string, status: string) {
+function hardnotnataHilda(status2: string, status: string) {
   return status.toLowerCase() === status2.toLowerCase()
 }
 

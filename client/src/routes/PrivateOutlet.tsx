@@ -6,7 +6,7 @@ function PrivateOutlet () {
     const token = getToken();
     const userId = getUserId();
     const projectId = getProjectInfo()?.crrProjectId;
-    if (token !== '' && matchUrl(userId!, projectId!)) {
+    if (token !== '' && matchUrl(userId!, parseInt(projectId!))) {
       return <Outlet/>;
     }
     else {
@@ -18,14 +18,14 @@ function matchUrl(userId: number, projectId: number) {
   const pathParts = window.location.pathname.split('/');
 
   if (pathParts[2] === 'dashboard') {
-    return Number(pathParts[1]) === userId;
+    return Number(pathParts[1]) === Number(userId);
   }
   else if (pathParts[2] === 'projects') {
-    return Number(pathParts[1]) === userId &&
-          Number(pathParts[3]) === projectId;
+    return Number(pathParts[1]) === Number(userId) &&
+          Number(pathParts[3]) === Number(projectId);
   }
   else if(pathParts[2] === 'profile') {
-    return Number(pathParts[1]) === userId;
+    return Number(pathParts[1]) === Number(userId);
   }
   else if (pathParts[1] === 'home' || 
           pathParts[1] === 'workflow' ||

@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
-import { UserService } from '../services/UserService';
+import userService from '../services/UserService';
 import { createToken } from '../utils/jwtUtils';
 import { isPasswordStrong, isNameValid, isEmailValid } from '../utils/Validations';
-const userService = new UserService();
+// const userService = new UserService();
 
-export class AuthController {
-    static async register(req: Request, res: Response): Promise<void> {
+class AuthController {
+    async register(req: Request, res: Response): Promise<void> {
         try {
             const userData = req.body;
             if (!isEmailValid(userData.email) 
@@ -30,7 +30,7 @@ export class AuthController {
         }
     }
 
-    static async login(req: Request, res: Response): Promise<void> {
+    async login(req: Request, res: Response): Promise<void> {
         const { email, password } = req.body;
         const hashedPassword = CryptoJS.SHA256(password).toString();
 
@@ -49,4 +49,4 @@ export class AuthController {
     }
 }
 
-
+export default new AuthController();

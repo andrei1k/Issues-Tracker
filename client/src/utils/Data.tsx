@@ -6,31 +6,28 @@ export function setToken(token: string, rememberUser: boolean) {
     if (rememberUser) {
         expires = new Date(new Date().getTime() +  7 * 24 * 60 * 60 * 1000); // 7 day
     } else {
-        expires = new Date(new Date().getTime() + 30 * 60 * 1000); // 30 min
+        expires = new Date(new Date().getTime() + 20 * 60 * 1000); // 20 min
     }
-    console.log(expires);
+
+    Cookies.set('expiration-token-time', expires.toUTCString());
     Cookies.set('token', token, { expires });
-    console.log('Token expiration date:', expires);
 };
 
 export function isTokenExpired() {
     const token = Cookies.get('token');
     if (!token) return true;
-  
-    const cookieString = document.cookie.split('; ').find(row => row.startsWith('token='));
-    if (!cookieString) return true;
-  
-    const expiresString = cookieString.split('; ').find(row => row.startsWith('expires='));
-    if (!expiresString) return true;
-  
-    const expirationDate = new Date(expiresString.split('=')[1]);
+
+    const expirationDateStr= Cookies.get('expiration-token-time');
+    if (!expirationDateStr) return true;
+
+    const expirationDate = new Date(expirationDateStr);
     const currentDate = new Date();
-  
-    return currentDate > expirationDate;
+    return currentDate >= expirationDate;
 };
 
 export function removeToken() {
     Cookies.remove('token');
+    Cookies.remove('expiration-token-time');
 }
 
 export function isEmptyUserData() {

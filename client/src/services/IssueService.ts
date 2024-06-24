@@ -1,17 +1,15 @@
 import { getToken } from "../utils/Data.tsx";
 
 export interface Issue {
-    statusId: number;
-    id: number;
+    id?: number;
     title: string;
     description: string;
-    priority: string;
-    assignedTo: string;
-    deadline: string;
-    //fukip
-    status?: string;
-}
-
+    priority: number;
+    assignedTo: number;
+    statusId: number;
+    projectId: number;
+  }
+  
 export class IssueService {
     async getIssues(projectId: number): Promise<Issue[]> {
             const response = await fetch(`http://127.0.0.1:3001/projects/${projectId}/issues/all/`, {

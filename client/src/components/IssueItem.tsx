@@ -1,34 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaTrashCan, FaPen } from "react-icons/fa6";
 import '../styles/IssueList.css';
 import Modal from "./Modal.tsx";
 import EditIssue from "./EditIssue.tsx";
-import issueService from "../services/IssueService.ts";
-import { getProjectInfo } from "../utils/Data.tsx";
-
-export interface Issue {
-  id?: number;
-  title: string;
-  description: string;
-  priority: string;
-  assignedTo: string;
-  //vremenno shtoto vsichko e fukupnato
-  status?:string;
-}
+import { Issue } from "../services/IssueService.ts";
 
 interface Props {
   issue: Issue;
   removeIssue: (issueId: number) => void;
   viewIssues: () => Promise<void>;
 }
-
-interface Project {
-  id: number;
-  title: string;
-}
-
-const defaultProject = {id: 0, title: ''};
-
 
 function IssueItem({ issue, removeIssue, viewIssues }: Props) {
 
@@ -40,8 +21,8 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
 
   }
 
-  const getPriorityText = (priority: string) => {
-    switch (parseInt(priority)) {
+  const getPriorityText = (priority: number) => {
+    switch (priority) {
       case 1:
         return 'High';
       case 2:
@@ -54,8 +35,6 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
   }
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [project, setProject] = useState<Project>(defaultProject);
-  const [issueId, setIssueId] = useState<number>(0);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -65,22 +44,13 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
     setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    const crrProjectInfo = getProjectInfo();
-    setProject({ id: parseInt(crrProjectInfo.crrProjectId), 
-      title: crrProjectInfo.crrProjectName });
-  }, []);
-
   const handleEditBtn = (e) => {
     e.preventDefault();
-    setIssueId(e.currentTarget.getAttribute('data-issueid'));
     openModal();
   }
   
   return (
-    <>
-    
-    
+    <> 
     <li className="issue-item">
       <ul className="issues">
         <li className="issue-field">
@@ -96,18 +66,21 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
           <span className="field-value">{getPriorityText(issue.priority)}</span>
         </li>
         <li className="issue-field">
+          <span className="field-label">Status:</span>
+          <span className="field-value">{issue.statusId}</span>
+        </li>
+        <li className="issue-field">
           <span className="field-label">Assigned To:</span>
           <span className="field-value">{issue.assignedTo}</span>
         </li>
         <li className="button-field">
-          <FaTrashCan onClick={handleClickRemove}/>
           <FaPen data-issueid={issue.id} onClick={handleEditBtn}/>
           <Modal 
             isOpen={isModalOpen} 
             onClose={closeModal} 
             children={<EditIssue issueId={issue.id} closeModal={closeModal} viewIssues={viewIssues}/>}>
           </Modal>
-
+          <FaTrashCan onClick={handleClickRemove}/>
         </li>
       </ul>
     </li>

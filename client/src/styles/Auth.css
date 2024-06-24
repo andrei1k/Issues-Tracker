@@ -4,7 +4,9 @@
   margin-top: 160px;
   margin-left: 30%;
   margin-right: 30%;
-  background-color: rgb(210, 217, 224);
+  /* background-color: rgb(210, 217, 224); */
+  background-color: #888;
+
   border-radius: 8px;
   min-width: 350px;
   border: 3px solid whitesmoke;
@@ -27,6 +29,7 @@
 
 .auth-form.h2 {
   align-self: center;
+  color: white;
 }
 
 .input-group {
@@ -35,30 +38,34 @@
   align-self: normal;
 }
 
-.remember-button {
+.remember-container {
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: start;
   align-self: flex-start;
 }
+
 .input-group input::placeholder {
   font-size: 14px;
-  color: #999;
+  color: #444;
 }
 
 .input-group input {
-  border: 1px solid #ccc;
+  border: 1px solid #aaa;
   border-radius: 4px;
   max-width: 390px;
   margin-bottom: 8px;
   padding-left: 5px;
   height: 40px;
   font-size: 14px;
+  outline: none;
+  background-color: #bbb;
+  color: #444;
   transition: border 0.15s ease, filter 0.3s ease;
 }
 
 .input-group input:hover {
-  border: 1px solid black;
+  border: 1px solid #666;
   border-radius: 6px;
 }
 
@@ -66,10 +73,10 @@
   width: 50%;
   min-width: 100px;
   padding: 10px;
-  background-color: #1d63ad;
+  background-color: #444;
   color: white;
   border: none;
-  border-radius: 15px;
+  border-radius: 8px;
   cursor: pointer;
   transition: scale 0.8s ease, opacity 0.8s ease, color 0.8s ease;
   margin-top: 10px;
@@ -77,7 +84,7 @@
 }
 
 .submit:hover {
-  background-color: #8bc3ee;
+  background-color: #777;
   scale: 1.05; 
   opacity: 0.9;
   color: black;

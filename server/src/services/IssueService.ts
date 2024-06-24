@@ -124,20 +124,9 @@ class IssueService {
 
     async getAllIssues() {
         try {
-            console.log('here');
             const issues = await Issue.query().withGraphFetched('status').withGraphFetched('assignedUser');
-            console.log(issues);
-            const issueServiceModels = issues.map(issue => {
-                return {
-                    title: issue.title,
-                    description: issue.description,
-                    priority: issue.priority,
-                    statusId: issue.status?.name,
-                    assignedTo: issue.assignedUser?.firstName + ' ' + issue.assignedUser?.lastName,
-                    projectId: issue.projectId
-                }
-            });
-            return issueServiceModels;
+            const allIssuesForUser = mapIssues(issues);
+            return allIssuesForUser;
         } catch(err) {
             throw new Error('Could not fetch issues'); 
         }

@@ -160,7 +160,7 @@ function IssueList() {
           statuses?.map(status => {
             return <Column
               key={status.id}
-              issues={filterIssues().filter(issue => hardnotnataHilda(status.name, issue.status?.name ?? ''))}
+              issues={filterIssues().filter(issue =>status.id === issue.status?.id)}
               statusName={status.name}
               removeIssue={removeIssue}
               viewIssues={viewIssues}></Column>
@@ -171,8 +171,8 @@ function IssueList() {
   );
 }
 
-function hardnotnataHilda(status2: string, status: string) {
-  return status.toLowerCase() === status2.toLowerCase()
-}
+// function hardnotnataHilda(status2: string, status: string) {
+//   return status.toLowerCase() === status2.toLowerCase()
+// }
 
 export default IssueList;

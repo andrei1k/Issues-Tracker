@@ -5,6 +5,7 @@ import { getToken } from "../utils/Data.tsx";
 import projectService from "../services/ProjectService.ts";
 import "../styles/AddIssue.css";
 import issueService, { Issue } from "../services/IssueService.ts";
+import { Status } from "../services/StatusService.ts";
 
 interface User {
   id: number;
@@ -19,13 +20,17 @@ interface ModalProp {
   viewIssues: () => Promise<void>;
 }
 
+const defaultStatus: Status = {id: 0, name: "", createdAt: new Date(), followingStatuses: [] as Status[]}
+
 function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(0);
   const [assignedTo, setAssignedTo] = useState(0);
   const [users, setUsers] = useState<User[]>([]);
-  const [statusId, setStatusId] = useState(0);
+  const [status, setStatus] = useState(defaultStatus);
+  const [issue, setIssue] = useState<Issue>();
+
 
   const { projectId } = useParams<{ projectId: string }>();
 
@@ -39,7 +44,9 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
       setDescription(issue.description);
       setPriority(issue.priority);
       setAssignedTo(issue.assignedTo);
-      setStatusId(issue.statusId);
+      setStatus(issue.status as Status);
+      setIssue(issue);
+      console.log(issue.status)
     } catch (error) {
       console.error("Error fetching issue details: ", error);
     }
@@ -71,12 +78,12 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
       return;
     }
 
-    const updatedIssue : Issue = {
+    const updatedIssue = {
       title,
       description,
       priority,
       assignedTo,
-      statusId,
+      statusId: status.id,
       projectId: parseInt(projectId),
       id: issueId,
     };
@@ -161,16 +168,19 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
         <div className="form-group">
           <label>Status</label>
           <select
-            value={statusId}
-            onChange={(e) => setStatusId(parseInt(e.target.value))}
+            value={status.id}
+            onChange={(e) => setStatus({name: status.name , id: Number(e.target.value), createdAt: status.createdAt, followingStatuses: status.followingStatuses})}
             className="select-field"
             required
           >
             <option value="">Select status</option>
-            <option value="1">TO DO</option>
-            <option value="2">Doing</option>
-            <option value="3">Done</option>
-            <option value="4">Bug</option>
+            
+            <option value={issue?.status?.id}>{issue?.status?.name}</option>
+            {status.followingStatuses?.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.name}
+                </option>
+                ))}
           </select>
         </div>
         <div className="form-group">

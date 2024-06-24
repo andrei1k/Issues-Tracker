@@ -104,12 +104,15 @@ class IssueService {
             const issue = await Issue.query()
                                 .findById(issueId)
                                 .withGraphFetched('assignedUser')
-                                .withGraphFetched('status').first() as Issue;
+                                .withGraphFetched('status')
+                                .withGraphFetched("status.followingStatuses")
+                                .first() as Issue;
+
             return {
                 title: issue.title,
                 description: issue.description,
                 priority: issue.priority,
-                statusId: issue.statusId,
+                status: issue.status,
                 assignedTo: issue.assignedTo,
                 projectId: issue.projectId
             }

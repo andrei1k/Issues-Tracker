@@ -164,6 +164,7 @@ function AddIssue({closeModal, viewIssues}: ModalProp ) {
             className="select-field"
             required
           >
+            <option value="">Select status</option>
             {
               statuses?.map(status => <option key={status.id} value={status.id}>{status.name}</option>)
             }

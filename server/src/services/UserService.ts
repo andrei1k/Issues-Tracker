@@ -9,24 +9,45 @@ interface UserRegistrationData {
 
 class UserService {
     async login(email: string, password: string): Promise<User> {      
-        const user = await User.query().where('email', email).first();
-        if (!user || password != user.password) {
-            throw new Error ('invalid-credentials');
+        try {
+            const user = await User.query().where('email', email).first();
+            if (!user || password != user.password) {
+                throw ('invalid-credentials');
+            }
+            return user;
         }
-        return user;
+        catch(err: any) {
+            if (err === 'invalid-credentials') {
+                throw new Error('invalid-credentials');
+            }
+            throw new Error('Error while login!');
+        }
     }
 
     async register(userData: UserRegistrationData): Promise<User> {
-        const newUser = await User.query().insert(userData);
-        return newUser;
+        try {
+            const newUser = await User.query().insert(userData);
+            return newUser;
+        }
+        catch(err) {
+            throw new Error('Error while register!');
+        }
     }
 
     async getUserInfo(userId: number): Promise<User> {
-        const user = await User.query().findById(userId);
-        if (!user) {
-            throw new Error('no-user');
+        try {
+            const user = await User.query().findById(userId);
+            if (!user) {
+                throw ('no-user');
+            }
+            return user;
         }
-        return user;
+        catch (err) {
+            if (err === 'no-user') {
+                throw new Error('no-user');
+            }
+            throw new Error('Error while getting userInfo!');
+        }
     }
 
     async editUserInfo(userId: number, userData: UserRegistrationData): Promise<void> {

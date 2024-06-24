@@ -6,7 +6,7 @@ export interface Project {
     createdAt: string;
 }
 
-export class ProjectService {
+class ProjectService {
     async viewProjects(userId: number): Promise<Project[]> {
         const response = await fetch(`http://localhost:3001/projects/view/${userId}`, {
             method: 'GET',

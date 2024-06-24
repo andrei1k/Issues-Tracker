@@ -41,7 +41,7 @@ function NavBarLoggedIn({ userId, isLoggedIn, logOut } : NavBarProps) {
           </Link>
         </li>
         <li className="navbar-item">
-          <Link to="/profile" className="navbar-link">
+          <Link to={`${userId}/profile`} className="navbar-link">
             <FaRegUserCircle className="navbar-icon" />
             <span className="navbar-name">Profile</span>
           </Link>

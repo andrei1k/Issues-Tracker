@@ -90,5 +90,5 @@ export class StatusService {
     }
 }
 
-const statusService = new StatusService()
-export default statusService
+const statusService = new StatusService();
+export default statusService;

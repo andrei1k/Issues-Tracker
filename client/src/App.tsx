@@ -13,35 +13,22 @@ import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
-import { getIsLoggedIn, getToken, isTokenExpired, getUserId, getUserInfo, isEmptyUserData, setToken, removeToken } from './utils/Data.tsx';
+import { getIsLoggedIn, isTokenExpired, getUserId, setToken, removeToken } from './utils/Data.tsx';
 import { WorkFlow } from './pages/WorkFlow.tsx';
 
 import './styles/App.css';
-const defaultUserData: LocalData = {
-    firstName: '', lastName: '', email: ''
-};
 
 function App() {
-    const [userData, setUserData] = useState<LocalData>(defaultUserData);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const userId = getUserId();
     const [rememberUser, setRememberUser] = useState<boolean>(false);
 
 
     useEffect(() => {
-        if (isEmptyUserData()) {
-            const fetchedUserData = getUserInfo();
-            const fetchedLogData = getIsLoggedIn();
-            setUserData(fetchedUserData);
-            setIsLoggedIn(fetchedLogData);
-        }
-        else {
-            localStorage.setItem('userId', JSON.stringify(0));
-            localStorage.setItem('userData', JSON.stringify(defaultUserData));
-            localStorage.setItem('isLoggedIn', JSON.stringify(false));
-            setUserData(defaultUserData);
-        }
-
+        const fetchedLogData = getIsLoggedIn();
+        setIsLoggedIn(fetchedLogData!);
+        localStorage.setItem('userId', JSON.stringify(0));
+        localStorage.setItem('isLoggedIn', JSON.stringify(false));
     }, []);
 
     useEffect(() => {
@@ -59,10 +46,8 @@ function App() {
         const updatedUserData = { userId, userInfo, token, isLoggedIn: true };
 
         localStorage.setItem('userId', JSON.stringify(userId));
-        localStorage.setItem('userData', JSON.stringify(updatedUserData.userInfo));
         localStorage.setItem('isLoggedIn', JSON.stringify(updatedUserData.isLoggedIn));
         
-        setUserData(updatedUserData.userInfo);
         setIsLoggedIn(updatedUserData.isLoggedIn);
         setRememberUser(rememberMe);
         setToken(updatedUserData.token, rememberUser);
@@ -70,11 +55,9 @@ function App() {
 
     const logOut = () => {
         localStorage.removeItem('userId');
-        localStorage.removeItem('userData');
         localStorage.removeItem('isLoggedIn');
         removeToken();
 
-        setUserData(defaultUserData);
         setIsLoggedIn(false);
         setRememberUser(false);
 
@@ -89,7 +72,7 @@ function App() {
         <div className='container'>
             <Router>
             <div className='sidebar'>
-                <NavBarLoggedIn userId={userId} isLoggedIn={isLoggedIn} logOut={logOut}/>
+                <NavBarLoggedIn userId={userId!} isLoggedIn={isLoggedIn} logOut={logOut}/>
             </div>
             <div className='content'>
             <Routes>
@@ -103,8 +86,8 @@ function App() {
                 <Route element={<PrivateOutlet />}>
                         <Route path='/home' element={<HomeLoggedIn />} />
                         <Route path='/issues' element={<IssueList />} />
-                        <Route path='/profile' element={<Profile />} />
-                        <Route path='/:userId/dashboard' element={<Dashboard userId={userId} userInfo={userData} />} />
+                        <Route path='/:userId/profile' element={<Profile />} />
+                        <Route path='/:userId/dashboard' element={<Dashboard userId={userId!} />} />
                         <Route path='/:userId/projects/:projectId' element={<IssueList/>}/>
                         <Route path='/workflow' element={<WorkFlow/>}/>
                         <Route path='/*' element={<HomeLoggedIn />}/>

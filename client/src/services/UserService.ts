@@ -1,4 +1,4 @@
-import { getToken } from "../utils/Data.tsx";
+import { getToken, getUserId } from "../utils/Data.tsx";
 
 export interface User {
     id: number;
@@ -10,7 +10,7 @@ export interface User {
 
 export class UserService {
     async getUser(): Promise<User> {
-        const response = await fetch(`http://127.0.0.1:3001/`, {
+        const response = await fetch(`http://127.0.0.1:3001/users/get-info/${getUserId()}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,3 +25,6 @@ export class UserService {
         return await response.json();
     }
 }
+
+const userService = new UserService();
+export default userService;

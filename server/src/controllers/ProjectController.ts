@@ -4,8 +4,7 @@ import { isIdValid, isTitleValid } from '../utils/Validations';
 
 class ProjectController {
     async viewProjects(req: Request, res: Response): Promise<void> {
-        const userId = req.params.userId;
-        
+        const userId = req.params.userId;     
         if (!isIdValid(userId)) {
             res.status(400).json({ error: 'invalid-id' });
             return;

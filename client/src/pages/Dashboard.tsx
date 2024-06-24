@@ -10,16 +10,9 @@ import AddProjectForm from '../components/AddProject.tsx';
 
 interface DashboardProps {
     userId: number;
-    userInfo: UserData;
 }
 
-interface UserData {
-    firstName: string;
-    lastName: string;
-    email: string;
-}
-
-function Dashboard({ userId, userInfo }: DashboardProps ) {
+function Dashboard({ userId }: DashboardProps ) {
     const [projects, setProjects] = useState<Project[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -142,7 +135,7 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
                 <title>Dashboard | Issue Tracker</title>
             </Helmet>
             <div>
-                <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2>
+                {/* <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2> */}
                 <form className='project-sort-container'>
                     <input
                         className='project-input'
@@ -152,12 +145,12 @@ function Dashboard({ userId, userInfo }: DashboardProps ) {
                         onChange={(e) => setProjectSearch(e.target.value)}
                     />
                     <select className='project-select-sort' onChange={sortByDate}>
-                        <option disabled selected hidden>By Date</option>
+                        <option value="" hidden>By Date</option>
                         <option className='project-option-sort' value='newer'>Newer projects first</option>
                         <option className='project-option-sort' value='older'>Older projects first</option>
                     </select>
                     <select className='project-select-sort' onChange={sortByName}>
-                        <option disabled selected hidden>By Name</option>
+                        <option value="" hidden>By Name</option>
                         <option className='project-option-sort' value='a-z'>A-Z</option>
                         <option className='project-option-sort' value='z-a'>Z-A</option>
                     </select>

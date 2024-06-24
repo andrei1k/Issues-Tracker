@@ -1,5 +1,15 @@
-import React from "react";
 import Cookies from 'js-cookie'
+
+interface ProjectInfo {
+    crrProjectId: number;
+    crrProjectName: string;
+}
+
+export interface UserData {
+    firstName: string;
+    lastName: string;
+    email: string;
+}
 
 export function setToken(token: string, rememberUser: boolean) {
     let expires: Date;
@@ -30,11 +40,11 @@ export function removeToken() {
     Cookies.remove('expiration-token-time');
 }
 
-export function isEmptyUserData() {
-    return getUserInfo() !== null;
-}
+// export function isEmptyUserData() {
+//     return getUserInfo() !== null;
+// }
 
-export function getUserId() {
+export function getUserId(): number | null {
     const userIdData = localStorage.getItem('userId');
     if (userIdData) {
         return JSON.parse(userIdData);
@@ -44,22 +54,12 @@ export function getUserId() {
 }
 
 
-export function getToken() {
+export function getToken(): string | null {
     const token = Cookies.get('token');
     return token ?  token : null;
 }
 
-
-export function getUserInfo() {
-    const userInfoData = localStorage.getItem('userData');
-    if (userInfoData) {
-        return JSON.parse(userInfoData);
-    }
-
-    return null;
-}
-
-export function getIsLoggedIn() {
+export function getIsLoggedIn(): boolean | null {
     const isLoggedInData = localStorage.getItem('isLoggedIn');
     if (isLoggedInData) {
         return JSON.parse(isLoggedInData);
@@ -68,9 +68,11 @@ export function getIsLoggedIn() {
     return null;
 }
 
-export function getProjectInfo() {
+export function getProjectInfo(): ProjectInfo | null{
     const projectData = localStorage.getItem('project');
     if (projectData) {
         return JSON.parse(projectData);
     }
+
+    return null;
 }

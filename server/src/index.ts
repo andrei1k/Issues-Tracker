@@ -7,6 +7,7 @@ import { projectRouter } from './routers/ProjectRouter';
 import { authMiddleware } from './middlewares/AuthMiddleware';
 import { issueRouter } from './routers/IssueRouters';
 import { statusRouter } from './routers/StatusRouter';
+import { userRouter } from './routers/UserRouter';
 
 const cors = require('cors');
 const knex = Knex(config.development);
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/auth',authRouter);
+app.use('/users',userRouter);
 app.use('/projects', authMiddleware, projectRouter);
 app.use('/issues', authMiddleware, issueRouter);
 app.use('/statuses', authMiddleware, statusRouter);

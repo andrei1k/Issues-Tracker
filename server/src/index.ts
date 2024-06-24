@@ -5,7 +5,7 @@ import { Model } from 'objection';
 import { authRouter } from './routers/AuthRouter';
 import { projectRouter } from './routers/ProjectRouter';
 import { authMiddleware } from './middlewares/AuthMiddleware';
-import { issueProjRouter, issueRouter } from './routers/IssueRouters';
+import { issueRouter } from './routers/IssueRouters';
 import { statusRouter } from './routers/StatusRouter';
 
 const cors = require('cors');

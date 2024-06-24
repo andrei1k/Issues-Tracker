@@ -16,7 +16,7 @@ export function setToken(token: string, rememberUser: boolean) {
     if (rememberUser) {
         expires = new Date(new Date().getTime() +  7 * 24 * 60 * 60 * 1000); // 7 day
     } else {
-        expires = new Date(new Date().getTime() + 30 * 1000); // 20 min
+        expires = new Date(new Date().getTime() + 20* 60 * 1000); // 20 min
     }
 
     Cookies.set('expiration-token-time', expires.toUTCString());
@@ -36,8 +36,8 @@ export function isTokenExpired() {
 };
 
 export function removeToken() {
-    Cookies.remove('token');
     Cookies.remove('expiration-token-time');
+    Cookies.remove('token');
 }
 
 export function getUserId(): number | null {

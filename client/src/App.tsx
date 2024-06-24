@@ -20,8 +20,8 @@ import './styles/App.css';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const userId = getUserId();
     const [rememberUser, setRememberUser] = useState<boolean>(false);
+    const userId = getUserId();
 
 
     useEffect(() => {

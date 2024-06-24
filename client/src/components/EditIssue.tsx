@@ -28,9 +28,8 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
   const [priority, setPriority] = useState(0);
   const [assignedTo, setAssignedTo] = useState(0);
   const [users, setUsers] = useState<User[]>([]);
-  const [status, setStatus] = useState(defaultStatus);
-  const [issue, setIssue] = useState<Issue>();
-
+  const [statusId, setStatusId] = useState(0);
+  const [currStatus, setCurrStatus] = useState<Status>();
 
   const { projectId } = useParams<{ projectId: string }>();
 
@@ -44,8 +43,9 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
       setDescription(issue.description);
       setPriority(issue.priority);
       setAssignedTo(issue.assignedTo);
-      setStatus(issue.status as Status);
-      setIssue(issue);
+      setStatusId(issue.status?.id as number);
+      setCurrStatus(issue.status as Status);
+
       console.log(issue.status)
     } catch (error) {
       console.error("Error fetching issue details: ", error);
@@ -83,7 +83,7 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
       description,
       priority,
       assignedTo,
-      statusId: status.id,
+      statusId,
       projectId: parseInt(projectId),
       id: issueId,
     };
@@ -168,15 +168,15 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
         <div className="form-group">
           <label>Status</label>
           <select
-            value={status.id}
-            onChange={(e) => setStatus({name: status.name , id: Number(e.target.value), createdAt: status.createdAt, followingStatuses: status.followingStatuses})}
+            value={statusId}
+            onChange={(e) => setStatusId(parseInt(e.target.value))}
             className="select-field"
             required
           >
             <option value="">Select status</option>
             
-            <option value={issue?.status?.id}>{issue?.status?.name}</option>
-            {status.followingStatuses?.map((status) => (
+            <option value={currStatus?.id}>{currStatus?.name}</option>
+            {currStatus?.followingStatuses?.map((status) => (
                 <option key={status.id} value={status.id}>
                   {status.name}
                 </option>

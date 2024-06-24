@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 interface ProjectInfo {
-    crrProjectId: number;
+    crrProjectId: string;
     crrProjectName: string;
 }
 
@@ -16,7 +16,7 @@ export function setToken(token: string, rememberUser: boolean) {
     if (rememberUser) {
         expires = new Date(new Date().getTime() +  7 * 24 * 60 * 60 * 1000); // 7 day
     } else {
-        expires = new Date(new Date().getTime() + 20 * 60 * 1000); // 20 min
+        expires = new Date(new Date().getTime() + 20* 60 * 1000); // 20 min
     }
 
     Cookies.set('expiration-token-time', expires.toUTCString());
@@ -36,13 +36,9 @@ export function isTokenExpired() {
 };
 
 export function removeToken() {
-    Cookies.remove('token');
     Cookies.remove('expiration-token-time');
+    Cookies.remove('token');
 }
-
-// export function isEmptyUserData() {
-//     return getUserInfo() !== null;
-// }
 
 export function getUserId(): number | null {
     const userIdData = localStorage.getItem('userId');
@@ -53,7 +49,6 @@ export function getUserId(): number | null {
     return null;
 }
 
-
 export function getToken(): string | null {
     const token = Cookies.get('token');
     return token ?  token : null;
@@ -62,6 +57,7 @@ export function getToken(): string | null {
 export function getIsLoggedIn(): boolean | null {
     const isLoggedInData = localStorage.getItem('isLoggedIn');
     if (isLoggedInData) {
+        console.log(JSON.parse(isLoggedInData));
         return JSON.parse(isLoggedInData);
     }
 

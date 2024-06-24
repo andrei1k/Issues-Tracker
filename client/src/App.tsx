@@ -13,22 +13,22 @@ import Login from './pages/Login.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Profile from './pages/Profile.tsx';
-import { getIsLoggedIn, isTokenExpired, getUserId, setToken, removeToken } from './utils/Data.tsx';
 import { WorkFlow } from './pages/WorkFlow.tsx';
+import { getIsLoggedIn, isTokenExpired, getUserId, setToken, removeToken } from './utils/Data.tsx';
 
 import './styles/App.css';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const userId = getUserId();
     const [rememberUser, setRememberUser] = useState<boolean>(false);
+    const userId = getUserId();
 
 
     useEffect(() => {
         const fetchedLogData = getIsLoggedIn();
-        setIsLoggedIn(fetchedLogData!);
-        localStorage.setItem('userId', JSON.stringify(0));
-        localStorage.setItem('isLoggedIn', JSON.stringify(false));
+        if (fetchedLogData) {
+            setIsLoggedIn(fetchedLogData);
+        }
     }, []);
 
     useEffect(() => {
@@ -42,6 +42,7 @@ function App() {
             return () => clearInterval(intervalId);
         }
     }, [isLoggedIn]);
+
     const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string) => {
         const updatedUserData = { userId, userInfo, token, isLoggedIn: true };
 
@@ -54,18 +55,18 @@ function App() {
     };
 
     const logOut = () => {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('isLoggedIn');
-        removeToken();
+        localStorage.setItem('isLoggedIn', JSON.stringify(false));
+        localStorage.setItem('userId', JSON.stringify(0));
 
         setIsLoggedIn(false);
         setRememberUser(false);
 
         if (isTokenExpired()) {
                 window.location.href = '/login?sessionExpired=true';
-        } else {
-            return <Navigate to='/'/>;
-        }
+            } else {
+                return <Navigate to='/'/>;
+            }
+            removeToken();
     };
 
     return (

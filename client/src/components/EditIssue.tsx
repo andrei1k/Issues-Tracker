@@ -5,6 +5,7 @@ import { getToken } from "../utils/Data.tsx";
 import projectService from "../services/ProjectService.ts";
 import "../styles/AddIssue.css";
 import issueService, { Issue } from "../services/IssueService.ts";
+import { Status } from "../services/StatusService.ts";
 
 interface User {
   id: number;
@@ -19,6 +20,8 @@ interface ModalProp {
   viewIssues: () => Promise<void>;
 }
 
+const defaultStatus: Status = {id: 0, name: "", createdAt: new Date(), followingStatuses: [] as Status[]}
+
 function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -26,6 +29,7 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
   const [assignedTo, setAssignedTo] = useState(0);
   const [users, setUsers] = useState<User[]>([]);
   const [statusId, setStatusId] = useState(0);
+  const [currStatus, setCurrStatus] = useState<Status>();
 
   const { projectId } = useParams<{ projectId: string }>();
 
@@ -39,7 +43,10 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
       setDescription(issue.description);
       setPriority(issue.priority);
       setAssignedTo(issue.assignedTo);
-      setStatusId(issue.statusId);
+      setStatusId(issue.status?.id as number);
+      setCurrStatus(issue.status as Status);
+
+      console.log(issue.status)
     } catch (error) {
       console.error("Error fetching issue details: ", error);
     }
@@ -71,7 +78,7 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
       return;
     }
 
-    const updatedIssue : Issue = {
+    const updatedIssue = {
       title,
       description,
       priority,
@@ -167,10 +174,13 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
             required
           >
             <option value="">Select status</option>
-            <option value="1">TO DO</option>
-            <option value="2">Doing</option>
-            <option value="3">Done</option>
-            <option value="4">Bug</option>
+            
+            <option value={currStatus?.id}>{currStatus?.name}</option>
+            {currStatus?.followingStatuses?.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.name}
+                </option>
+                ))}
           </select>
         </div>
         <div className="form-group">

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
+import { getUserId } from '../utils/Data.ts';
 import projectService from '../services/ProjectService.ts';
-import { getUserId } from '../utils/Data.tsx';
 
 import '../styles/UserForm.css';
 

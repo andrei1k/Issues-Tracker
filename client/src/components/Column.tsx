@@ -1,7 +1,7 @@
 import React from "react";
 import IssueItem from "./IssueItem.tsx";
 import { Issue } from "../services/IssueService.ts";
-import "../styles/Column.css"
+import "../styles/Column.css";
 
 interface Props {
     issues: Issue[];

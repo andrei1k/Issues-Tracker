@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import '../styles/Profile.css';
+
+import { UserData } from '../utils/Data.ts';
 import userService from '../services/UserService.ts';
-import { UserData } from '../utils/Data';
+
+import '../styles/Profile.css';
 
 function Profile() {
 

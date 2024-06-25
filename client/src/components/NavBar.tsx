@@ -28,12 +28,6 @@ function NavBarLoggedIn({ userId, isLoggedIn, logOut } : NavBarProps) {
             <span className="navbar-name">Dashboard</span>
           </Link>
         </li>
-        {/* <li className="navbar-item">
-          <Link to="/add-issue" className="navbar-link">
-            <FaPlusCircle className="navbar-icon" />
-            <span className="navbar-name">Add Issue</span>
-          </Link>
-        </li> */}
         <li className="navbar-item">
           <Link to='/workflow' className="navbar-link">
             <FaProjectDiagram className="navbar-icon" />

@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 
-import FilterForm from "../components/FilterForm.tsx";
-import IssueItem from "../components/IssueItem.tsx";
 import Modal from "../components/Modal.tsx";
+import Column from "../components/Column.tsx";
 import AddIssue from '../components/AddIssue.tsx';
-import issueService, { Issue } from "../services/IssueService.ts";
+import FilterForm from "../components/FilterForm.tsx";
 import projectService from "../services/ProjectService.ts";
+import issueService, { Issue } from "../services/IssueService.ts";
+import statusService, { Status } from "../services/StatusService.ts";
 
 import "../styles/IssueList.css";
-import statusService, { Status } from "../services/StatusService.ts";
-import Column from "../components/Column.tsx";
 
 export interface User {
   id: number;

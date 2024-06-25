@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LocalData } from './components/AuthForm.tsx';
-
-import PrivateOutlet from './routes/PrivateOutlet.tsx';
-
-import NavBarLoggedIn from "./components/NavBar.tsx";
-import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
-import IssueList from "./components/IssueList.tsx";
 
 import Home from './pages/Home.tsx';
 import Login from './pages/Login.tsx';
+import Profile from './pages/Profile.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
-import Profile from './pages/Profile.tsx';
 import { WorkFlow } from './pages/WorkFlow.tsx';
-import { getIsLoggedIn, isTokenExpired, getUserId, setToken, removeToken } from './utils/Data.tsx';
+import IssueList from "./components/IssueList.tsx";
+import NavBarLoggedIn from "./components/NavBar.tsx";
+import { LocalData } from './components/AuthForm.tsx';
+import PrivateOutlet from './routes/PrivateOutlet.tsx';
+import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
+
+import { getIsLoggedIn, 
+    isTokenExpired, 
+    getUserId, 
+    setToken, 
+    removeToken } from './utils/Data.ts';
 
 import './styles/App.css';
 

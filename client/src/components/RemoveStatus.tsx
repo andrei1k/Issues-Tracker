@@ -1,5 +1,6 @@
-import React, { useState } from "react"
-import statusService, { Status } from "../services/StatusService.ts"
+import React, { useState } from "react";
+import statusService, { Status } from "../services/StatusService.ts";
+
 import "../styles/AddIssue.css";
 import "../styles/Workflow.css";
 

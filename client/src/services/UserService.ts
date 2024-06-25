@@ -1,4 +1,4 @@
-import { getToken, getUserId } from "../utils/Data.tsx";
+import { IP_ADDRESS, getToken, getUserId } from "../utils/Data.ts";
 
 export interface User {
     id: number;
@@ -10,7 +10,7 @@ export interface User {
 
 export class UserService {
     async getUser(): Promise<User> {
-        const response = await fetch(`http://localhost:3001/users/get-info/${getUserId()}`, {
+        const response = await fetch(`http://${IP_ADDRESS}:3001/users/get-info/${getUserId()}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

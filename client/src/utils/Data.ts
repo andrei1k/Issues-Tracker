@@ -1,5 +1,7 @@
 import Cookies from 'js-cookie'
 
+export const IP_ADDRESS = 'localhost';
+
 interface ProjectInfo {
     crrProjectId: string;
     crrProjectName: string;

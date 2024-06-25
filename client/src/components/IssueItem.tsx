@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { FaTrashCan, FaPen } from "react-icons/fa6";
-import "../styles/IssueList.css";
+
 import Modal from "./Modal.tsx";
 import EditIssue from "./EditIssue.tsx";
 import { Issue } from "../services/IssueService.ts";
+
+import "../styles/IssueList.css";
 
 interface Props {
   issue: Issue;

@@ -1,11 +1,13 @@
-import React, { useState, useEffect, FormEvent } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
-import { getToken } from "../utils/Data.tsx";
-import projectService from "../services/ProjectService.ts";
-import "../styles/AddIssue.css";
-import issueService, { Issue } from "../services/IssueService.ts";
+import React, { useState, useEffect, FormEvent } from "react";
+
+import { getToken } from "../utils/Data.ts";
 import { Status } from "../services/StatusService.ts";
+import issueService from "../services/IssueService.ts";
+import projectService from "../services/ProjectService.ts";
+
+import "../styles/AddIssue.css";
 
 interface User {
   id: number;

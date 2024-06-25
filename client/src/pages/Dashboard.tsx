@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { FaTrashAlt, FaSignOutAlt, FaUserPlus } from "react-icons/fa";
-import '../styles/Dashboard.css';
-import projectService, { Project } from '../services/ProjectService.ts';
 import Modal from '../components/Modal.tsx';
 import UserForm from '../components/UserForm.tsx';
 import AddProjectForm from '../components/AddProject.tsx';
+import projectService, { Project } from '../services/ProjectService.ts';
+
+import '../styles/Dashboard.css';
 
 interface DashboardProps {
     userId: number;

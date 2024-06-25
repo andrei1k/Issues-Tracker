@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { getUserId } from '../utils/Data.tsx';
+import { getUserId } from '../utils/Data.ts';
 
 import '../styles/HomeLoggedIn.css';
 

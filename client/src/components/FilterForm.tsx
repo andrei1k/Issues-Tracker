@@ -1,7 +1,7 @@
 import React, {useRef} from "react";
 import { CiGrid41, CiBoxList } from "react-icons/ci";
-import { User } from "./IssueList.tsx";
 
+import { User } from "./IssueList.tsx";
 
 interface FilterFormProps {
   issueSearch: string;

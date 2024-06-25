@@ -1,12 +1,14 @@
+import { Helmet } from "react-helmet";
 import React, { useEffect, useState } from "react";
-import statusService, { Status } from "../services/StatusService.ts";
+import AddStatus from "../components/AddStatus.tsx";
+import StatusLink from "../components/StatusLink.tsx";
 import WorkFlowForm from "../components/WorkFlowForm.tsx";
 import RemoveStatus from "../components/RemoveStatus.tsx";
-import AddStatus from "../components/AddStatus.tsx";
-import { Helmet } from "react-helmet";
-import '../styles/Workflow.css';
-import StatusLink from "../components/StatusLink.tsx";
 import FloatingMessage from "../components/FloatingMessage.tsx";
+
+import statusService, { Status } from "../services/StatusService.ts";
+
+import '../styles/Workflow.css';
 
 export function WorkFlow() {
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { IP_ADDRESS } from '../utils/Data.ts';
+
 import '../styles/Auth.css';
 
 interface AuthProps {
@@ -75,7 +77,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
 
   async function authUser(formData: FormData) {
     try {
-      const response = await fetch(`http://localhost:3001/auth/${formType}`, {
+      const response = await fetch(`http://${IP_ADDRESS}:3001/auth/${formType}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

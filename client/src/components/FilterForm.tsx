@@ -61,7 +61,7 @@ function FilterForm({
         onChange={(e) => setSelectedAssignee(parseInt(e.target.value))}
         className="assignee-select"
       >
-        <option value="">All Assignees</option>
+        <option value="0">All Assignees</option>
         {assignees?.map(user => (
           <option 
             key={user.id} 

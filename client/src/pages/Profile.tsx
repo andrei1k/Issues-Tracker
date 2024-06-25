@@ -31,25 +31,25 @@ function Profile() {
         getUserStats();
     },[])
     return (
-        <div>
+        <div className='profile-container'>
             <Helmet>
                 <title>Profile | Issue Tracker</title>
             </Helmet>
             <h1>Profile page</h1>
             <div className='information-user'>
-                <h2>Main Info: </h2>
-                <div>
-                    <span>Email: </span>{userData?.email}
-                </div>
-                <div>
-                    <span>First Name: </span>{userData?.firstName}
-                </div>
-                <div>
-                    <span>Last Name: </span>{userData?.lastName}
-                </div>
-            </div>
-
             <div className='user-cards'>
+                <div className='information-card'>
+                    <h2>Main Information</h2>
+                    <div>
+                        <span>Email: </span>{userData?.email}
+                    </div>
+                    <div>
+                        <span>First Name: </span>{userData?.firstName}
+                    </div>
+                    <div>
+                        <span>Last Name: </span>{userData?.lastName}
+                    </div>
+                </div>
                 <div className='card'>
                     <h3>Issues</h3>
                     <p>Total: {userStats?.issues}</p>
@@ -60,6 +60,8 @@ function Profile() {
                 </div>
             </div>
         </div>
+        </div>
+
     );
 }
 

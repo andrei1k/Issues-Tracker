@@ -1,11 +1,28 @@
-.information-user {
+.profile-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.information-user {
     border: 1px solid #ccc;
     border-radius: 1em;
-    
-    /* align-items: center; */
+    max-width: 1000px;
     padding: 2em;
+}
+
+.information-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 2rem;
+    width: 616px;
+    flex-wrap: nowrap;
+    align-self: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 616px;
+    text-align: center;
 }
 
 .user-cards {
@@ -26,9 +43,19 @@
     max-width: 300px;
     text-align: center;
 }
+
+@media (max-width: 905px) {
+    .information-card {
+        max-width: 300px;
+        padding: 1rem;
+    }
+}
   
 @media (max-width: 600px) {
     .card {
         flex: 1 1 100%;
+    }
+    .information-card {
+        max-width: 300px;
     }
 }

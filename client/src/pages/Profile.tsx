@@ -11,7 +11,12 @@ function Profile() {
     const [userData, setUserData] = useState<UserData>();
     const [userStats, setUserStats] = useState<UserStatsViewModel>();
 
-    
+    const formatDate = (utcDateString) => {
+        const date = new Date(utcDateString);
+        return date.toLocaleString('bg-BG');
+      };      
+      
+
     const getUserData = async () => {
         const fetchedUserData = await userService.getUser();
         console.log(fetchedUserData);
@@ -40,14 +45,23 @@ function Profile() {
             <div className='user-cards'>
                 <div className='information-card'>
                     <h2>Main Information</h2>
-                    <div>
-                        <span>Email: </span>{userData?.email}
-                    </div>
-                    <div>
-                        <span>First Name: </span>{userData?.firstName}
-                    </div>
-                    <div>
-                        <span>Last Name: </span>{userData?.lastName}
+                    <div className='information-container'>
+                        <div>
+                            <label className='information-label'>Email: </label>
+                            <span className='information-span'>{userData?.email}</span>
+                        </div>
+                        <div>
+                            <label className='information-label'>First Name: </label>
+                            <span className='information-span'>{userData?.firstName}</span>
+                        </div>
+                        <div>
+                            <label className='information-label'>Last Name: </label>
+                            <span className='information-span'>{userData?.lastName}</span>
+                        </div>
+                        <div>
+                            <label className='information-label'>Creation: </label>
+                            <span className='information-span'>{formatDate(userData?.createdAt)}</span>
+                        </div>
                     </div>
                 </div>
                 <div className='card'>

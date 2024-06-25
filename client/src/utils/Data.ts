@@ -11,6 +11,7 @@ export interface UserData {
     firstName: string;
     lastName: string;
     email: string;
+    createdAt?: string;
 }
 
 export interface UserStatsViewModel {

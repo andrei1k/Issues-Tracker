@@ -13,7 +13,7 @@ export interface Issue {
   
 export class IssueService {
     async getIssues(projectId: number): Promise<Issue[]> {
-            const response = await fetch(`http://127.0.0.1:3001/projects/${projectId}/issues/all/`, {
+            const response = await fetch(`http://192.168.0.108:3001/projects/${projectId}/issues/all/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export class IssueService {
 
     async getIssuesByAssignee(projectId: number, userId: number) {
         const response = await fetch(
-            `http://localhost:3001/projects/${projectId}/issues/assignee/${userId}`, {
+            `http://192.168.0.108:3001/projects/${projectId}/issues/assignee/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export class IssueService {
     }
     async getIssuesByPriority(projectId: number, priority: number) {
         const response = await fetch(
-            `http://localhost:3001/projects/${projectId}/issues/priority/${priority}`, {
+            `http://192.168.0.108:3001/projects/${projectId}/issues/priority/${priority}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export class IssueService {
     }
 
     async removeIssue(projectId: number, issueId: number): Promise<void> {
-        const response = await fetch(`http://localhost:3001/projects/${projectId}/issues/remove/${issueId}`, {
+        const response = await fetch(`http://192.168.0.108:3001/projects/${projectId}/issues/remove/${issueId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export class IssueService {
     }
 
     async getIssue(issueId: number): Promise<Issue> {
-        const response = await fetch(`http://127.0.0.1:3001/issues/${issueId}`, {
+        const response = await fetch(`http://192.168.0.108:3001/issues/${issueId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

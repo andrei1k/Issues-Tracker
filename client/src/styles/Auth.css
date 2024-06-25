@@ -4,9 +4,7 @@
   margin-top: 160px;
   margin-left: 30%;
   margin-right: 30%;
-  /* background-color: rgb(210, 217, 224); */
   background-color: #888;
-
   border-radius: 8px;
   min-width: 350px;
   border: 3px solid whitesmoke;
@@ -153,5 +151,18 @@
     margin-right: 7%;
     margin-top: 80px;
     max-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .session-expire {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 20px;
+  }
+  .auth-container {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 70px;
   }
 }

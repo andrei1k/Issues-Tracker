@@ -8,7 +8,7 @@ export interface Project {
 
 class ProjectService {
     async viewProjects(userId: number): Promise<Project[]> {
-        const response = await fetch(`http://localhost:3001/projects/view/${userId}`, {
+        const response = await fetch(`http://192.168.0.108:3001/projects/view/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ class ProjectService {
     async viewSortedProjectsByDate(userId: number, increasing: boolean) {
         const wayOfSort = increasing  ? 'increasing' : 'decreasing';
         const response = await fetch(
-                `http://localhost:3001/projects/view/sorted-date/${wayOfSort}/${userId}`, {
+                `http://192.168.0.108:3001/projects/view/sorted-date/${wayOfSort}/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ class ProjectService {
         const wayOfSort = increasing ? 'a-z' : 'z-a';
 
         const response = await 
-            fetch(`http://localhost:3001/projects/view/sorted-name/${wayOfSort}/${userId}`, {
+            fetch(`http://192.168.0.108:3001/projects/view/sorted-name/${wayOfSort}/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ class ProjectService {
     }
 
     async removeProject(userId: number, projectId: number, mustBeDeleted: boolean) {
-            const response = await fetch(`http://localhost:3001/projects/remove/${userId}`, {
+            const response = await fetch(`http://192.168.0.108:3001/projects/remove/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ class ProjectService {
         if (projectName === '') {
             throw new Error('empty-string');
         }
-        const response = await fetch(`http://localhost:3001/projects/add/${userId}`, {
+        const response = await fetch(`http://192.168.0.108:3001/projects/add/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ class ProjectService {
     }
 
     async getUsersFromProject(projectId: number) {
-            const response = await fetch(`http://localhost:3001/projects/users`, {
+            const response = await fetch(`http://192.168.0.108:3001/projects/users`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ class ProjectService {
     }
 
     async addUserInProject(projectId: number, firstName: string, lastName: string, email: string) {
-        const response = await fetch(`http://localhost:3001/projects/add-user`, {
+        const response = await fetch(`http://192.168.0.108:3001/projects/add-user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

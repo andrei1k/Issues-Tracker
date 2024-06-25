@@ -20,14 +20,24 @@
 
 .navbar-name {
     display: inline;
-    transition: opacity 0.3s ease-in-out;
+    font-size: 15px;
+    transition: opacity 0.3s ease-in-out, font-size 0.3s ease-in-out;;
     opacity: 0;
     width: auto;
 }
 
 .navbar-link:hover .navbar-name {
     opacity: 1;
-    width: 5em;
+    width: auto;
+    font-size: 15px;
+    text-align: center;
+    padding-bottom: 0.5em;
+}
+
+.navbar-link:focus .navbar-name {
+    opacity: 1;
+    width: auto;
+    font-size: 15px;
     text-align: center;
     padding-bottom: 0.5em;
 }
@@ -43,13 +53,17 @@
     padding-bottom: 0.25em;
 }
 
-/* При ширина на екрана по-малка от 768px */
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
+    .navbar-name {
+        font-size: 12px;
+    }
     .navbar-link:hover .navbar-name {
-        opacity: 1;
         font-size: 15px;
         width: 3em;
-        text-align: center;
+        padding-bottom: 0.05em;
+    }
+    .navbar-link:focus .navbar-name {
+        width: auto;
         padding-bottom: 0.05em;
     }
 
@@ -64,11 +78,21 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media (max-width: 480px) {
+    .navbar-name {
+        font-size: 12px;
+    }
     .navbar-link:hover .navbar-name {
         opacity: 1;
+        width: auto;
         font-size: 12px;
-        width: 3em;
+        text-align: center;
+        padding-bottom: 0.05em;
+    }
+    .navbar-link:focus .navbar-name {
+        opacity: 1;
+        width: auto;
+        font-size: 12px;
         text-align: center;
         padding-bottom: 0.05em;
     }
@@ -81,5 +105,11 @@
         width: 1em;
         height: 1em;
         padding-bottom: 0.025em;
+    }
+    .navbar-name {
+        display: inline;
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0;
+        text-align: center;
     }
 }

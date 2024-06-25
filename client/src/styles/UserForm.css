@@ -1,5 +1,5 @@
 .user-form {
-    max-width: 30em; 
+    width: 25em;
     margin: 1em;
     padding: 2em; 
     border: 0.0625em solid #cccccc; 
@@ -32,7 +32,7 @@
 }
 
 .user-form button {
-    width: 100%;
+    /* width: 100%; */
     margin-top: 0.3em;
     padding: 0.625em;
     border: none;
@@ -44,6 +44,10 @@
     transition: background-color 0.3s;
 }
 
+.user-form button:focus {
+    outline: none;
+}
+
 .user-form button:hover {
     background-color: #0056b3;
 }
@@ -52,4 +56,10 @@
     text-align: center;
     color: #008000;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .user-form {
+        max-width: 15em;
+    }
 }

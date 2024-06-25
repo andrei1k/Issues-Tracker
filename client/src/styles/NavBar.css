@@ -58,8 +58,8 @@
         font-size: 12px;
     }
     .navbar-link:hover .navbar-name {
+        width: auto;
         font-size: 15px;
-        width: 3em;
         padding-bottom: 0.05em;
     }
     .navbar-link:focus .navbar-name {

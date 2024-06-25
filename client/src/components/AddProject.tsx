@@ -18,7 +18,7 @@ const AddProjectForm = ({closeModal, viewProjects }: AddProjectFormProps) => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            await projectService.addProject(getUserId(), projectTitle);
+            await projectService.addProject(getUserId()!, projectTitle);
             setMessage('Successfully added project!');
             await viewProjects();
             setTimeout(() => {

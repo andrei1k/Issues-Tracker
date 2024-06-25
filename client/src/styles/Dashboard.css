@@ -147,11 +147,6 @@
     padding-bottom: 5px;
 }
 
-.modal-form {
-    display: flex;
-    flex-direction: column;
-}
-
 @media (max-width: 768px) {
     .project-container {
         padding: 20px;
@@ -185,11 +180,14 @@
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 480px) {
     .project-container {
         padding: 15px;
     }
 
+    .project {
+        padding: 10px;
+    }
     .project-title {
         font-size: 14px;
     }

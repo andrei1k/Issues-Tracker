@@ -4,16 +4,17 @@
   margin-top: 160px;
   margin-left: 30%;
   margin-right: 30%;
-  background-color: #888;
+  background-color: #ccc;
   border-radius: 8px;
   min-width: 350px;
-  border: 3px solid whitesmoke;
+  border: 3px solid #eee;
 }
 
 .auth-container .h2 {
   text-align: center;
-  margin: 0px;
+  margin: 0;
   margin-bottom: 10px;
+  color: #333;
 }
 
 .auth-form {
@@ -25,15 +26,15 @@
   max-width: 400px;
 }
 
-.auth-form.h2 {
+.auth-form .h2 {
   align-self: center;
-  color: white;
+  color: #fff; 
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  align-self: normal;
+  align-self: stretch;
 }
 
 .remember-container {
@@ -45,52 +46,52 @@
 
 .input-group input::placeholder {
   font-size: 14px;
-  color: #444;
+  color: #666;
 }
 
 .input-group input {
-  border: 1px solid #aaa;
-  border-radius: 4px;
+  border: 1px solid #aaa; 
+  border-radius: 0.75em; 
   max-width: 390px;
   margin-bottom: 8px;
-  padding-left: 5px;
-  height: 40px;
-  font-size: 14px;
-  outline: none;
-  background-color: #bbb;
-  color: #444;
+  padding-left: 5px; 
+  height: 40px; 
+  font-size: 14px; 
+  outline: none; 
+  background-color: #ddd; 
+  color: #333;
   transition: border 0.15s ease, filter 0.3s ease;
 }
 
 .input-group input:hover {
   border: 1px solid #666;
-  border-radius: 6px;
+  border-radius: 0.75em;
 }
 
 .submit {
   width: 50%;
   min-width: 100px;
   padding: 10px;
-  background-color: #444;
-  color: white;
+  background-color: #555;
+  color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: scale 0.8s ease, opacity 0.8s ease, color 0.8s ease;
+  transition: transform 0.8s ease, opacity 0.8s ease, color 0.8s ease; /* Плавен преход */
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .submit:hover {
   background-color: #777;
-  scale: 1.05; 
+  transform: scale(1.05);
   opacity: 0.9;
-  color: black;
+  color: #000;
 }
 
 .session-expire {
-  background-color: lightcoral;
-  padding-top: 10px;
+  background-color: #f79494; 
+  padding-top: 10px; 
   padding-bottom: 10px;
   margin-top: 80px;
   margin-left: 30%;
@@ -106,12 +107,12 @@
 
 .loading-indicator {
   display: inline-block;
-  width: 30px;
-  height: 30px;
-  border: 3px solid gray;
-  border-radius: 50%;
-  border-top-color: black;
-  animation: spin 1s infinite linear;
+  width: 1.5em;
+  height: 1.5em;
+  border: 3px solid gray; 
+  border-radius: 50%; 
+  border-top-color: black; 
+  animation: spin 1s infinite linear; 
 }
 
 @keyframes spin {
@@ -125,10 +126,9 @@
     justify-content: center;
     margin-left: 7%;
     margin-right: 7%;
-    background-color: rgb(210, 217, 224);
-    border-radius: 8px;
+    border-radius: 1em;
     min-width: 250px;
-    max-width: 600px;
+    max-width: 600px; 
   }
   .auth-form {
     display: flex;
@@ -142,10 +142,12 @@
     margin-right: 10%;
     max-width: 400px;
   }
+
   .loading-indicator {
-    width: 25px;
-    height: 25px;
+    width: 1.5em;
+    height: 1.5em; 
   }
+
   .session-expire {
     margin-left: 7%;
     margin-right: 7%;

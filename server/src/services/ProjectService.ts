@@ -56,10 +56,10 @@ class ProjectService {
         const project = await Project.query().findById(projectId);
         const projectUsers = await project?.$relatedQuery('users');
 
-        if (projectUsers?.length === 1) {
-            await user?.$relatedQuery('projects').deleteById(projectId);
+        if (projectUsers && projectUsers?.length > 1) {
+            await user?.$relatedQuery('projects').unrelate().where('userProjects.projectId', projectId);
         } else {
-            await user?.$relatedQuery('projects').unrelate().where('id', projectId);
+            await user?.$relatedQuery('projects').deleteById(projectId);
         }
     }
 

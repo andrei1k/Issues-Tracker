@@ -78,7 +78,6 @@ class ProjectController {
         const userId = req.params.userId;
         const projectId = req.body.projectId;
         const mustBeDeleted = req.body.mustBeDeleted;
-        
         if (!isIdValid(userId)) {
             res.status(400).json({ error: 'invalid-data' });
             return;

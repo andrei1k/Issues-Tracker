@@ -3,3 +3,4 @@ import userController from '../controllers/UserController';
 
 export const userRouter = Router(); 
 userRouter.get('/get-info/:userId', userController.getUserInfo);
+userRouter.get('/stats/:userId', userController.getUserStats);

@@ -13,6 +13,11 @@ export interface UserData {
     email: string;
 }
 
+export interface UserStatsViewModel {
+    projects: number;
+    issues: number;
+}
+
 export function setToken(token: string, rememberUser: boolean) {
     let expires: Date;
     if (rememberUser) {

@@ -10,7 +10,7 @@ export interface Status {
 export class StatusService {
 
     async getStatuses(): Promise<Status[]> {
-        const response = await fetch(`http://192.168.0.108:3001/statuses`, {
+        const response = await fetch(`http://localhost:3001/statuses`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

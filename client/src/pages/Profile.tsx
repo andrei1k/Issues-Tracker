@@ -52,11 +52,11 @@ function Profile() {
             <div className='user-cards'>
                 <div className='card'>
                     <h3>Issues</h3>
-                    <p>Total: {userStats?.projects}</p>
+                    <p>Total: {userStats?.issues}</p>
                 </div>
                 <div className='card'>
                     <h3>Projects</h3>
-                    <p>Total: {userStats?.issues}</p>
+                    <p>Total: {userStats?.projects}</p>
                 </div>
             </div>
         </div>

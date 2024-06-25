@@ -75,7 +75,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
 
   async function authUser(formData: FormData) {
     try {
-      const response = await fetch(`http://192.168.0.108:3001/auth/${formType}`, {
+      const response = await fetch(`http://localhost:3001/auth/${formType}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

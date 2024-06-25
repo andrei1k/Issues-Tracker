@@ -10,7 +10,7 @@ export interface User {
 
 export class UserService {
     async getUser(): Promise<User> {
-        const response = await fetch(`http://192.168.0.108:3001/users/get-info/${getUserId()}`, {
+        const response = await fetch(`http://localhost:3001/users/get-info/${getUserId()}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

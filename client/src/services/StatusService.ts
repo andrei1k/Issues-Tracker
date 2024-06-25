@@ -27,7 +27,7 @@ export class StatusService {
 
     async addWorkFlowConnection(fromStatus: number, toStatus: number): Promise<void> {
 
-        const response = await fetch(`http://192.168.0.108:3001/statuses/flow`, {
+        const response = await fetch(`http://localhost:3001/statuses/flow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export class StatusService {
 
     async removeWorkFlowConnection(fromStatus: number, toStatus: number): Promise<void> {
 
-        const response = await fetch(`http://192.168.0.108:3001/statuses/flow`, {
+        const response = await fetch(`http://localhost:3001/statuses/flow`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export class StatusService {
 
     async addStatus(status: string): Promise<void> {
 
-        const response = await fetch(`http://192.168.0.108:3001/statuses`, {
+        const response = await fetch(`http://localhost:3001/statuses`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export class StatusService {
 
     async removeStatus(status: number): Promise<void> {
 
-        const response = await fetch(`http://192.168.0.108:3001/statuses`, {
+        const response = await fetch(`http://localhost:3001/statuses`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

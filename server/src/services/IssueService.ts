@@ -59,7 +59,14 @@ class IssueService {
                                 .withGraphFetched('assignedUser')
                                 .withGraphFetched('status');
           
-            const issuesMapped = mapIssues(issues);
+            const issuesMapped = issues.map(issue => ({
+                id: issue.id,
+                title: issue.title,
+                description: issue.description,
+                priority: issue.priority,
+                status: issue.status,
+                assignedTo: issue.assignedTo
+            }));
 
             return issuesMapped;
         } catch(err) {

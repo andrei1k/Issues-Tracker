@@ -35,8 +35,13 @@ class UserService {
             const newUser = await User.query().insert(userData);
             return newUser.id;
         }
-        catch(err) {
-            throw new Error('Error while register!');
+        catch(err: any) {
+            if (err.constraint === 'users_email_unique') {
+                throw new Error('Error while register!');
+            }
+
+            throw new Error('Server error!');
+
         }
     }
 

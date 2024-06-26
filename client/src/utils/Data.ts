@@ -65,7 +65,6 @@ export function getToken(): string | null {
 export function getIsLoggedIn(): boolean | null {
     const isLoggedInData = localStorage.getItem('isLoggedIn');
     if (isLoggedInData) {
-        console.log(JSON.parse(isLoggedInData));
         return JSON.parse(isLoggedInData);
     }
 

@@ -19,19 +19,15 @@ function Profile() {
 
     const getUserData = async (): Promise<void> => {
         const fetchedUserData = await userService.getUser();
-        console.log(fetchedUserData);
         setUserData(fetchedUserData);
     }
 
     const getUserStats = async (): Promise<void> => {
         const fetchedUserStats: UserStatsViewModel = await userService.getUserStats() as UserStatsViewModel;
-        console.log(fetchedUserStats);
         setUserStats(fetchedUserStats);
-        console.log(userStats);
     }
 
     useEffect(() => {
-        console.log('useEffect')
         getUserData();
         getUserStats();
     },[])

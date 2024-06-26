@@ -21,7 +21,7 @@ class AuthController {
             const token = createToken(userId);
             res.status(201).json({userId, token});
         } catch(error: any) {
-            if (error.constraint === 'users_email_unique') {
+            if (error.message === 'Error while register!') {
                 res.status(400).json({error: 'already-used-email' });
             } else {
                 res.status(500).json({error: 'Server error!' });

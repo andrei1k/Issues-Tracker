@@ -3,7 +3,6 @@ import CryptoJS from 'crypto-js';
 import userService from '../services/UserService';
 import { createToken } from '../utils/jwtUtils';
 import { isPasswordStrong, isNameValid, isEmailValid } from '../utils/Validations';
-// const userService = new UserService();
 
 class AuthController {
     async register(req: Request, res: Response): Promise<void> {
@@ -17,10 +16,10 @@ class AuthController {
                 return;
             }
             userData.password = CryptoJS.SHA256(userData.password).toString();   
-            const currentUser = await userService.register(userData);
+            const userId = await userService.register(userData);
 
-            const token = createToken(currentUser.id);
-            res.status(201).json({currentUser, token});
+            const token = createToken(userId);
+            res.status(201).json({userId, token});
         } catch(error: any) {
             if (error.constraint === 'users_email_unique') {
                 res.status(400).json({error: 'already-used-email' });
@@ -35,10 +34,10 @@ class AuthController {
         const hashedPassword = CryptoJS.SHA256(password).toString();
 
         try {
-            const currentUser = await userService.login(email, hashedPassword);
+            const userId = await userService.login(email, hashedPassword);
 
-            const token = createToken(currentUser.id);
-            res.status(201).json({currentUser, token});
+            const token = createToken(userId);
+            res.status(201).json({userId, token});
         } catch (error: any) {
             if (error.message === 'invalid-credentials') {
                 res.status(400).json({error});

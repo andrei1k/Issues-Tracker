@@ -14,13 +14,13 @@ interface UserRegistrationData {
 }
 
 class UserService {
-    async login(email: string, password: string): Promise<User> {      
+    async login(email: string, password: string): Promise<number> {      
         try {
             const user = await User.query().where('email', email).first();
             if (!user || password != user.password) {
                 throw ('invalid-credentials');
             }
-            return user;
+            return user.id;
         }
         catch(err: any) {
             if (err === 'invalid-credentials') {
@@ -30,10 +30,10 @@ class UserService {
         }
     }
 
-    async register(userData: UserRegistrationData): Promise<User> {
+    async register(userData: UserRegistrationData): Promise<number> {
         try {
             const newUser = await User.query().insert(userData);
-            return newUser;
+            return newUser.id;
         }
         catch(err) {
             throw new Error('Error while register!');

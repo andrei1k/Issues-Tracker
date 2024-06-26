@@ -1,10 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import AuthForm,{LocalData} from '../components/AuthForm.tsx';
+import AuthForm from '../components/AuthForm.tsx';
 
 interface RegisterProps {
-    onRegister: (userId:number, localData: LocalData, rememberMe: boolean, token: string) => void;
+    onRegister: (userId:number, rememberMe: boolean, token: string) => void;
 }
 
 function Register({ onRegister }: RegisterProps) {

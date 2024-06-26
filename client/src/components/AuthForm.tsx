@@ -6,19 +6,18 @@ import { IP_ADDRESS } from '../utils/Data.ts';
 import '../styles/Auth.css';
 
 interface AuthProps {
-  onSubmit: (userId:number, data: LocalData, rememberMe: boolean, token: string) => void;
+  onSubmit: (userId:number, rememberMe: boolean, token: string) => void;
   formType: 'login' | 'register';
 }
 
-export interface LocalData {
+export interface FormData {
   firstName: string;
   lastName: string;
   email: string;
-  password?: string;
+  password: string;
 }
 
 // used for authUser parameter
-type FormData = Omit<LocalData, 'userId'>;
 
 function AuthForm({ onSubmit, formType }: AuthProps) {
   const [firstName, setFirstName] = useState('');
@@ -98,20 +97,14 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
         setLoading(false);
         throw new Error('Server response was not ok');
       }
-  
-      const data = await response.json();
-  
+      
       setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
-
-      const localUserId = data.currentUser.id;
-      const localData: LocalData = {
-        firstName: data.currentUser.firstName,
-        lastName: data.currentUser.lastName,
-        email: data.currentUser.email,
-      }
+      
+      const data = await response.json();
+      const localUserId = data.userId;
   
       setLoading(false);
-      onSubmit(localUserId, localData, rememberMe, data.token);
+      onSubmit(localUserId, rememberMe, data.token);
 
       navigate('/home');
     } catch (error) {

@@ -9,7 +9,6 @@ import Dashboard from './pages/Dashboard.tsx';
 import { WorkFlow } from './pages/WorkFlow.tsx';
 import IssueList from "./components/IssueList.tsx";
 import NavBarLoggedIn from "./components/NavBar.tsx";
-import { LocalData } from './components/AuthForm.tsx';
 import PrivateOutlet from './routes/PrivateOutlet.tsx';
 import HomeLoggedIn from "./components/HomeLoggedIn.tsx";
 
@@ -46,8 +45,8 @@ function App() {
         }
     }, [isLoggedIn]);
 
-    const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string): void => {
-        const updatedUserData = { userId, userInfo, token, isLoggedIn: true };
+    const authorize = (userId:number, rememberMe: boolean, token: string): void => {
+        const updatedUserData = { userId, token, isLoggedIn: true };
 
         localStorage.setItem('userId', JSON.stringify(userId));
         localStorage.setItem('isLoggedIn', JSON.stringify(updatedUserData.isLoggedIn));

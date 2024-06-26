@@ -1,10 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import AuthForm,{LocalData} from '../components/AuthForm.tsx';
+import AuthForm from '../components/AuthForm.tsx';
 
 interface LoginProps {
-    onLogin: (userId:number, localData: LocalData, rememberMe: boolean, token: string) => void;
+    onLogin: (userId:number, rememberMe: boolean, token: string) => void;
 }
 
 function Login({ onLogin }: LoginProps) {

@@ -35,7 +35,7 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
 
   const { projectId } = useParams<{ projectId: string }>();
 
-  const fetchIssueDetails = async () => {
+  const fetchIssueDetails = async (): Promise<void> => {
     try {
       if (!projectId || !issueId) {
         return;
@@ -54,7 +54,7 @@ function EditIssue({issueId, closeModal, viewIssues}: ModalProp ) {
     }
   }
 
-  const fetchUsersForProject = async () => {
+  const fetchUsersForProject = async (): Promise<void> => {
     try {
       if (!projectId) {
         return;

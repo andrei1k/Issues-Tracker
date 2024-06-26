@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import { IP_ADDRESS } from '../utils/Data.ts';
 
 import '../styles/Auth.css';
 
 interface AuthProps {
-  onSubmit: (userId:number, data: any, rememberMe: boolean, token: string) => void;
+  onSubmit: (userId:number, data: LocalData, rememberMe: boolean, token: string) => void;
   formType: 'login' | 'register';
 }
 
@@ -34,6 +34,7 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
   const [sessionExpired, setSessionExpired] = useState(false);
 
   const navigate = useNavigate();
+
   const isEmailValid = (email: string): boolean => {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   };
@@ -103,7 +104,6 @@ function AuthForm({ onSubmit, formType }: AuthProps) {
       setMessage(`${formType === 'login' ? 'Login' : 'Register'} successfully!`);
 
       const localUserId = data.currentUser.id;
-      // setUserId(data.currentUser.id);
       const localData: LocalData = {
         firstName: data.currentUser.firstName,
         lastName: data.currentUser.lastName,

@@ -29,20 +29,20 @@ function IssueList() {
   const { projectId } = useParams<{ projectId: string }>();
   const [statuses, setStatuses] = useState<Status[]>()
 
-  const openModal = () => {
+  const openModal = (): void => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsModalOpen(false);
   };
 
-  const fetchStatuses = async () => {
+  const fetchStatuses = async (): Promise<void> => {
     const statuses = await statusService.getStatuses()
     setStatuses(statuses)
   }
 
-  const getUsersForProject = async () => {
+  const getUsersForProject = async (): Promise<void> => {
     try {
       const users = await projectService.getUsersFromProject(parseInt(projectId!));
       setAssignees(users);
@@ -51,7 +51,7 @@ function IssueList() {
     }
   }
 
-  const viewIssues = async () => {
+  const viewIssues = async (): Promise<void> => {
     try {
       const data = await issueService.getIssues(parseInt(projectId!));
       setIssues(data);
@@ -108,7 +108,7 @@ function IssueList() {
     }
   }, [selectedAssignee]);
 
-  const handleGridClick = () => {
+  const handleGridClick = (): void => {
     setGridView(true);
   };
 
@@ -116,7 +116,7 @@ function IssueList() {
     setGridView(false);
   }
 
-  const removeIssue = async (issueId: number) => {
+  const removeIssue = async (issueId: number): Promise<void> => {
     try {
       await issueService.removeIssue(parseInt(projectId!), issueId);
       await viewIssues();
@@ -126,7 +126,7 @@ function IssueList() {
     }
   }
 
-  const handleAddIssueButton = (e) => {
+  const handleAddIssueButton = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     openModal();
   }
@@ -170,9 +170,5 @@ function IssueList() {
     </div>
   );
 }
-
-// function hardnotnataHilda(status2: string, status: string) {
-//   return status.toLowerCase() === status2.toLowerCase()
-// }
 
 export default IssueList;

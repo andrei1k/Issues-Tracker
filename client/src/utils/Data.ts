@@ -19,7 +19,7 @@ export interface UserStatsViewModel {
     issues: number;
 }
 
-export function setToken(token: string, rememberUser: boolean) {
+export function setToken(token: string, rememberUser: boolean): void {
     let expires: Date;
     if (rememberUser) {
         expires = new Date(new Date().getTime() +  7 * 24 * 60 * 60 * 1000); // 7 day
@@ -31,7 +31,7 @@ export function setToken(token: string, rememberUser: boolean) {
     Cookies.set('token', token, { expires });
 };
 
-export function isTokenExpired() {
+export function isTokenExpired(): boolean {
     const token = Cookies.get('token');
     if (!token) return true;
 
@@ -43,7 +43,7 @@ export function isTokenExpired() {
     return currentDate >= expirationDate;
 };
 
-export function removeToken() {
+export function removeToken(): void {
     Cookies.remove('expiration-token-time');
     Cookies.remove('token');
 }

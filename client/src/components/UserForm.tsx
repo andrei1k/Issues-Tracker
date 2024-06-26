@@ -8,13 +8,13 @@ interface UserFormProps {
     closeModal: () => void;
 }
 
-const UserForm = ({ projectId, closeModal }: UserFormProps) => {
+function UserForm({ projectId, closeModal }: UserFormProps) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent): Promise<void> => {
         event.preventDefault();
         try {
             await projectService.addUserInProject(projectId, firstName, lastName, email);

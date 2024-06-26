@@ -1,4 +1,5 @@
 import { IP_ADDRESS, getToken } from "../utils/Data.ts";
+import { User } from "./UserService.ts";
 
 export interface Project {
     id: number;
@@ -40,7 +41,7 @@ class ProjectService {
         return await response.json();
     }
 
-    async viewSortedProjectsByName(userId: number, increasing: boolean) {
+    async viewSortedProjectsByName(userId: number, increasing: boolean): Promise<Project[]> {
         const wayOfSort = increasing ? 'a-z' : 'z-a';
 
         const response = await 
@@ -59,7 +60,7 @@ class ProjectService {
         return await response.json();
     }
 
-    async removeProject(userId: number, projectId: number, mustBeDeleted: boolean) {
+    async removeProject(userId: number, projectId: number, mustBeDeleted: boolean): Promise<void> {
             const response = await fetch(`http://${IP_ADDRESS}:3001/projects/remove/${userId}`, {
                 method: 'DELETE',
                 headers: {
@@ -74,7 +75,7 @@ class ProjectService {
             }        
     };
 
-    async addProject(userId:number, projectName: string) {
+    async addProject(userId:number, projectName: string): Promise<void> {
         if (projectName === '') {
             throw new Error('empty-string');
         }
@@ -96,7 +97,7 @@ class ProjectService {
         }
     }
 
-    async getUsersFromProject(projectId: number) {
+    async getUsersFromProject(projectId: number): Promise<User[]> {
             const response = await fetch(`http://${IP_ADDRESS}:3001/projects/users`, {
               method: 'POST',
               headers: {
@@ -113,7 +114,10 @@ class ProjectService {
             return await response.json();
     }
 
-    async addUserInProject(projectId: number, firstName: string, lastName: string, email: string) {
+    async addUserInProject(projectId: number,
+                        firstName: string, 
+                        lastName: string, 
+                        email: string): Promise<void> {
         const response = await fetch(`http://${IP_ADDRESS}:3001/projects/add-user`, {
             method: 'POST',
             headers: {

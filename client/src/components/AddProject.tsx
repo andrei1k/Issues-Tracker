@@ -11,11 +11,11 @@ interface AddProjectFormProps {
     viewProjects: () => Promise<void>;
 }
 
-const AddProjectForm = ({closeModal, viewProjects }: AddProjectFormProps) => {
+function AddProjectForm({closeModal, viewProjects }: AddProjectFormProps) {
     const [projectTitle, setProjectTitle] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent): Promise<void> => {
         event.preventDefault();
         try {
             await projectService.addProject(getUserId()!, projectTitle);

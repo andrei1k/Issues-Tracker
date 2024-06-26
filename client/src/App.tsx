@@ -46,7 +46,7 @@ function App() {
         }
     }, [isLoggedIn]);
 
-    const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string) => {
+    const authorize = (userId:number, userInfo: LocalData, rememberMe: boolean, token: string): void => {
         const updatedUserData = { userId, userInfo, token, isLoggedIn: true };
 
         localStorage.setItem('userId', JSON.stringify(userId));
@@ -65,11 +65,12 @@ function App() {
         setRememberUser(false);
 
         if (isTokenExpired()) {
-                window.location.href = '/login?sessionExpired=true';
-            } else {
-                return <Navigate to='/'/>;
-            }
-            removeToken();
+            window.location.href = '/login?sessionExpired=true';
+        } else {
+            return <Navigate to='/'/>;
+        }
+        
+        removeToken();
     };
 
     return (

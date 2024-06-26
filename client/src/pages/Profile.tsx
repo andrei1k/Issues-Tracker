@@ -11,19 +11,19 @@ function Profile() {
     const [userData, setUserData] = useState<UserData>();
     const [userStats, setUserStats] = useState<UserStatsViewModel>();
 
-    const formatDate = (utcDateString) => {
+    const formatDate = (utcDateString: string): string => {
         const date = new Date(utcDateString);
         return date.toLocaleString('bg-BG');
       };      
       
 
-    const getUserData = async () => {
+    const getUserData = async (): Promise<void> => {
         const fetchedUserData = await userService.getUser();
         console.log(fetchedUserData);
         setUserData(fetchedUserData);
     }
 
-    const getUserStats = async () => {
+    const getUserStats = async (): Promise<void> => {
         const fetchedUserStats: UserStatsViewModel = await userService.getUserStats() as UserStatsViewModel;
         console.log(fetchedUserStats);
         setUserStats(fetchedUserStats);
@@ -60,7 +60,7 @@ function Profile() {
                         </div>
                         <div>
                             <label className='information-label'>Creation: </label>
-                            <span className='information-span'>{formatDate(userData?.createdAt)}</span>
+                            <span className='information-span'>{formatDate(userData?.createdAt!)}</span>
                         </div>
                     </div>
                 </div>

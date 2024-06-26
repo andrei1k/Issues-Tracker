@@ -9,19 +9,19 @@ import "../styles/IssueList.css";
 
 interface Props {
   issue: Issue;
-  removeIssue: (issueId: number) => void;
+  removeIssue: (issueId: number) => Promise<void>;
   viewIssues: () => Promise<void>;
 }
 
 function IssueItem({ issue, removeIssue, viewIssues }: Props) {
-  const handleClickRemove = (e) => {
+  const handleClickRemove = async (e: React.MouseEvent<SVGElement>): Promise<void> => {
     e.preventDefault();
     if (issue.id) {
-      removeIssue(issue.id);
+      await removeIssue(issue.id);
     }
   };
 
-  const getPriorityText = (priority: number) => {
+  const getPriorityText = (priority: number): string => {
     switch (priority) {
       case 1:
         return "High";
@@ -36,15 +36,15 @@ function IssueItem({ issue, removeIssue, viewIssues }: Props) {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const openModal = () => {
+  const openModal = (): void => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsModalOpen(false);
   };
 
-  const handleEditBtn = (e) => {
+  const handleEditBtn = (e: React.MouseEvent<SVGElement>): void => {
     e.preventDefault();
     openModal();
   };

@@ -14,7 +14,7 @@ function PrivateOutlet () {
     }
 }
 
-function matchUrl(userId: number, projectId: number) {
+function matchUrl(userId: number, projectId: number): boolean {
   const pathParts = window.location.pathname.split('/');
 
   if (pathParts[2] === 'dashboard') {

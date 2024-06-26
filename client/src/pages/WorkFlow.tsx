@@ -16,7 +16,7 @@ export function WorkFlow() {
     const [errorMessage, setErrorMessage] = useState('')
 
 
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
             const statuses = await statusService.getStatuses()
             setStatuses(statuses)
             // console.log(statuses);

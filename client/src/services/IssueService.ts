@@ -28,7 +28,7 @@ export class IssueService {
             return await response.json();
     }
 
-    async getIssuesByAssignee(projectId: number, userId: number) {
+    async getIssuesByAssignee(projectId: number, userId: number): Promise<Issue[]> {
         const response = await fetch(
             `http://${IP_ADDRESS}:3001/projects/${projectId}/issues/assignee/${userId}`, {
             method: 'GET',
@@ -45,7 +45,7 @@ export class IssueService {
         return await response.json();
 
     }
-    async getIssuesByPriority(projectId: number, priority: number) {
+    async getIssuesByPriority(projectId: number, priority: number): Promise<Issue[]> {
         const response = await fetch(
             `http://${IP_ADDRESS}:3001/projects/${projectId}/issues/priority/${priority}`, {
             method: 'GET',

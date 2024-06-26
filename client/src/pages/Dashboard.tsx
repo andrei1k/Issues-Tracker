@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { FaTrashAlt, FaSignOutAlt, FaUserPlus } from "react-icons/fa";
+
 import Modal from '../components/Modal.tsx';
 import UserForm from '../components/UserForm.tsx';
 import AddProjectForm from '../components/AddProject.tsx';
@@ -21,23 +22,23 @@ function Dashboard({ userId }: DashboardProps ) {
     const [currentProjectId, setCurrentProjectId] = useState(0);
     const navigate = useNavigate();
 
-    const openModal = () => {
+    const openModal = (): void => {
         setIsModalOpen(true);
     };
 
-    const openProjectModal = () => {
+    const openProjectModal = (): void => {
         setIsProjectModalOpen(true);
     };
 
-    const closeProjectModal = () => {
+    const closeProjectModal = (): void => {
         setIsProjectModalOpen(false);
     }
 
-    const closeModal = () => {
+    const closeModal = (): void => {
         setIsModalOpen(false);
     };
 
-    const viewProjects = async () => {
+    const viewProjects = async (): Promise<void> => {
         try {
             const data = await projectService.viewProjects(userId);
             setProjects(data);
@@ -47,7 +48,7 @@ function Dashboard({ userId }: DashboardProps ) {
         }
     };
     
-    const removeProject = async (projectId: number, mustBeDeleted: boolean) => {
+    const removeProject = async (projectId: number, mustBeDeleted: boolean): Promise<void> => {
         try {
             await projectService.removeProject(userId, projectId, mustBeDeleted);
             await viewProjects();
@@ -61,7 +62,7 @@ function Dashboard({ userId }: DashboardProps ) {
         viewProjects();
     }, []);
 
-    const handleAddUser: React.MouseEventHandler<SVGAElement> = async (event) => {
+    const handleAddUser: React.MouseEventHandler<SVGAElement> = async (event): Promise<void> => {
         event.preventDefault();
         const projectId = event.currentTarget.getAttribute('data-projectid');
         if (projectId !== null) {
@@ -70,24 +71,24 @@ function Dashboard({ userId }: DashboardProps ) {
         openModal();
     } 
 
-    const handleCreateClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    const handleCreateClick: React.MouseEventHandler<HTMLButtonElement> = (event): void => {
         event.preventDefault();
         openProjectModal();
     }
 
-    const handleLeave: React.MouseEventHandler<SVGAElement> = async (event) => {
+    const handleLeave: React.MouseEventHandler<SVGAElement> = async (event): Promise<void> => {
         event.preventDefault();
         const projectId = event.currentTarget.getAttribute('data-projectid');
         await removeProject(Number(projectId), false);
     };
 
-    const handleRemove: React.MouseEventHandler<SVGAElement> = async (event) => {
+    const handleRemove: React.MouseEventHandler<SVGAElement> = async (event): Promise<void> => {
         event.preventDefault();
         const projectId = event.currentTarget.getAttribute('data-projectid');
         await removeProject(Number(projectId), true);
     };
 
-    const handleView: React.MouseEventHandler<HTMLTableCellElement> = (event) => {
+    const handleView: React.MouseEventHandler<HTMLTableCellElement> = (event): void => {
         event.preventDefault();
         const crrProjectId = event.currentTarget.getAttribute('data-projectid');
         const crrProjectName = event.currentTarget.getAttribute('data-projectname');
@@ -95,7 +96,7 @@ function Dashboard({ userId }: DashboardProps ) {
         navigate(`../${userId}/projects/${crrProjectId}`);
     };
 
-    const sortByDate: React.ChangeEventHandler<HTMLSelectElement> = async (e) => {
+    const sortByDate: React.ChangeEventHandler<HTMLSelectElement> = async (e): Promise<void> => {
         e.preventDefault();
         const option = e.target.value;
         if (option === 'newer') {
@@ -108,7 +109,7 @@ function Dashboard({ userId }: DashboardProps ) {
         }
     }
 
-    const sortByName: React.ChangeEventHandler<HTMLSelectElement> = async (e) => {
+    const sortByName: React.ChangeEventHandler<HTMLSelectElement> = async (e): Promise<void> => {
         e.preventDefault();
         const option = e.target.value;
         if (option === 'a-z') {
@@ -136,7 +137,6 @@ function Dashboard({ userId }: DashboardProps ) {
                 <title>Dashboard | Issue Tracker</title>
             </Helmet>
             <div>
-                {/* <h2>Welcome, {userInfo.firstName} {userInfo.lastName}</h2> */}
                 <form className='project-sort-container'>
                     <input
                         className='project-input'

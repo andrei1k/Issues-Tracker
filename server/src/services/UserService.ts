@@ -81,10 +81,6 @@ class UserService {
             throw new Error('Error while getting userStats!');
         }
     }
-
-    async editUserInfo(userId: number, userData: UserRegistrationData): Promise<void> {
-        // const user
-    }
 }
 
 export default new UserService();

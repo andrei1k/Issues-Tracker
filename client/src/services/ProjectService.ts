@@ -61,18 +61,18 @@ class ProjectService {
     }
 
     async removeProject(userId: number, projectId: number, mustBeDeleted: boolean): Promise<void> {
-            const response = await fetch(`http://${IP_ADDRESS}:3001/projects/remove/${userId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}` 
-                },
-                body: JSON.stringify( {projectId, mustBeDeleted} )
-            });
+        const response = await fetch(`http://${IP_ADDRESS}:3001/projects/remove/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}` 
+            },
+            body: JSON.stringify( {projectId, mustBeDeleted} )
+        });
 
-            if (!response.ok) {
-                throw new Error('Error deleting projects');
-            }        
+        if (!response.ok) {
+            throw new Error('Error deleting projects');
+        }        
     };
 
     async addProject(userId:number, projectName: string): Promise<void> {
@@ -98,20 +98,20 @@ class ProjectService {
     }
 
     async getUsersFromProject(projectId: number): Promise<User[]> {
-            const response = await fetch(`http://${IP_ADDRESS}:3001/projects/users`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getToken()}`,
-              },
-              body: JSON.stringify({ projectId })
-            });
-    
-            if (!response.ok) {
-              throw new Error("Failed to fetch users");
-            }
-    
-            return await response.json();
+        const response = await fetch(`http://${IP_ADDRESS}:3001/projects/users`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`,
+            },
+            body: JSON.stringify({ projectId })
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch users");
+        }
+
+        return await response.json();
     }
 
     async addUserInProject(projectId: number,

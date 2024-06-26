@@ -46,7 +46,7 @@ function IssueList() {
 
   const getUsersForProject = async (): Promise<void> => {
     try {
-      const users = await projectService.getUsersFromProject(parseInt(projectId!));
+      const users = await projectService.getUsersFromProject(parseInt(projectId ?? ''));
       setAssignees(users);
     } catch(error) {
       console.error("Error fetching users: ", error);
@@ -55,7 +55,7 @@ function IssueList() {
 
   const filterByAssignee = async (userId: number): Promise<void> => {
     try {
-      const data = await issueService.getIssuesByAssignee(parseInt(projectId!), userId);
+      const data = await issueService.getIssuesByAssignee(parseInt(projectId ?? ''), userId);
       setIssues(data);
     } catch(err) {
       console.log(err.message);
@@ -64,7 +64,7 @@ function IssueList() {
 
   const filterByPriority = async (priority: string): Promise<void> => {
     try {
-      const data =  await issueService.getIssuesByPriority(parseInt(projectId!), parseInt(priority));
+      const data =  await issueService.getIssuesByPriority(parseInt(projectId ?? ''), parseInt(priority));
       setIssues(data);
     } catch(err) {
       console.log(err.message);
@@ -117,7 +117,7 @@ function IssueList() {
 
   const removeIssue = async (issueId: number): Promise<void> => {
     try {
-      await issueService.removeIssue(parseInt(projectId!), issueId);
+      await issueService.removeIssue(parseInt(projectId ?? ''), issueId);
       await viewIssues();
     }
     catch(error) {
@@ -127,7 +127,7 @@ function IssueList() {
 
   const viewIssues = async (): Promise<void> => {
     try {
-      const data =  await issueService.getIssues(parseInt(projectId!));
+      const data =  await issueService.getIssues(parseInt(projectId ?? ''));
       setIssues(data);
     }
     catch(error) {

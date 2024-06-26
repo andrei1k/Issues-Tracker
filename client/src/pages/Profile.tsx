@@ -60,7 +60,7 @@ function Profile() {
                         </div>
                         <div>
                             <label className='information-label'>Creation: </label>
-                            <span className='information-span'>{formatDate(userData?.createdAt!)}</span>
+                            <span className='information-span'>{formatDate(userData?.createdAt ?? '')}</span>
                         </div>
                     </div>
                 </div>

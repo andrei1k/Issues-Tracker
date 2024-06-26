@@ -6,7 +6,7 @@ function PrivateOutlet () {
     const token = getToken();
     const userId = getUserId();
     const projectId = getProjectInfo()?.crrProjectId;
-    if (token !== '' && matchUrl(userId!, parseInt(projectId!))) {
+    if (token !== '' && matchUrl(userId ?? 0, parseInt(projectId ?? ''))) {
       return <Outlet/>;
     }
     else {

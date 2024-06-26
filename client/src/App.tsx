@@ -77,7 +77,7 @@ function App() {
         <div className='container'>
             <Router>
             <div className='sidebar'>
-                <NavBarLoggedIn userId={userId!} isLoggedIn={isLoggedIn} logOut={logOut}/>
+                <NavBarLoggedIn userId={userId ?? 0} isLoggedIn={isLoggedIn} logOut={logOut}/>
             </div>
             <div className='content'>
             <Routes>

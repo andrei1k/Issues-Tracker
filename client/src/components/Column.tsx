@@ -6,7 +6,7 @@ import "../styles/Column.css";
 interface Props {
     issues: Issue[];
     statusName: string;
-    removeIssue: (issueId: number) => void;
+    removeIssue: (issueId: number) => Promise<void>;
     viewIssues: () => Promise<void>;
   }
 
